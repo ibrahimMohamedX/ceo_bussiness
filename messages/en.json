@@ -1,0 +1,410 @@
+{
+  "Navbar": {
+    "brand": "NODAL",
+    "links": {
+      "services": "Services",
+      "industries": "Industries",
+      "projects": "Projects",
+      "engineering": "Engineering",
+      "company": "Company",
+      "contact": "Contact"
+    },
+    "cta": "Start your project",
+    "localeLabel": "Language",
+    "themeLabel": "Toggle theme"
+  },
+  "Hero": {
+    "eyebrow": {
+      "software": "SOFTWARE",
+      "embedded": "EMBEDDED",
+      "ai": "AI"
+    },
+    "title": {
+      "line1": "Engineering",
+      "line2": "Intelligence",
+      "line3": "Into Reality."
+    },
+    "description": "We design intelligent software, embedded systems, and AI-powered products that solve real problems and move the world forward.",
+    "primaryCta": "Start Your Project",
+    "secondaryCta": "Explore Our Engineering",
+    "highlights": {
+      "engineering": "END-TO-END\nENGINEERING",
+      "reliable": "RELIABLE\nBY DESIGN",
+      "hardware": "HARDWARE\nAWARE",
+      "ai": "AI POWERED\nSOLUTIONS"
+    },
+    "coreCaption": "EVERY LINE OF CODE.\nEVERY CIRCUIT.\nEVERY DECISION.",
+    "corePurpose": "ONE PURPOSE:\nREAL WORLD IMPACT.",
+    "coreLabels": {
+      "ai": "ARTIFICIAL\nINTELLIGENCE",
+      "aiVerbs": "PERCEIVE\nLEARN\nREASON\nDECIDE",
+      "software": "SOFTWARE\nENGINEERING",
+      "softwareVerbs": "ARCHITECT\nBUILD\nOPTIMIZE\nSCALE",
+      "embedded": "EMBEDDED\nSYSTEMS",
+      "embeddedVerbs": "SENSE\nCONTROL\nPERFORM\nRELIABLY",
+      "impact": "REAL WORLD\nIMPACT",
+      "impactVerbs": "SOLVE\nTRANSFORM\nEMPOWER"
+    },
+    "coreStatus": "CORE ACTIVE",
+    "coreCoordinates": "34.0522° N\n118.2437° W"
+  },
+  "Services": {
+    "eyebrow": "WHAT WE BUILD",
+    "title": {
+      "line1": "Engineering",
+      "line2": "disciplines."
+    },
+    "description": "Full-stack engineering across three integrated disciplines. Every system we deliver combines software precision, embedded reliability, and AI intelligence.",
+    "cards": {
+      "software": {
+        "title": "Software Engineering",
+        "description": "Architecting scalable, maintainable software systems built for performance and longevity. From cloud infrastructure to developer tooling.",
+        "tags": ["Systems Architecture", "Cloud-Native", "DevOps"],
+        "link": "Learn More"
+      },
+      "embedded": {
+        "title": "Embedded Systems",
+        "description": "Precision firmware and hardware-aware software for microcontrollers, FPGAs, and edge devices where reliability and latency matter.",
+        "tags": ["Firmware", "RTOS", "Edge Computing"],
+        "link": "Learn More"
+      },
+      "ai": {
+        "title": "Artificial Intelligence",
+        "description": "Intelligent systems that perceive, reason, and decide. From computer vision to predictive analytics and generative AI solutions.",
+        "tags": ["Machine Learning", "Computer Vision", "LLMs"],
+        "link": "Learn More"
+      }
+    }
+  },
+  "Industries": {
+    "eyebrow": "VERTICALS",
+    "title": {
+      "line1": "Industries we",
+      "line2": "engineer for."
+    },
+    "description": "Deep technical expertise across mission-critical sectors. Each vertical demands precision, reliability, and intelligence at scale.",
+    "cards": {
+      "aerospace": {
+        "title": "Aerospace & Defense",
+        "description": "Safety-critical avionics software, secure communication systems, and autonomous flight control with real-time embedded AI."
+      },
+      "manufacturing": {
+        "title": "Industrial Manufacturing",
+        "description": "Intelligent automation, predictive maintenance, and digital twin systems optimized for zero-downtime factory operations."
+      },
+      "healthcare": {
+        "title": "Healthcare & MedTech",
+        "description": "FDA-compliant embedded software for medical devices, diagnostic AI models, and secure clinical data infrastructure."
+      },
+      "energy": {
+        "title": "Energy & Utilities",
+        "description": "Smart grid firmware, renewable asset monitoring, and predictive analytics for resilient energy distribution networks."
+      }
+    }
+  },
+  "Process": {
+    "eyebrow": "ENGINEERING PROCESS",
+    "title": {
+      "line1": "How we engineer",
+      "line2": "every product."
+    },
+    "description": "A disciplined engineering workflow that transforms complex requirements into production-ready systems. Every phase is designed for precision, repeatability, and measurable outcomes.",
+    "steps": {
+      "discovery": {
+        "title": "Discovery",
+        "description": "We map your domain, constraints, and success criteria. Requirements become a traceable, versioned specification."
+      },
+      "architecture": {
+        "title": "Architecture",
+        "description": "System design with trade-off analysis. We define interfaces, data models, and deployment topology before a single line of code."
+      },
+      "engineering": {
+        "title": "Engineering",
+        "description": "Iterative build cycles with continuous integration. Every commit is reviewed, tested, and measured against the spec."
+      },
+      "validation": {
+        "title": "Validation",
+        "description": "Rigorous verification across hardware-in-the-loop, integration, and acceptance testing. Nothing ships unproven."
+      },
+      "deployment": {
+        "title": "Deployment",
+        "description": "Production rollout with observability, rollback guardrails, and 24/7 monitoring. We stay with the system through its full lifecycle."
+      }
+    }
+  },
+  "Projects": {
+    "eyebrow": "FEATURED PROJECTS",
+    "title": {
+      "line1": "Projects we",
+      "line2": "engineered."
+    },
+    "description": "A selection of production systems delivered across aerospace, manufacturing, healthcare, and energy. Each project represents a full lifecycle engagement — from discovery to deployment and beyond.",
+    "items": [
+      {
+        "title": "Orion Avionics Suite",
+        "summary": "Safety-critical flight control software for next-gen commercial aircraft. DO-178C Level A certified with real-time deterministic scheduling.",
+        "tags": ["C++", "Ada", "VxWorks", "DO-178C"],
+        "cta": "View Case Study"
+      },
+      {
+        "title": "Apex Digital Twin Platform",
+        "summary": "Industrial IoT platform enabling predictive maintenance across 200+ factory sites. 40% reduction in unplanned downtime.",
+        "tags": ["TypeScript", "Rust", "Kafka", "Kubernetes"],
+        "cta": "View Case Study"
+      },
+      {
+        "title": "VitalLink Medical Gateway",
+        "summary": "FDA Class IIb compliant connectivity hub for critical care devices. Secure HL7/FHIR integration with hospital EMR systems.",
+        "tags": ["C", "Zephyr RTOS", "BLE", "TLS 1.3"],
+        "cta": "View Case Study"
+      }
+    ]
+  },
+  "Technologies": {
+    "eyebrow": "TECHNOLOGY STACK",
+    "title": {
+      "line1": "Technologies",
+      "line2": "we master."
+    },
+    "description": "Deep expertise across the full technology spectrum. Every tool is chosen for its engineering merit — not trends. We build with precision, reliability, and long-term maintainability in mind.",
+    "categories": {
+      "frontend": {
+        "title": "Frontend",
+        "items": [
+          { "name": "React", "icon": "Code2" },
+          { "name": "TypeScript", "icon": "Code2" },
+          { "name": "Next.js", "icon": "Zap" },
+          { "name": "Tailwind CSS", "icon": "SlidersHorizontal" },
+          { "name": "Three.js", "icon": "Box" },
+          { "name": "Framer Motion", "icon": "Move" }
+        ]
+      },
+      "backend": {
+        "title": "Backend",
+        "items": [
+          { "name": "Node.js", "icon": "Server" },
+          { "name": "Python", "icon": "Terminal" },
+          { "name": "Go", "icon": "Cpu" },
+          { "name": "Rust", "icon": "Shield" },
+          { "name": "PostgreSQL", "icon": "Database" },
+          { "name": "Redis", "icon": "Zap" }
+        ]
+      },
+      "embedded": {
+        "title": "Embedded",
+        "items": [
+          { "name": "C/C++", "icon": "Microchip" },
+          { "name": "Zephyr RTOS", "icon": "Cog" },
+          { "name": "FreeRTOS", "icon": "Cpu" },
+          { "name": "ARM Cortex-M", "icon": "Chip" },
+          { "name": "FPGA", "icon": "Grid" },
+          { "name": "VHDL/Verilog", "icon": "Code2" }
+        ]
+      },
+      "ai": {
+        "title": "AI & ML",
+        "items": [
+          { "name": "PyTorch", "icon": "Brain" },
+          { "name": "TensorFlow", "icon": "Brain" },
+          { "name": "ONNX Runtime", "icon": "Cpu" },
+          { "name": "Hugging Face", "icon": "MessageSquare" },
+          { "name": "LangChain", "icon": "Link" },
+          { "name": "OpenCV", "icon": "Eye" }
+        ]
+      },
+      "cloud": {
+        "title": "Cloud & DevOps",
+        "items": [
+          { "name": "Kubernetes", "icon": "Server" },
+          { "name": "Docker", "icon": "Box" },
+          { "name": "AWS", "icon": "Cloud" },
+          { "name": "GCP", "icon": "Cloud" },
+          { "name": "Terraform", "icon": "FileCode" },
+          { "name": "GitLab CI", "icon": "GitBranch" }
+        ]
+      },
+      "iot": {
+        "title": "IoT & Connectivity",
+        "items": [
+          { "name": "MQTT", "icon": "Radio" },
+          { "name": "LoRaWAN", "icon": "Wifi" },
+          { "name": "BLE", "icon": "Bluetooth" },
+          { "name": "Modbus", "icon": "Cable" },
+          { "name": "OPC UA", "icon": "Link" },
+          { "name": "Thread", "icon": "Mesh" }
+        ]
+      },
+      "mobile": {
+        "title": "Mobile",
+        "items": [
+          { "name": "React Native", "icon": "Smartphone" },
+          { "name": "Flutter", "icon": "Layers" },
+          { "name": "Swift", "icon": "Apple" },
+          { "name": "Kotlin", "icon": "Android" },
+          { "name": "Expo", "icon": "Globe" },
+          { "name": "Capacitor", "icon": "Plug" }
+        ]
+      }
+    }
+  },
+  "WhyProjex": {
+    "eyebrow": "WHY PROJEX",
+    "title": {
+      "line1": "Why leading",
+      "line2": "teams choose us."
+    },
+    "description": "We don't just deliver code — we engineer outcomes. Every engagement is backed by deep technical discipline, cross-domain fluency, and a partnership model built for the long haul.",
+    "cards": {
+      "quality": {
+        "title": "Engineering Quality",
+        "description": "Rigorous verification, deterministic testing, and architectural review baked into every delivery. No shortcuts, no tech debt by default.",
+        "icon": "ShieldCheck"
+      },
+      "e2e": {
+        "title": "End-to-End Engineering",
+        "description": "From requirements to silicon to production. We own the full stack — software, firmware, AI, and hardware integration — so nothing falls through the cracks.",
+        "icon": "GitBranch"
+      },
+      "hardware": {
+        "title": "Hardware-Aware Software",
+        "description": "Software that respects physics. Memory budgets, latency constraints, thermal envelopes — we write code that runs efficiently on real silicon.",
+        "icon": "Cpu"
+      },
+      "modern": {
+        "title": "Modern Technology",
+        "description": "Current toolchains, proven patterns, zero legacy baggage. We adopt technologies when they're production-ready — not when they're trending.",
+        "icon": "Zap"
+      },
+      "delivery": {
+        "title": "Reliable Delivery",
+        "description": "Predictable timelines, transparent milestones, and committed dates. We plan for risk, communicate early, and ship what we promise.",
+        "icon": "Truck"
+      },
+      "support": {
+        "title": "Long-Term Support",
+        "description": "We don't hand off and disappear. Maintenance windows, security patches, and capability evolution — your system stays current and secure.",
+        "icon": "LifeBuoy"
+      }
+    }
+  },
+  "Testimonials": {
+    "eyebrow": "TESTIMONIALS",
+    "title": {
+      "line1": "What partners",
+      "line2": "say about us."
+    },
+    "description": "Sample testimonials shown for layout preview. Replace with verified client quotes before going live.",
+    "cards": {
+      "one": {
+        "quote": "Sample placeholder testimonial describing the engineering quality and delivery reliability experienced during a representative engagement. [Sample — replace with a verified client quote.]",
+        "name": "Placeholder Name",
+        "company": "Sample Company",
+        "role": "Sample Role"
+      },
+      "two": {
+        "quote": "Sample placeholder testimonial describing the end-to-end ownership from requirements through production deployment across software, firmware, and AI surfaces. [Sample — replace with a verified client quote.]",
+        "name": "Placeholder Name",
+        "company": "Sample Company",
+        "role": "Sample Role"
+      },
+      "three": {
+        "quote": "Sample placeholder testimonial describing the long-term partnership model, transparent communication, and continued support after launch. [Sample — replace with a verified client quote.]",
+        "name": "Placeholder Name",
+        "company": "Sample Company",
+        "role": "Sample Role"
+      }
+    }
+  },
+  "Faq": {
+    "eyebrow": "FAQ",
+    "title": {
+      "line1": "Questions,",
+      "line2": "answered."
+    },
+    "description": "Sample frequently asked questions shown for layout preview. Replace with verified FAQ content before going live.",
+    "items": {
+      "one": {
+        "question": "What does a typical engagement look like? [Sample — replace with verified FAQ content.]",
+        "answer": "Sample answer describing the engagement lifecycle from discovery through deployment and long-term support. [Sample — replace with verified FAQ content.]"
+      },
+      "two": {
+        "question": "How do you estimate timelines and pricing? [Sample — replace with verified FAQ content.]",
+        "answer": "Sample answer describing how scope, complexity, and milestones inform a transparent, committed timeline. [Sample — replace with verified FAQ content.]"
+      },
+      "three": {
+        "question": "Do you work on embedded hardware and software together? [Sample — replace with verified FAQ content.]",
+        "answer": "Sample answer describing cross-domain engineering across software, firmware, and hardware integration. [Sample — replace with verified FAQ content.]"
+      },
+      "four": {
+        "question": "How is intellectual property and confidentiality handled? [Sample — replace with verified FAQ content.]",
+        "answer": "Sample answer describing standard IP assignment, NDAs, and access controls for sensitive work. [Sample — replace with verified FAQ content.]"
+      },
+      "five": {
+        "question": "What support is available after launch? [Sample — replace with verified FAQ content.]",
+        "answer": "Sample answer describing maintenance windows, security patches, and capability evolution after deployment. [Sample — replace with verified FAQ content.]"
+      },
+      "six": {
+        "question": "Can you integrate with our existing systems? [Sample — replace with verified FAQ content.]",
+        "answer": "Sample answer describing integration with existing infrastructure, APIs, and data pipelines. [Sample — replace with verified FAQ content.]"
+      }
+    }
+  },
+  "ContactCta": {
+    "eyebrow": "START YOUR PROJECT",
+    "title": {
+      "line1": "Let's engineer",
+      "line2": "what's next."
+    },
+    "description": "Tell us about your system, your constraints, and your timeline. We'll respond with a clear path forward — from discovery to deployment and long-term support.",
+    "primaryCta": "Start Your Project",
+    "secondaryCta": "Talk to Our Engineers"
+  },
+  "Footer": {
+    "tagline": "Engineering intelligence into reality — across software, embedded systems, and AI.",
+    "columns": {
+      "company": {
+        "heading": "Company",
+        "links": {
+          "services": "Services",
+          "industries": "Industries",
+          "projects": "Projects",
+          "process": "Process"
+        }
+      },
+      "engineering": {
+        "heading": "Engineering",
+        "links": {
+          "software": "Software Engineering",
+          "embedded": "Embedded Systems",
+          "ai": "Artificial Intelligence",
+          "technologies": "Technologies"
+        }
+      },
+      "resources": {
+        "heading": "Resources",
+        "links": {
+          "whyProjex": "Why NODAL",
+          "testimonials": "Testimonials",
+          "faq": "FAQ",
+          "contact": "Contact"
+        }
+      },
+      "contact": {
+        "heading": "Contact",
+        "prompt": "Have a project in mind? Start a conversation with our engineering team.",
+        "cta": "Start your project"
+      }
+    },
+    "social": {
+      "label": "Follow NODAL",
+      "github": "GitHub",
+      "linkedin": "LinkedIn",
+      "twitter": "Twitter"
+    },
+    "bottomBar": {
+      "copyright": "© {year} NODAL. All rights reserved.",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    }
+  }
+}
