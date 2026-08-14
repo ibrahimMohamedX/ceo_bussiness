@@ -14,19 +14,19 @@ function DigitalCore() {
   const t = useTranslations('Hero')
   const coreRef = useRef<HTMLDivElement>(null)
   // Index position maps to `.asset-layer-N` classes in globals.css (index → N+1).
-  // Do NOT reindex or reorder: the four live layers must keep their assigned layer
-  // classes (1, 2, 3, 5) so per-layer blend/opacity/animation stays correct.
-  // Indices 3 (Data_Streams) and 5 (Light_Particles) are `null` — those URLs return
-  // HTTP 404 on the Vercel Blob store and no local copy exists. They are left in
-  // position so the intended-but-missing assets stay traceable and are reported as
-  // missing rather than replaced with placeholders/invented assets.
+  // Do NOT reindex or reorder: each layer must keep its assigned layer class so
+  // the per-layer blend/opacity/animation stays correct.
+  // All six layers resolve to verified local copies in /public/hero/ (sourced from
+  // docs/assets/), replacing the dead Vercel Blob URLs. Background_Effects.png,
+  // Glow_Auras.png and Holographic_Grid.png are present in docs/assets but are NOT
+  // part of this 6-layer composition (no original slot) — not added to avoid redesign.
   const layers = [
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/hero-glow.webp-5ybwAMjgSVoVQ0B6D1iBz8pnNlmcAN.png',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/hero-rings-OpD0vL7qzT5ENLrdAQX0AvHzVvYh4P.png',
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Network_Layer-Ms2wgHUUovMhU7kmwxv59m0p8mpmWe.png',
-    null, // Data_Streams — 404 on blob store; missing (not fabricated)
-    'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/hero-core.webp-CBtUarcCwq8QOjw3vHpaP0UnEdGgmj.png',
-    null, // Light_Particles — 404 on blob store; missing (not fabricated)
+    '/hero/hero-glow.webp',
+    '/hero/hero-rings.png',
+    '/hero/Network_Layer.png',
+    '/hero/Data_Streams.png',
+    '/hero/hero-core.webp',
+    '/hero/Light_Particles.png',
   ]
 
   useEffect(() => {
@@ -301,10 +301,10 @@ export default function Page() {
         <div className="nav-links">
           <a href="#services">{t('Navbar.links.services')}</a>
           <a href="#industries">{t('Navbar.links.industries')}</a>
-          <a href="#hero">{t('Navbar.links.projects')}</a>
-          <a href="#hero">{t('Navbar.links.engineering')}</a>
-          <a href="#hero">{t('Navbar.links.company')}</a>
-          <a href="#hero">{t('Navbar.links.contact')}</a>
+          <a href="#projects">{t('Navbar.links.projects')}</a>
+          <a href="#process">{t('Navbar.links.engineering')}</a>
+          <a href="#why-projex">{t('Navbar.links.company')}</a>
+          <a href="#contact">{t('Navbar.links.contact')}</a>
         </div>
 
         {/* ── Locale switcher + Theme toggle group ── */}
