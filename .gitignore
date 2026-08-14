@@ -1,48 +1,24 @@
-# v0 sandbox internal files
-__v0_runtime_loader.js
-__v0_devtools.tsx
-__v0_jsx-dev-runtime.ts
-.snowflake/
-.v0-trash/
-.vercel/
+# =========================================================
+# Dependencies
+# =========================================================
 
-# Environment variables
-.env*.local
-
-# Common ignores
-node_modules
-.next/
-.DS_Store
-# ###
-# Dependencies 
-/node_modules
-/.pnpm-store
-
-# Next.js Build Output 
-/.next/
-/out/
-/build
-
-# Debug & Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-
-# Environment Variables 
-.env
-.env*.local
-
-# OS / IDE Files
-.DS_Store
-Thumbs.db
-.vscode/
-.idea/
 node_modules/
+.pnpm-store/
+
+
+# =========================================================
+# Next.js / Build Output
+# =========================================================
+
 .next/
 out/
-dist/
 build/
+dist/
+
+
+# =========================================================
+# Environment Variables / Secrets
+# =========================================================
 
 .env
 .env.local
@@ -50,37 +26,79 @@ build/
 .env.test.local
 .env.production.local
 
+# Any other local environment files
+.env*.local
+
+
+# =========================================================
+# Vercel
+# =========================================================
+
+.vercel/
+
+
+# =========================================================
+# v0 / Sandbox Internal Files
+# =========================================================
+
+__v0_runtime_loader.js
+__v0_devtools.tsx
+__v0_jsx-dev-runtime.ts
+.snowflake/
+.v0-trash/
+
+
+# =========================================================
+# CDP / Browser Profiles
+# =========================================================
+
+.cdp-*/
+
+
+# =========================================================
+# Generated QA / Verification Results
+# =========================================================
+
+cdp-results.json
+testimonials-qa-results.json
+why-projex-qa-results.json
+
+
+# =========================================================
+# TypeScript
+# =========================================================
+
+*.tsbuildinfo
+
+
+# =========================================================
+# Logs / Debug
+# =========================================================
+
 *.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
+pnpm-debug.log*
 
-.vercel/
-# Local CDP / Chrome profiles
-.cdp-profile*/
-.cdp-profiles*/
 
-# Claude local files
+# =========================================================
+# OS Files
+# =========================================================
+
+.DS_Store
+Thumbs.db
+
+
+# =========================================================
+# IDE / Editor
+# =========================================================
+
+.vscode/
+.idea/
+
+
+# =========================================================
+# Claude / Local AI Tooling
+# =========================================================
+
 .claude/
-# Local CDP / browser profiles
-.cdp-profile*/
-.cdp-profiles*/
-
-# Generated QA / CDP results
-cdp-results.json
-testimonials-qa-results.json
-why-projex-qa-results.json
-
-# TypeScript build cache
-*.tsbuildinfo
-.cdp-*/
-# Local CDP profiles
-.cdp-*/
-
-# Generated QA / verification results
-cdp-results.json
-testimonials-qa-results.json
-why-projex-qa-results.json
-
-# TypeScript cache
-*.tsbuildinfo
