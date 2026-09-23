@@ -1,0 +1,13 @@
+{
+  // PROJEX Firebase project configuration — FOUNDATION ONLY.
+  // No hosting/emulator blobs are configured yet; leave the object minimal so the
+  // rulesets can be deployed standalone (`firebase deploy --only firestore,storage`).
+  "project": "ceo-bussiness",
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  }
+}

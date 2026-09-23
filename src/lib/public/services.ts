@@ -1,0 +1,130 @@
+'use server'
+
+import { getPublicFirestore } from '@/src/lib/firebase/admin'
+import type { ServiceRecord, BilingualText } from '@/src/lib/admin/services'
+
+/**
+ * Public-facing service record with bilingual fields
+ * Used by public pages (services overview, discipline pages) - only published services
+ */
+export interface PublicService {
+  id: string
+  slug: string
+  title: BilingualText
+  summary: BilingualText
+  description: BilingualText
+  tags: string[]
+  icon?: string
+  featured: boolean
+  status: 'published'
+  sortOrder: number
+  updatedAt: string
+}
+
+import { Timestamp } from 'firebase-admin/firestore'
+
+/**
+ * Converts admin ServiceRecord to public PublicService
+ * Filters and transforms data for public consumption
+ */
+function toPublicService(record: ServiceRecord): PublicService {
+  // Convert Timestamp to ISO string if needed
+  const updatedAt = record.updatedAt instanceof Timestamp
+    ? record.updatedAt.toDate().toISOString()
+    : record.updatedAt
+
+  return {
+    id: record.id,
+    slug: record.slug,
+    title: record.title,
+    summary: record.summary,
+    description: { en: record.description?.en ?? '', ar: record.description?.ar ?? '' },
+    tags: record.tags,
+    icon: record.icon,
+    featured: record.featured,
+    status: 'published' as const,
+    sortOrder: record.sortOrder,
+    updatedAt,
+  }
+}
+
+/**
+ * Fetches all published services for public pages
+ * Ordered by sortOrder asc
+ * Server-side only - uses Admin SDK via firebase-admin
+ */
+export async function getPublishedServices(): Promise<PublicService[]> {
+  const db = getPublicFirestore()
+  if (!db) return []
+  const snapshot = await db
+    .collection('services')
+    .where('status', '==', 'published')
+    .orderBy('sortOrder', 'asc')
+    .get()
+
+  const services: PublicService[] = []
+  for (const doc of snapshot.docs) {
+    const data = doc.data() as ServiceRecord
+    services.push(toPublicService({ ...data, id: doc.id }))
+  }
+  return services
+}
+
+/**
+ * Fetches featured published services for homepage
+ * Limited to featured posts, ordered by sortOrder
+ */
+export async function getFeaturedServices(limitCount = 3): Promise<PublicService[]> {
+  const db = getPublicFirestore()
+  if (!db) return []
+  const snapshot = await db
+    .collection('services')
+    .where('status', '==', 'published')
+    .where('featured', '==', true)
+    .orderBy('sortOrder', 'asc')
+    .limit(limitCount)
+    .get()
+
+  const services: PublicService[] = []
+  for (const doc of snapshot.docs) {
+    const data = doc.data() as ServiceRecord
+    services.push(toPublicService({ ...data, id: doc.id }))
+  }
+  return services
+}
+
+/**
+ * Fetches a single published service by slug
+ * Returns null if not found or not published
+ */
+export async function getPublishedServiceBySlug(slug: string): Promise<PublicService | null> {
+  const db = getPublicFirestore()
+  if (!db) return null
+  const snapshot = await db
+    .collection('services')
+    .where('slug', '==', slug)
+    .where('status', '==', 'published')
+    .limit(1)
+    .get()
+
+  if (snapshot.empty) return null
+
+  const doc = snapshot.docs[0]
+  const data = doc.data() as ServiceRecord
+  return toPublicService({ ...data, id: doc.id })
+}
+
+/**
+ * Fetches all tags used in published services
+ * Returns unique tags array
+ */
+export async function getServiceTags(): Promise<string[]> {
+  const services = await getPublishedServices()
+  const tags = new Set<string>()
+  for (const s of services) {
+    for (const t of s.tags) {
+      tags.add(t)
+    }
+  }
+  return Array.from(tags).sort()
+}

@@ -82,11 +82,11 @@ function ThemeProvider({
 
   const applyTheme = (newTheme: Theme) => {
     const root = document.documentElement
-    const resolved = newTheme === 'system' && enableSystem
-      ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-      : newTheme === 'system'
-        ? defaultTheme
-        : newTheme
+    const resolved: 'light' | 'dark' = newTheme === 'system'
+      ? (enableSystem
+          ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+          : (defaultTheme === 'system' ? 'dark' : defaultTheme))
+      : newTheme
 
     setResolvedTheme(resolved)
 
@@ -173,7 +173,7 @@ export default function Providers({
       disableTransitionOnChange
       themes={['dark', 'light']}
     >
-      <NextIntlClientProvider locale={locale} messages={messages} timeZone="UTC">
+      <NextIntlClientProvider key={locale} locale={locale} messages={messages} timeZone="UTC">
         {children}
       </NextIntlClientProvider>
     </ThemeProvider>

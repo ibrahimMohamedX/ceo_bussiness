@@ -1,0 +1,223 @@
+{
+  // ============================================================================
+  // PROJEX — Firestore composite indexes (complete, entire project)
+  // ============================================================================
+  // Derived from a full-codebase audit of every multi-field query in:
+  //   src/lib/public/*.ts   (published-only reads, sorted by createdAt/publishedAt)
+  //   src/lib/admin/*.ts    (admin lists, sorted by updatedAt; status filters)
+  // Single-field `where(...)` / single `orderBy(...)` queries are served by
+  // Firestore's automatic single-field indexes and require NO entry here.
+  //
+  // NOTE: the admin layer sorts lists by `updatedAt`, while the public layer
+  // sorts by `createdAt`/`publishedAt`. Both orderings are present below where
+  // the collection uses each — order matters for composite indexes.
+  //
+  // This file is wired into `firebase deploy` via firebase.json → firestore.indexes.
+  // ============================================================================
+  "indexes": [
+    // ---- media (global library) --------------------------------------------
+    // admin getMediaLibrary: where ownerType == X + orderBy createdAt desc
+    {
+      "collectionGroup": "media",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerType", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+
+    // ---- inquiries ----------------------------------------------------------
+    // admin getInquiriesByStatus: where status == X + orderBy createdAt desc
+    {
+      "collectionGroup": "inquiries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+
+    // =========================================================================
+    // projects
+    // =========================================================================
+    // public getPublishedProjects: status == published + sortOrder asc + createdAt desc
+    {
+      "collectionGroup": "projects",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    // public getFeaturedProjects: featured == true + status == published + sortOrder asc + createdAt desc
+    {
+      "collectionGroup": "projects",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "featured", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    // public getPublishedProjectBySlug: slug == X + status == published
+    {
+      "collectionGroup": "projects",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "slug", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+
+    // =========================================================================
+    // blogPosts
+    // =========================================================================
+    // public getPublishedBlogPosts / getFeaturedBlogPosts: status == published + sortOrder asc + publishedAt desc
+    {
+      "collectionGroup": "blogPosts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "publishedAt", "order": "DESCENDING" }
+      ]
+    },
+    // public getPublishedBlogPostBySlug: slug == X + status == published
+    {
+      "collectionGroup": "blogPosts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "slug", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+
+    // =========================================================================
+    // services
+    // =========================================================================
+    // public getPublishedServices: status == published + sortOrder asc
+    {
+      "collectionGroup": "services",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    // public getFeaturedServices: featured == true + status == published + sortOrder asc
+    {
+      "collectionGroup": "services",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "featured", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    // public getPublishedServiceBySlug: slug == X + status == published
+    {
+      "collectionGroup": "services",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "slug", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    // admin getAllServices: sortOrder asc + updatedAt desc
+    {
+      "collectionGroup": "services",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "DESCENDING" }
+      ]
+    },
+    // admin getServicesByStatus: status == X + sortOrder asc + updatedAt desc
+    {
+      "collectionGroup": "services",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "DESCENDING" }
+      ]
+    },
+
+    // =========================================================================
+    // testimonials
+    // =========================================================================
+    // public getPublishedTestimonials: status == published + sortOrder asc
+    {
+      "collectionGroup": "testimonials",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    // public getFeaturedTestimonials: featured == true + status == published + sortOrder asc
+    {
+      "collectionGroup": "testimonials",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "featured", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    // admin getAllTestimonials: sortOrder asc + updatedAt desc
+    {
+      "collectionGroup": "testimonials",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "DESCENDING" }
+      ]
+    },
+    // admin getTestimonialsByStatus: status == X + sortOrder asc + updatedAt desc
+    {
+      "collectionGroup": "testimonials",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "DESCENDING" }
+      ]
+    },
+
+    // =========================================================================
+    // faqs
+    // =========================================================================
+    // public getPublishedFaqs: status == published + sortOrder asc
+    {
+      "collectionGroup": "faqs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" }
+      ]
+    },
+    // admin getAllFaqs: sortOrder asc + updatedAt desc
+    {
+      "collectionGroup": "faqs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "DESCENDING" }
+      ]
+    },
+    // admin getFaqsByStatus: status == X + sortOrder asc + updatedAt desc
+    {
+      "collectionGroup": "faqs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "sortOrder", "order": "ASCENDING" },
+        { "fieldPath": "updatedAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -1,0 +1,38 @@
+// PROJEX Cloud Storage security rules — FOUNDATION ONLY.
+// Kept restrictive; no broad allow read/write. See docs/architecture/06* (media).
+
+// Storage path convention:
+//   media/{ownerType}/{ownerId}/...           library-backed media
+//   projects/{projectId}/media/{mediaId}/...  per-project media subcollection
+// Public files: read gating is on the decision below; privacy-sensitive files
+// are served via signed URLs / download token, never open GET.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Active staff (same enrolment predicate as Firestore rules; the role lives
+    // in admins/{uid}). Used for all writes and any non-public reads.
+    function isAnyAdmin() {
+      return request.auth != null
+        && request.auth.uid != null
+        && get(/databases/(default)/documents/admins/$(request.auth.uid)).data.active == true
+        && (get(/databases/(default)/documents/admins/$(request.auth.uid)).data.role in ['super_admin', 'admin', 'editor', 'support']);
+    }
+
+    // Files under the media library. Writes are staff-gated (enforced at write
+    // on top of the client upload path). Reads of image media are public so the
+    // site can render covers/galleries signed with a download token; any non-
+    // image file (and everything else) is denied generic read below.
+    match /media/{ownerType}/{ownerId}/{allPaths=**} {
+      allow read: if resource.contentType.matches('image/.*');
+      allow write: if isAnyAdmin() &&
+        (request.resource.contentType.matches('image/.*')
+         || request.resource.contentType.matches('application/pdf'));
+    }
+
+    // Explicit deny for anything not matched above.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

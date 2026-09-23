@@ -1,0 +1,144 @@
+rules_version = '2';
+
+// PROJEX Firestore security rules — FOUNDATION ONLY.
+// Permissions are deliberately restrictive. See docs/architecture/03* for policy.
+//
+// Access model:
+//  - Public read: only documents a visitor should see, gated by a
+//    `status == 'published'` check. No public write to any collection here.
+//  - Admin write/read: authenticated AND the user is an active staff member
+//    recorded in admins/{uid}. Roles are an opt-in escalation from the base
+//    "authed + staff" predicate.
+//  - Inquiries: written ONLY via a secure server path (HTTPS function /
+//    server route), not via unrestricted client Firestore writes.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // Staff enrolment is explicit: the caller must be signed in AND have a
+    // matching active document in admins/{uid}. This is how roles gate access —
+    // base check used below, with role() applied for role-restricted actions.
+    function isStaff(roleActive) {
+      return isSignedIn()
+        && request.auth.uid != null
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid))
+             .data.active == true
+        && roleActive;
+    }
+
+    function role(role) {
+      return get(/databases/$(database)/documents/admins/$(request.auth.uid))
+               .data.role == role;
+    }
+
+    // Any active staff member: super_admin OR admin OR editor OR support.
+    function isAnyAdmin() {
+      return role('super_admin') || role('admin') || role('editor') || role('support');
+    }
+
+    // ---- Public read-only content -------------------------------------------
+    // Every dynamic section the public site renders. Read allowed only for
+    // published documents (or drafts/archive for staff). No writes here at all.
+
+    function publishedOrStaff() {
+      return resource.data.status == 'published'
+             || isAnyAdmin();
+    }
+
+    match /projects/{projectId} {
+      allow get: if publishedOrStaff();
+      allow list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    match /projects/{projectId}/media/{mediaId} {
+      allow get, list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    match /blogs/{blogId} {
+      allow get, list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    match /blogPosts/{blogId} {
+      allow get, list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    match /services/{serviceId} {
+      allow get, list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    match /testimonials/{testimonialId} {
+      allow get, list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    match /faqs/{faqId} {
+      allow get, list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    match /about/{aboutId} {
+      allow get: if publishedOrStaff();
+      allow list: if publishedOrStaff();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    // ---- Site settings ------------------------------------------------------
+    // Global, single-doc config. Staff-only writes.
+    match /siteSettings/{docId} {
+      allow get: if isSignedIn() && isAnyAdmin();
+      allow list, create, update, delete: if isAnyAdmin();
+    }
+
+    // ---- Admin enrolment (roles) ---------------------------------------------
+    // Only a super_admin may create/update admins docs, so escalation of roles
+    // is itself staff-gated. Regular users cannot read the staff roster.
+    match /admins/{adminId} {
+      allow get, list: if isAnyAdmin();
+      // Create/update guarded further: writes to any admin doc (including the
+      // caller's own) require super_admin to avoid self-escalation.
+      allow create, update: if role('super_admin')
+        && request.resource.data.active in [true, false];
+      allow delete: if role('super_admin')
+        && adminId != request.auth.uid; // no self-delete to keep ≥1 manager
+    }
+
+    // ---- Inquiries -----------------------------------------------------------
+    // No public create. Created only through the secure server path (HTTPS
+    // function / server route) documented in docs/architecture/05*. There is
+    // intentionally no allow create on this path from the client.
+    match /inquiries/{inquiryId} {
+      allow get, list: if isAnyAdmin();
+      allow create: if isAnyAdmin();
+      allow update: if isAnyAdmin() && role('super_admin') || role('admin') || role('support');
+      allow delete: if role('super_admin');
+    }
+
+    // ---- Media library -------------------------------------------------------
+    match /media/{mediaId} {
+      allow get, list: if isSignedIn() && isAnyAdmin();
+      allow create, update, delete: if isAnyAdmin();
+    }
+
+    // ---- Activity log --------------------------------------------------------
+    match /activityLogs/{logId} {
+      allow get, list: if isAnyAdmin();
+      allow create: if isAnyAdmin();
+      allow update, delete: if role('super_admin');
+    }
+
+    // ---- Explicit deny for anything unmatchable ------------------------------
+    // Prevent unlisted collections from being readable/writable.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

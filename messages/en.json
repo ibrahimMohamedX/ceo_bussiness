@@ -6,6 +6,7 @@
       "industries": "Industries",
       "projects": "Projects",
       "engineering": "Engineering",
+      "about": "About",
       "company": "Company",
       "contact": "Contact"
     },
@@ -59,20 +60,61 @@
       "software": {
         "title": "Software Engineering",
         "description": "Architecting scalable, maintainable software systems built for performance and longevity. From cloud infrastructure to developer tooling.",
-        "tags": ["Systems Architecture", "Cloud-Native", "DevOps"],
+        "tags": [
+          "Systems Architecture",
+          "Cloud-Native",
+          "DevOps"
+        ],
         "link": "Learn More"
       },
       "embedded": {
         "title": "Embedded Systems",
         "description": "Precision firmware and hardware-aware software for microcontrollers, FPGAs, and edge devices where reliability and latency matter.",
-        "tags": ["Firmware", "RTOS", "Edge Computing"],
+        "tags": [
+          "Firmware",
+          "RTOS",
+          "Edge Computing"
+        ],
         "link": "Learn More"
       },
       "ai": {
         "title": "Artificial Intelligence",
         "description": "Intelligent systems that perceive, reason, and decide. From computer vision to predictive analytics and generative AI solutions.",
-        "tags": ["Machine Learning", "Computer Vision", "LLMs"],
+        "tags": [
+          "Machine Learning",
+          "Computer Vision",
+          "LLMs"
+        ],
         "link": "Learn More"
+      }
+    }
+  },
+  "ServicesPage": {
+    "eyebrow": "WHAT WE DO",
+    "title": {
+      "line1": "Engineering",
+      "line2": "disciplines."
+    },
+    "description": "Full-stack engineering across three integrated disciplines. Every system we deliver combines software precision, embedded reliability, and AI intelligence.",
+    "primaryCta": "Start Your Project",
+    "secondaryCta": "Explore Our Engineering",
+    "disciplineLabel": "DISCIPLINE",
+    "learnMore": "Learn More",
+    "disciplines": {
+      "software": {
+        "number": "01",
+        "eyebrow": "SOFTWARE ENGINEERING",
+        "lede": "We architect, build, and scale the software layer of your product — from cloud infrastructure to developer tooling. Every commit is reviewed, tested, and measured against the spec."
+      },
+      "embedded": {
+        "number": "02",
+        "eyebrow": "EMBEDDED SYSTEMS",
+        "lede": "Precision firmware and hardware-aware software for microcontrollers, FPGAs, and edge devices. We design interfaces, data models, and deployment topology before a single line of code."
+      },
+      "ai": {
+        "number": "03",
+        "eyebrow": "ARTIFICIAL INTELLIGENCE",
+        "lede": "Intelligent systems that perceive, reason, and decide — from computer vision to predictive analytics and generative AI. Validated rigorously before anything ships."
       }
     }
   },
@@ -139,26 +181,616 @@
       "line2": "engineered."
     },
     "description": "A selection of production systems delivered across aerospace, manufacturing, healthcare, and energy. Each project represents a full lifecycle engagement — from discovery to deployment and beyond.",
+    "cta": "View Case Study",
+    "empty": "No featured projects yet.",
     "items": [
       {
         "title": "Orion Avionics Suite",
         "summary": "Safety-critical flight control software for next-gen commercial aircraft. DO-178C Level A certified with real-time deterministic scheduling.",
-        "tags": ["C++", "Ada", "VxWorks", "DO-178C"],
+        "tags": [
+          "C++",
+          "Ada",
+          "VxWorks",
+          "DO-178C"
+        ],
         "cta": "View Case Study"
       },
       {
         "title": "Apex Digital Twin Platform",
         "summary": "Industrial IoT platform enabling predictive maintenance across 200+ factory sites. 40% reduction in unplanned downtime.",
-        "tags": ["TypeScript", "Rust", "Kafka", "Kubernetes"],
+        "tags": [
+          "TypeScript",
+          "Rust",
+          "Kafka",
+          "Kubernetes"
+        ],
         "cta": "View Case Study"
       },
       {
         "title": "VitalLink Medical Gateway",
         "summary": "FDA Class IIb compliant connectivity hub for critical care devices. Secure HL7/FHIR integration with hospital EMR systems.",
-        "tags": ["C", "Zephyr RTOS", "BLE", "TLS 1.3"],
+        "tags": [
+          "C",
+          "Zephyr RTOS",
+          "BLE",
+          "TLS 1.3"
+        ],
         "cta": "View Case Study"
       }
     ]
+  },
+  "PortfolioPage": {
+    "hero": {
+      "eyebrow": "OUR WORK",
+      "title": {
+        "line1": "Work we've",
+        "line2": "engineered."
+      },
+      "description": "A selection of production systems we delivered end to end at the intersection of software, embedded systems, and AI. Each project is a full lifecycle engagement — from discovery to deployment and long-term support.",
+      "primaryCta": "Start Your Project",
+      "secondaryCta": "Explore Our Engineering"
+    },
+    "grid": {
+      "eyebrow": "FEATURED PROJECTS",
+      "title": {
+        "line1": "Projects we",
+        "line2": "engineered."
+      },
+      "description": "Three representative systems shipped across aerospace, manufacturing, and healthcare. Built to production grade — measured, validated, and supported through their full lifecycle."
+    }
+  },
+  "BlogPage": {
+    "hero": {
+      "eyebrow": "ENGINEERING NOTES",
+      "title": {
+        "line1": "Technical thinking,",
+        "line2": "written clearly."
+      },
+      "description": "Short engineering notes from the PROJEX team on software, embedded systems, and AI. Practical. Precise. Written by engineers, for engineers."
+    },
+    "categories": {
+      "eyebrow": "TOPICS",
+      "title": {
+        "line1": "Explore by",
+        "line2": "discipline."
+      },
+      "description": "Filter articles by the engineering discipline they cover.",
+      "items": [
+        {
+          "label": "All Notes",
+          "active": true
+        },
+        {
+          "label": "Software"
+        },
+        {
+          "label": "Embedded"
+        },
+        {
+          "label": "AI"
+        }
+      ],
+      "ariaGroupLabel": "Article topics"
+    },
+    "featured": {
+      "eyebrow": "FEATURED NOTE",
+      "tag": "FEATURED",
+      "cta": "Read the note"
+    },
+    "articles": {
+      "eyebrow": "ARTICLES",
+      "title": {
+        "line1": "Recent",
+        "line2": "notes."
+      },
+      "description": "A running collection of practical engineering notes — grounded in how we design, build, and ship reliable systems.",
+      "items": [
+        {
+          "category": "Embedded",
+          "title": "Designing firmware that survives power loss",
+          "summary": "How we structure embedded firmware around transactional state so a system can lose power at any instant and still recover to a known, safe state.",
+          "tags": [
+            "RTOS",
+            "Robustness",
+            "C++"
+          ]
+        },
+        {
+          "category": "Software",
+          "title": "Structured logging beyond the console",
+          "summary": "Why machine-readable, correlated logs scale better than human-readable output when diagnosing distributed systems in production.",
+          "tags": [
+            "Observability",
+            "SLOs",
+            "Reliability"
+          ]
+        },
+        {
+          "category": "AI",
+          "title": "Grounding model output: retrieval before generation",
+          "summary": "A practical look at retrieval-augmented generation and why grounding an answer in documents you control beats hoping for a memorized one.",
+          "tags": [
+            "RAG",
+            "LLMs",
+            "Principles"
+          ]
+        },
+        {
+          "category": "Software",
+          "title": "Measuring real-world performance, not benchmarks",
+          "summary": "Why we instrument the critical path of production systems and view performance as a property of the running system rather than a lab number.",
+          "tags": [
+            "Performance",
+            "Profiling",
+            "Design"
+          ]
+        },
+        {
+          "category": "Embedded",
+          "title": "Interrupt latency and deterministic systems",
+          "summary": "How careful interrupt design and bounded response times let embedded systems meet strict timing guarantees under real load.",
+          "tags": [
+            "RTOS",
+            "Timing",
+            "Hardware"
+          ]
+        },
+        {
+          "category": "AI",
+          "title": "Edge inference for constrained hardware",
+          "summary": "A guide to running inference on devices with limited compute and memory, and the trade-offs that shape where a model is deployed.",
+          "tags": [
+            "Edge AI",
+            "Optimization",
+            "Deployment"
+          ]
+        }
+      ]
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "current": "Page {page} of {total}"
+    },
+    "search": {
+      "placeholder": "Search engineering notes",
+      "label": "Search"
+    },
+    "empty": {
+      "title": "No notes here yet.",
+      "description": "We're working on something worth writing about."
+    },
+    "cta": {
+      "eyebrow": "WORK WITH US",
+      "title": {
+        "line1": "Have an engineering",
+        "line2": "challenge in mind?"
+      },
+      "description": "Tell us what you are building. Our team engineers software, embedded systems, and AI into products that hold up in production.",
+      "primaryCta": "Start Your Project",
+      "secondaryCta": "Explore Our Work"
+    }
+  },
+  "SoftwarePage": {
+    "hero": {
+      "eyebrow": "SOFTWARE ENGINEERING",
+      "title": {
+        "line1": "Software that",
+        "line2": "builds what's next."
+      },
+      "description": "We architect, build, and ship the software layer of your product — from cloud-native backends to polished interfaces. Every system is designed for scale, maintainability, and longevity.",
+      "primaryCta": "Start Your Project",
+      "secondaryCta": "Explore the Process"
+    },
+    "whatWeBuild": {
+      "number": "01",
+      "eyebrow": "WHAT WE BUILD",
+      "title": "The software layer of your most ambitious systems.",
+      "lede": "We design and deliver production-grade software across the stack — bringing precision, reliability, and measurable performance to everything we ship.",
+      "desc": "Every engagement starts with a disciplined spec and ends with a system that runs for years. We own the full lifecycle: discovery, architecture, development, testing, deployment, and long-term support.",
+      "tags": [
+        "Systems Architecture",
+        "Cloud-Native",
+        "Developer Tooling"
+      ],
+      "link": "Explore the Process"
+    },
+    "capabilities": {
+      "eyebrow": "ENGINEERING CAPABILITIES",
+      "title": {
+        "line1": "Deep capability",
+        "line2": "across the stack."
+      },
+      "description": "Modern engineering disciplines applied with rigor. Every capability is grounded in proven patterns and production-grade tooling.",
+      "items": {
+        "architecture": {
+          "title": "Systems Architecture",
+          "desc": "Trade-off analysis, interface definition, and data modeling before a single line of code. Blueprints built to last."
+        },
+        "cloud": {
+          "title": "Cloud-Native",
+          "desc": "Distributed backends, containerized services, and elastic infrastructure engineered for resilience and scale."
+        },
+        "tooling": {
+          "title": "Developer Tooling",
+          "desc": "Internal platforms, CI/CD pipelines, and automation that accelerate teams and keep delivery predictable."
+        },
+        "data": {
+          "title": "Data Systems",
+          "desc": "Relational and message-driven data layers — query models, streaming pipelines, and storage designed for clarity."
+        }
+      }
+    },
+    "stack": {
+      "eyebrow": "TECHNOLOGY STACK",
+      "title": {
+        "line1": "Tools we",
+        "line2": "engineer with."
+      },
+      "description": "A focused, current toolkit. We choose technology for engineering merit — not trends — and stay fluent across frontend and backend.",
+      "categories": {
+        "frontend": {
+          "title": "Frontend"
+        },
+        "backend": {
+          "title": "Backend"
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "ENGINEERING PROCESS",
+      "title": {
+        "line1": "How we engineer",
+        "line2": "software."
+      },
+      "description": "A disciplined workflow that transforms complex requirements into production-ready software. Six phases, each designed for precision and measurable outcomes.",
+      "steps": {
+        "discovery": {
+          "title": "Discovery",
+          "desc": "We map your domain, constraints, and success criteria into a traceable, versioned specification."
+        },
+        "architecture": {
+          "title": "Architecture",
+          "desc": "System design with trade-off analysis — interfaces, data models, and deployment topology settled up front."
+        },
+        "development": {
+          "title": "Development",
+          "desc": "Iterative build cycles with continuous integration. Every commit is reviewed, tested, and measured against the spec."
+        },
+        "testing": {
+          "title": "Testing",
+          "desc": "Rigorous unit, integration, and end-to-end verification. Nothing ships unproven."
+        },
+        "deployment": {
+          "title": "Deployment",
+          "desc": "Production rollout with observability, rollback guardrails, and monitoring through the system's full lifecycle."
+        },
+        "support": {
+          "title": "Support",
+          "desc": "Maintenance windows, security patches, and capability evolution. Your system stays current and secure."
+        }
+      }
+    },
+    "quality": {
+      "eyebrow": "QUALITY & RELIABILITY",
+      "title": {
+        "line1": "Reliable",
+        "line2": "by design."
+      },
+      "description": "Quality isn't a phase — it's an engineering discipline. Every system we ship is held to the same standard.",
+      "items": {
+        "maintainable": {
+          "title": "Maintainable",
+          "desc": "Clear structure, documented decisions, and code built to be read, reviewed, and evolved by future teams."
+        },
+        "scalable": {
+          "title": "Scalable",
+          "desc": "Architecture that grows with your load — from first release to full production scale without rework."
+        },
+        "performant": {
+          "title": "Performant",
+          "desc": "Latency budgets, measured trade-offs, and a systematic approach to keeping systems fast under load."
+        },
+        "secure": {
+          "title": "Secure",
+          "desc": "Security baked into the architecture — threat modeling, least privilege, and defense in depth."
+        }
+      }
+    },
+    "work": {
+      "eyebrow": "RELEVANT WORK",
+      "title": {
+        "line1": "Software we",
+        "line2": "engineered."
+      },
+      "description": "A representative system shipped at the intersection of software and industrial scale — built end to end from discovery to deployment."
+    }
+  },
+  "EmbeddedPage": {
+    "hero": {
+      "eyebrow": "EMBEDDED SYSTEMS",
+      "title": {
+        "line1": "Precision firmware,",
+        "line2": "hardware-aware."
+      },
+      "description": "We engineer firmware and hardware-aware software for microcontrollers, FPGAs, and edge devices — where reliability and latency matter more than anything else.",
+      "primaryCta": "Start Your Project",
+      "secondaryCta": "Explore the Process"
+    },
+    "whatWeBuild": {
+      "number": "01",
+      "eyebrow": "WHAT WE BUILD",
+      "title": "The intelligence embedded in real-world hardware.",
+      "lede": "We design firmware and embedded software that runs reliably on real silicon — deterministic, resource-conscious, and built to the physical limits of the device.",
+      "desc": "From bare-metal firmware to real-time operating systems and edge deployments, we own the full stack of the device. Requirements, schematics, firmware, integration, and on-device validation.",
+      "tags": [
+        "Firmware Development",
+        "RTOS",
+        "Edge Computing"
+      ],
+      "link": "Explore the Process"
+    },
+    "capabilities": {
+      "eyebrow": "EMBEDDED CAPABILITIES",
+      "title": {
+        "line1": "Engineered for the",
+        "line2": "constraints of silicon."
+      },
+      "description": "Embedded engineering is the discipline of perfect behavior under tight constraints. Every capability is grounded in how hardware really behaves.",
+      "items": {
+        "deterministic": {
+          "title": "Deterministic Behavior",
+          "desc": "Predictable timing, bounded latency, and scheduling that meets real-time guarantees — analyzed before the board ships."
+        },
+        "closeToHardware": {
+          "title": "Close-to-Hardware",
+          "desc": "Register-level interaction, memory-mapped I/O, and a precise model of how the device actually executes instructions."
+        },
+        "protocols": {
+          "title": "Communication Protocols",
+          "desc": "Wired and wireless interfaces — MQTT, BLE, LoRaWAN, Modbus, and more — implemented with exact semantics and handling."
+        },
+        "drivers": {
+          "title": "Device Drivers",
+          "desc": "BSPs and low-level drivers written against the datasheet, with clean interfaces for the application layer above."
+        },
+        "resourceConstrained": {
+          "title": "Resource-Constrained",
+          "desc": "Memory budgets, flash budgets, and power budgets negotiated explicitly. Software that respects the silicon it runs on."
+        },
+        "hardwareBoundaries": {
+          "title": "Hardware/Software Boundaries",
+          "desc": "Clear ownership of the interface between firmware and the rest of the system — stable, documented, testable."
+        }
+      }
+    },
+    "stack": {
+      "eyebrow": "HARDWARE & TECHNOLOGY STACK",
+      "title": {
+        "line1": "Silicon and",
+        "line2": "software we ship on."
+      },
+      "description": "A focused, proven toolkit for real-time embedded systems. We select controllers, real-time operating systems, and connectivity on engineering merit — not hype.",
+      "categories": {
+        "embedded": {
+          "title": "Embedded"
+        },
+        "iot": {
+          "title": "IoT & Connectivity"
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "ENGINEERING PROCESS",
+      "title": {
+        "line1": "How we bring",
+        "line2": "hardware to life."
+      },
+      "description": "A disciplined workflow for embedded systems. Each phase converges the design toward deterministic, validated hardware and firmware.",
+      "steps": {
+        "requirements": {
+          "title": "Requirements",
+          "desc": "We capture functional and physical constraints — power, memory, timing, environment — into a traceable device specification."
+        },
+        "architecture": {
+          "title": "Hardware/Software Architecture",
+          "desc": "We partition the system across silicon and firmware — MCU selection, peripheral mapping, and interface contracts settled up front."
+        },
+        "firmware": {
+          "title": "Firmware Development",
+          "desc": "Bare-metal and RTOS firmware built in iterative cycles, with every module reviewed against the datasheet and the spec."
+        },
+        "integration": {
+          "title": "Integration",
+          "desc": "Bringing firmware, drivers, and real silicon together — validating behavior on target hardware, not just in simulation."
+        },
+        "validation": {
+          "title": "Validation",
+          "desc": "Hardware-in-the-loop testing, real-device debugging, and repeatable verification against timing and reliability goals."
+        },
+        "support": {
+          "title": "Deployment & Support",
+          "desc": "Production bring-up, field updates, and long-lived support across the device's operational lifecycle."
+        }
+      }
+    },
+    "reliability": {
+      "eyebrow": "RELIABILITY & VALIDATION",
+      "title": {
+        "line1": "Proven",
+        "line2": "on real hardware."
+      },
+      "description": "Embedded software is only as good as its behavior on the device. We validate relentlessly on silicon, not just in simulation.",
+      "items": {
+        "hardwareInLoop": {
+          "title": "Hardware-in-the-Loop",
+          "desc": "Firmware exercised against real hardware through automated test rigs that repeatedly verify behavior under load."
+        },
+        "integrationTest": {
+          "title": "Integration Testing",
+          "desc": "Drivers, protocol stacks, and application layers verified together on target boards, not in isolation."
+        },
+        "realDevice": {
+          "title": "Real-Device Testing",
+          "desc": "Debugging and validation on the actual hardware — because silicon behavior is the only truth that matters."
+        },
+        "maintainable": {
+          "title": "Maintainable Firmware",
+          "desc": "Clear module boundaries, documented behavior, and code built to be reviewed and evolved across hardware revisions."
+        }
+      }
+    },
+    "work": {
+      "eyebrow": "RELEVANT WORK",
+      "title": {
+        "line1": "Embedded systems",
+        "line2": "we engineered."
+      },
+      "description": "A representative device shipped at the intersection of firmware and real-world safety — built end to end from requirements to validation."
+    }
+  },
+  "AIPage": {
+    "hero": {
+      "eyebrow": "ARTIFICIAL INTELLIGENCE",
+      "title": {
+        "line1": "Intelligence",
+        "line2": "engineered into systems."
+      },
+      "description": "We treat AI as an engineering discipline — applied to real software systems with rigorous data, evaluation, and monitoring. From machine learning and computer vision to LLM-powered and generative applications.",
+      "primaryCta": "Start Your Project",
+      "secondaryCta": "Explore the Process"
+    },
+    "whatWeBuild": {
+      "number": "03",
+      "eyebrow": "WHAT WE BUILD",
+      "title": "AI integrated into production software.",
+      "lede": "We design and ship intelligent systems that perceive, reason, and decide — grounded in real data and validated rigorously before anything ships.",
+      "desc": "Every engagement starts with a well-scoped problem and ends with a deployed, monitored system. We own the full lifecycle: problem definition, data and context, model and architecture, development, evaluation, and deployment & monitoring.",
+      "tags": [
+        "Machine Learning",
+        "Computer Vision",
+        "LLMs"
+      ],
+      "link": "Explore the Process"
+    },
+    "capabilities": {
+      "eyebrow": "AI CAPABILITIES",
+      "title": {
+        "line1": "Intelligence",
+        "line2": "with engineering rigor."
+      },
+      "description": "Applied AI grounded in proven patterns and production-grade tooling — not buzzwords. Every capability is built to be evaluated, measured, and deployed.",
+      "items": {
+        "machineLearning": {
+          "title": "Machine Learning",
+          "desc": "Models trained on real data for classification, regression, and forecasting — with disciplined training and evaluation pipelines."
+        },
+        "computerVision": {
+          "title": "Computer Vision",
+          "desc": "Perception systems that interpret imagery and video — detection, segmentation, and tracking integrated into real pipelines."
+        },
+        "llmApplications": {
+          "title": "LLM Applications",
+          "desc": "Language-model-powered features — retrieval, summarization, and reasoning — engineered into product workflows."
+        },
+        "generativeAI": {
+          "title": "Generative AI",
+          "desc": "Structured approaches for generating text, imagery, and structured content within defined operational boundaries."
+        },
+        "predictiveAnalytics": {
+          "title": "Predictive Analytics",
+          "desc": "Forecasting and anomaly detection on operational data — turning sensor and business signals into early insight."
+        },
+        "aiAutomation": {
+          "title": "AI-Powered Automation",
+          "desc": "Intelligent workflows that reduce manual effort, with measurable results and people kept in the loop."
+        }
+      }
+    },
+    "stack": {
+      "eyebrow": "AI & ML TECHNOLOGY STACK",
+      "title": {
+        "line1": "Tools we",
+        "line2": "engineer AI with."
+      },
+      "description": "A focused, current toolkit for applied machine learning and language applications. We choose technology for engineering merit — not trends.",
+      "categories": {
+        "modeling": {
+          "title": "Modeling & ML"
+        },
+        "application": {
+          "title": "Application & Deployment"
+        }
+      }
+    },
+    "process": {
+      "eyebrow": "ENGINEERING PROCESS",
+      "title": {
+        "line1": "How we engineer",
+        "line2": "intelligence."
+      },
+      "description": "A disciplined workflow that turns ambiguous problems into deployed, monitored systems. Six phases, each designed for precision and measurable outcomes.",
+      "steps": {
+        "problem": {
+          "title": "Problem Definition",
+          "desc": "We frame the problem, success criteria, and constraints in measurable terms before any data or model work."
+        },
+        "data": {
+          "title": "Data & Context",
+          "desc": "We map available data, its quality, and its constraints — grounding the system in real context, not assumptions."
+        },
+        "architecture": {
+          "title": "Model & Architecture",
+          "desc": "We select and structure the approach — model choice, interfaces, and integration points settled up front."
+        },
+        "development": {
+          "title": "Development",
+          "desc": "Iterative build cycles with disciplined training, tuning, and integration. Every change is evaluated against the spec."
+        },
+        "evaluation": {
+          "title": "Evaluation",
+          "desc": "Rigorous testing against held-out data and real-world cases. Nothing ships unproven."
+        },
+        "deployment": {
+          "title": "Deployment & Monitoring",
+          "desc": "Production rollout with observability, drift tracking, and rollback guardrails through the system's lifecycle."
+        }
+      }
+    },
+    "reliability": {
+      "eyebrow": "AI RELIABILITY & EVALUATION",
+      "title": {
+        "line1": "Reliable",
+        "line2": "by design."
+      },
+      "description": "AI systems earn trust through evidence. We evaluate rigorously, monitor continuously, and keep humans in the loop.",
+      "items": {
+        "testSet": {
+          "title": "Rigorous Evaluation",
+          "desc": "Held-out test sets and real-world validation measure generalization, not just training fit."
+        },
+        "monitoring": {
+          "title": "Continuous Monitoring",
+          "desc": "Drift detection and performance tracking keep systems trustworthy after deployment."
+        },
+        "explainability": {
+          "title": "Explainability",
+          "desc": "Decisions are inspected and understandable — critical for real-world accountability."
+        },
+        "humanInLoop": {
+          "title": "Human in the Loop",
+          "desc": "People review and override where it matters. Automation respects judgment and safety."
+        }
+      }
+    },
+    "work": {
+      "eyebrow": "RELEVANT WORK",
+      "title": {
+        "line1": "AI at the heart",
+        "line2": "of real systems."
+      },
+      "description": "A representative system where data-driven insight ships at industrial scale — built end to end from problem definition to deployment."
+    }
   },
   "Technologies": {
     "eyebrow": "TECHNOLOGY STACK",
@@ -171,78 +803,204 @@
       "frontend": {
         "title": "Frontend",
         "items": [
-          { "name": "React", "icon": "Code2" },
-          { "name": "TypeScript", "icon": "Code2" },
-          { "name": "Next.js", "icon": "Zap" },
-          { "name": "Tailwind CSS", "icon": "SlidersHorizontal" },
-          { "name": "Three.js", "icon": "Box" },
-          { "name": "Framer Motion", "icon": "Move" }
+          {
+            "name": "React",
+            "icon": "Code2"
+          },
+          {
+            "name": "TypeScript",
+            "icon": "Code2"
+          },
+          {
+            "name": "Next.js",
+            "icon": "Zap"
+          },
+          {
+            "name": "Tailwind CSS",
+            "icon": "SlidersHorizontal"
+          },
+          {
+            "name": "Three.js",
+            "icon": "Box"
+          },
+          {
+            "name": "Framer Motion",
+            "icon": "Move"
+          }
         ]
       },
       "backend": {
         "title": "Backend",
         "items": [
-          { "name": "Node.js", "icon": "Server" },
-          { "name": "Python", "icon": "Terminal" },
-          { "name": "Go", "icon": "Cpu" },
-          { "name": "Rust", "icon": "Shield" },
-          { "name": "PostgreSQL", "icon": "Database" },
-          { "name": "Redis", "icon": "Zap" }
+          {
+            "name": "Node.js",
+            "icon": "Server"
+          },
+          {
+            "name": "Python",
+            "icon": "Terminal"
+          },
+          {
+            "name": "Go",
+            "icon": "Cpu"
+          },
+          {
+            "name": "Rust",
+            "icon": "Shield"
+          },
+          {
+            "name": "PostgreSQL",
+            "icon": "Database"
+          },
+          {
+            "name": "Redis",
+            "icon": "Zap"
+          }
         ]
       },
       "embedded": {
         "title": "Embedded",
         "items": [
-          { "name": "C/C++", "icon": "Microchip" },
-          { "name": "Zephyr RTOS", "icon": "Cog" },
-          { "name": "FreeRTOS", "icon": "Cpu" },
-          { "name": "ARM Cortex-M", "icon": "Chip" },
-          { "name": "FPGA", "icon": "Grid" },
-          { "name": "VHDL/Verilog", "icon": "Code2" }
+          {
+            "name": "C/C++",
+            "icon": "Microchip"
+          },
+          {
+            "name": "Zephyr RTOS",
+            "icon": "Cog"
+          },
+          {
+            "name": "FreeRTOS",
+            "icon": "Cpu"
+          },
+          {
+            "name": "ARM Cortex-M",
+            "icon": "Chip"
+          },
+          {
+            "name": "FPGA",
+            "icon": "Grid"
+          },
+          {
+            "name": "VHDL/Verilog",
+            "icon": "Code2"
+          }
         ]
       },
       "ai": {
         "title": "AI & ML",
         "items": [
-          { "name": "PyTorch", "icon": "Brain" },
-          { "name": "TensorFlow", "icon": "Brain" },
-          { "name": "ONNX Runtime", "icon": "Cpu" },
-          { "name": "Hugging Face", "icon": "MessageSquare" },
-          { "name": "LangChain", "icon": "Link" },
-          { "name": "OpenCV", "icon": "Eye" }
+          {
+            "name": "PyTorch",
+            "icon": "Brain"
+          },
+          {
+            "name": "TensorFlow",
+            "icon": "Brain"
+          },
+          {
+            "name": "ONNX Runtime",
+            "icon": "Cpu"
+          },
+          {
+            "name": "Hugging Face",
+            "icon": "MessageSquare"
+          },
+          {
+            "name": "LangChain",
+            "icon": "Link"
+          },
+          {
+            "name": "OpenCV",
+            "icon": "Eye"
+          }
         ]
       },
       "cloud": {
         "title": "Cloud & DevOps",
         "items": [
-          { "name": "Kubernetes", "icon": "Server" },
-          { "name": "Docker", "icon": "Box" },
-          { "name": "AWS", "icon": "Cloud" },
-          { "name": "GCP", "icon": "Cloud" },
-          { "name": "Terraform", "icon": "FileCode" },
-          { "name": "GitLab CI", "icon": "GitBranch" }
+          {
+            "name": "Kubernetes",
+            "icon": "Server"
+          },
+          {
+            "name": "Docker",
+            "icon": "Box"
+          },
+          {
+            "name": "AWS",
+            "icon": "Cloud"
+          },
+          {
+            "name": "GCP",
+            "icon": "Cloud"
+          },
+          {
+            "name": "Terraform",
+            "icon": "FileCode"
+          },
+          {
+            "name": "GitLab CI",
+            "icon": "GitBranch"
+          }
         ]
       },
       "iot": {
         "title": "IoT & Connectivity",
         "items": [
-          { "name": "MQTT", "icon": "Radio" },
-          { "name": "LoRaWAN", "icon": "Wifi" },
-          { "name": "BLE", "icon": "Bluetooth" },
-          { "name": "Modbus", "icon": "Cable" },
-          { "name": "OPC UA", "icon": "Link" },
-          { "name": "Thread", "icon": "Mesh" }
+          {
+            "name": "MQTT",
+            "icon": "Radio"
+          },
+          {
+            "name": "LoRaWAN",
+            "icon": "Wifi"
+          },
+          {
+            "name": "BLE",
+            "icon": "Bluetooth"
+          },
+          {
+            "name": "Modbus",
+            "icon": "Cable"
+          },
+          {
+            "name": "OPC UA",
+            "icon": "Link"
+          },
+          {
+            "name": "Thread",
+            "icon": "Mesh"
+          }
         ]
       },
       "mobile": {
         "title": "Mobile",
         "items": [
-          { "name": "React Native", "icon": "Smartphone" },
-          { "name": "Flutter", "icon": "Layers" },
-          { "name": "Swift", "icon": "Apple" },
-          { "name": "Kotlin", "icon": "Android" },
-          { "name": "Expo", "icon": "Globe" },
-          { "name": "Capacitor", "icon": "Plug" }
+          {
+            "name": "React Native",
+            "icon": "Smartphone"
+          },
+          {
+            "name": "Flutter",
+            "icon": "Layers"
+          },
+          {
+            "name": "Swift",
+            "icon": "Apple"
+          },
+          {
+            "name": "Kotlin",
+            "icon": "Android"
+          },
+          {
+            "name": "Expo",
+            "icon": "Globe"
+          },
+          {
+            "name": "Capacitor",
+            "icon": "Plug"
+          }
         ]
       }
     }
@@ -294,6 +1052,7 @@
       "line2": "say about us."
     },
     "description": "Sample testimonials shown for layout preview. Replace with verified client quotes before going live.",
+    "empty": "No testimonials yet.",
     "cards": {
       "one": {
         "quote": "Sample placeholder testimonial describing the engineering quality and delivery reliability experienced during a representative engagement. [Sample — replace with a verified client quote.]",
@@ -347,7 +1106,8 @@
         "question": "Can you integrate with our existing systems? [Sample — replace with verified FAQ content.]",
         "answer": "Sample answer describing integration with existing infrastructure, APIs, and data pipelines. [Sample — replace with verified FAQ content.]"
       }
-    }
+    },
+    "empty": "No frequently asked questions yet."
   },
   "ContactCta": {
     "eyebrow": "START YOUR PROJECT",
@@ -365,6 +1125,7 @@
       "company": {
         "heading": "Company",
         "links": {
+          "about": "About",
           "services": "Services",
           "industries": "Industries",
           "projects": "Projects",
@@ -386,6 +1147,8 @@
           "whyProjex": "Why NODAL",
           "testimonials": "Testimonials",
           "faq": "FAQ",
+          "blog": "Engineering Notes",
+          "portfolio": "Portfolio",
           "contact": "Contact"
         }
       },
@@ -399,12 +1162,162 @@
       "label": "Follow NODAL",
       "github": "GitHub",
       "linkedin": "LinkedIn",
-      "twitter": "Twitter"
+      "twitter": "Twitter",
+      "instagram": "Instagram",
+      "facebook": "Facebook"
     },
     "bottomBar": {
       "copyright": "© {year} NODAL. All rights reserved.",
       "privacy": "Privacy Policy",
       "terms": "Terms of Service"
     }
+  },
+  "AboutPage": {
+    "hero": {
+      "eyebrow": "MAKING THE CASE",
+      "title": {
+        "line1": "Engineering at",
+        "line2": "the core."
+      },
+      "description": "NODAL is an engineering and technology practice that turns requirements into reliable products. Everything we build starts from the same place: a conviction that precision, measureable quality, and a clear method are what make software, embedded systems, and AI work in the real world.",
+      "primaryCta": "Start your project",
+      "secondaryCta": "Explore our values"
+    },
+    "mission": {
+      "eyebrow": "MISSION",
+      "title": {
+        "line1": "We engineer",
+        "line2": "reliable systems."
+      },
+      "description": "Our mission is to build production technology that performs under real conditions. We ship software, embedded systems, and AI applications that earn trust by working consistently.",
+      "items": {
+        "precision": {
+          "title": "Precision",
+          "desc": "We design each system around measurable requirements and verifiable behavior, so the result matches its specification."
+        },
+        "reliability": {
+          "title": "Reliability",
+          "desc": "We favour simpler, well-tested designs over clever ones that are hard to keep running in production."
+        },
+        "performance": {
+          "title": "Performance",
+          "desc": "We treat responsiveness and efficiency as engineering deliverables, measured and tuned like any other requirement."
+        }
+      }
+    },
+    "vision": {
+      "eyebrow": "VISION",
+      "title": {
+        "line1": "Intelligent systems",
+        "line2": "built to last."
+      },
+      "description": "We work toward a future where intelligent products are also dependable ones. Technology should be capable without becoming fragile, and useful without becoming opaque.",
+      "items": {
+        "scalable": {
+          "title": "Scalable",
+          "desc": "Systems that grow with demand, without trading away clarity or control."
+        },
+        "secure": {
+          "title": "Secure",
+          "desc": "Security treated as an engineering discipline, not an afterthought."
+        },
+        "automation": {
+          "title": "Automation",
+          "desc": "Repetitive work handled by machines so people can focus on decisions that need judgement."
+        }
+      }
+    },
+    "story": {
+      "number": "01",
+      "eyebrow": "OUR STORY",
+      "title": {
+        "line1": "Built on",
+        "line2": "an engineering culture."
+      },
+      "lede": "We are engineers, first. That shapes how we work, what we build, and how we measure success.",
+      "link": "Meet the teams behind it",
+      "desc": "From the earliest days, our projects spanned software, embedded hardware, and applied AI. Rather than specialising in one discipline alone, we kept a single engineering culture across all of them: define the problem precisely, keep designs honest, and verify before you declare anything done."
+    },
+    "team": {
+      "eyebrow": "TEAM",
+      "title": {
+        "line1": "One culture across",
+        "line2": "three disciplines."
+      },
+      "description": "Our teams work across software engineering, embedded systems, and artificial intelligence. Each discipline has its own depth, but they share the same engineering standards and tools.",
+      "items": {
+        "software": {
+          "title": "Software",
+          "desc": "Engineers who design and build scalable, testable applications and the systems around them."
+        },
+        "embedded": {
+          "title": "Embedded",
+          "desc": "Engineers who bring products to life at the hardware boundary, where resources are limited and timing matters."
+        },
+        "ai": {
+          "title": "Artificial Intelligence",
+          "desc": "Engineers who turn data into dependable, explainable systems that support real decisions."
+        }
+      }
+    },
+    "values": {
+      "eyebrow": "VALUES",
+      "title": {
+        "line1": "How we",
+        "line2": "work."
+      },
+      "description": "These principles govern every project, from first conversation to long after launch.",
+      "items": {
+        "integrity": {
+          "title": "Integrity",
+          "desc": "We tell the truth about timelines, risks, and what a system can and cannot do."
+        },
+        "quality": {
+          "title": "Quality",
+          "desc": "Care is embedded in the work itself, not added as a checklist at the end."
+        },
+        "collaboration": {
+          "title": "Collaboration",
+          "desc": "We work alongside your team, sharing context so the product keeps improving after we are done."
+        }
+      }
+    },
+    "timeline": {
+      "eyebrow": "HOW WE WORK",
+      "title": {
+        "line1": "From idea to",
+        "line2": "lasting system."
+      },
+      "description": "The same proven cycle carries every engagement, from a first problem statement to a system that keeps running reliably.",
+      "steps": {
+        "discovery": {
+          "title": "Discovery",
+          "desc": "We define the real problem and the constraints around it before choosing tools."
+        },
+        "architecture": {
+          "title": "Architecture",
+          "desc": "We design a system that is secure, scalable, and honest about its trade-offs."
+        },
+        "build": {
+          "title": "Build",
+          "desc": "We implement with clean, tested code and discipline across the stack."
+        },
+        "validate": {
+          "title": "Validate",
+          "desc": "We verify against real conditions, not comfortable ones."
+        },
+        "operate": {
+          "title": "Operate",
+          "desc": "We stay engaged after launch, monitoring and improving performance."
+        }
+      }
+    }
+  },
+  "NotFoundPage": {
+    "eyebrow": "NOT FOUND",
+    "status": "404",
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist or has moved.",
+    "homeCta": "Return Home"
   }
 }
