@@ -30,9 +30,13 @@ export type MediaOwnerType =
 export type ProjectMediaKind = 'cover' | 'gallery' | 'diagram' | 'screenshot' | 'logo'
 export type BlogPostMediaKind = 'cover' | 'gallery' | 'diagram' | 'screenshot'
 
+export type CloudinaryResourceType = 'image' | 'video'
+
 export interface ProjectMediaInput {
   projectId: string
-  storagePath: string
+  storagePath?: string
+  publicId?: string
+  resourceType?: CloudinaryResourceType
   fileName: string
   kind: ProjectMediaKind
   alt?: Partial<BilingualText>
@@ -46,7 +50,9 @@ export interface ProjectMediaInput {
 
 export interface BlogPostMediaInput {
   postId: string
-  storagePath: string
+  storagePath?: string
+  publicId?: string
+  resourceType?: CloudinaryResourceType
   fileName: string
   kind: BlogPostMediaKind
   alt?: Partial<BilingualText>
@@ -61,7 +67,11 @@ export interface BlogPostMediaInput {
 export interface MediaLibraryInput {
   ownerType: MediaOwnerType
   ownerId?: string
-  storagePath: string
+  // Asset identity: Cloudinary (publicId + resourceType) or legacy Firebase
+  // storagePath. At least one is required — see resolveMediaIdentity().
+  storagePath?: string
+  publicId?: string
+  resourceType?: CloudinaryResourceType
   fileName: string
   mimeType: string
   sizeBytes: number
@@ -86,6 +96,63 @@ async function requireMediaAdmin(session: AdminSession | null): Promise<AdminSes
  * and mirror it in the global media/ library index. Enforces the storage path
  * convention media/projects/{projectId}/... for every project binary.
  */
+/**
+ * A media record's asset identity, resolved across the legacy and Cloudinary
+ * models. During the migration a record may carry EITHER:
+ *   - legacy:    storagePath (Firebase Storage object path)
+ *   - Cloudinary: publicId + resourceType
+ * New writes always carry the Cloudinary identity. The legacy storagePath is
+ * retained (when present) so pre-migration documents remain readable and their
+ * binaries remain deletable until the backfill is run.
+ */
+export interface MediaIdentity {
+  storagePath?: string
+  publicId?: string
+  resourceType?: CloudinaryResourceType
+}
+
+/**
+ * Validate a media input's identity and normalise it for persistence.
+ * Requires at least one of storagePath / publicId; returns the fields to spread
+ * into the Firestore write so both call sites stay in lockstep.
+ */
+function resolveMediaIdentity(input: MediaIdentity, label: string): MediaIdentity {
+  const storagePath = input.storagePath?.trim() || undefined
+  const publicId = input.publicId?.trim() || undefined
+
+  if (!storagePath && !publicId) {
+    throw new ApiError(400, 'Either storagePath or publicId is required.')
+  }
+  if (publicId && !input.resourceType) {
+    throw new ApiError(400, 'resourceType is required when publicId is set.')
+  }
+
+  // A legacy storage path must still satisfy the storage.rules convention; a
+  // Cloudinary publicId is scoped by its folder instead (media/{ownerType}/{ownerId}).
+  if (storagePath && !storagePath.startsWith(label)) {
+    throw new ApiError(
+      400,
+      `Storage path must live under ${label} (storage.rules only permits media/{ownerType}/{ownerId}).`,
+    )
+  }
+
+  return {
+    storagePath,
+    publicId,
+    resourceType: publicId ? input.resourceType : undefined,
+  }
+}
+
+/**
+ * Deterministic id for a global media/ index doc. Prefers the Cloudinary publicId
+ * (the primary identity going forward); falls back to the legacy storage path so
+ * pre-migration records keep their existing, stable index ids.
+ */
+function indexIdForMedia(identity: MediaIdentity): string {
+  const key = identity.publicId ? `cloudinary:${identity.publicId}` : `storage:${identity.storagePath}`
+  return Buffer.from(key, 'utf8').toString('base64url')
+}
+
 export async function createProjectMedia(
   session: AdminSession | null,
   input: ProjectMediaInput
@@ -93,16 +160,9 @@ export async function createProjectMedia(
   const authSession = await requireMediaAdmin(session)
 
   if (!input.projectId) throw new ApiError(400, 'projectId is required.')
-  if (!input.storagePath) throw new ApiError(400, 'storagePath is required.')
   if (!input.fileName) throw new ApiError(400, 'fileName is required.')
 
-  const expectedPrefix = `media/projects/${input.projectId}/`
-  if (!input.storagePath.startsWith(expectedPrefix)) {
-    throw new ApiError(
-      400,
-      `Storage path must live under ${expectedPrefix} (storage.rules only permits media/{ownerType}/{ownerId}).`,
-    )
-  }
+  const identity = resolveMediaIdentity(input, `media/projects/${input.projectId}/`)
 
   const now = new Date()
   const ref = firestore().collection('projects').doc(input.projectId)
@@ -111,7 +171,9 @@ export async function createProjectMedia(
 
   const mediaDoc = ref.collection('media').doc()
   await mediaDoc.set({
-    storagePath: input.storagePath,
+    storagePath: identity.storagePath ?? null,
+    publicId: identity.publicId ?? null,
+    resourceType: identity.resourceType ?? null,
     fileName: input.fileName,
     kind: input.kind,
     alt: cleanPartial(input.alt),
@@ -126,10 +188,12 @@ export async function createProjectMedia(
   })
 
   // Global media/ library index (docs/architecture/06_MEDIA_LIBRARY.md §4).
-  // Use a deterministic doc id derived from the storage path so re-registering
-  // the same path upserts instead of duplicating the index entry.
-  await firestore().collection('media').doc(indexIdForPath(input.storagePath)).set({
-    storagePath: input.storagePath,
+  // Use a deterministic doc id derived from the asset identity so re-registering
+  // the same asset upserts instead of duplicating the index entry.
+  await firestore().collection('media').doc(indexIdForMedia(identity)).set({
+    storagePath: identity.storagePath ?? null,
+    publicId: identity.publicId ?? null,
+    resourceType: identity.resourceType ?? null,
     public: true,
     ownerType: 'project',
     ownerId: input.projectId,
@@ -186,20 +250,18 @@ export async function updateProjectMedia(
 
   // Mirror the full patched metadata into the library index (not just updatedAt),
   // so the global picker stays consistent with the per-owner subcollection.
+  // Matched on publicId (Cloudinary era) or storagePath (legacy); a record may
+  // carry either, so both are queried and de-duplicated by doc id.
   const c = await ref.get()
-  const storagePath = c.data()?.storagePath
-  if (storagePath) {
-    const index: Record<string, unknown> = { updatedAt: new Date() }
-    if (patch.kind) index.kind = patch.kind
-    if (patch.alt) index.alt = cleanPartial(patch.alt)
-    if (patch.caption) index.caption = cleanPartial(patch.caption)
-    if (typeof patch.width === 'number') index.width = patch.width
-    if (typeof patch.height === 'number') index.height = patch.height
-    if (typeof patch.mimeType === 'string') index.mimeType = patch.mimeType
-    if (typeof patch.sizeBytes === 'number') index.sizeBytes = patch.sizeBytes
-    const lib = await firestore().collection('media').where('storagePath', '==', storagePath).get()
-    for (const libDoc of lib.docs) await libDoc.ref.update(index)
-  }
+  const index: Record<string, unknown> = { updatedAt: new Date() }
+  if (patch.kind) index.kind = patch.kind
+  if (patch.alt) index.alt = cleanPartial(patch.alt)
+  if (patch.caption) index.caption = cleanPartial(patch.caption)
+  if (typeof patch.width === 'number') index.width = patch.width
+  if (typeof patch.height === 'number') index.height = patch.height
+  if (typeof patch.mimeType === 'string') index.mimeType = patch.mimeType
+  if (typeof patch.sizeBytes === 'number') index.sizeBytes = patch.sizeBytes
+  await updateLibraryIndexEntries(readAssetIdentity(c.data()!), index)
 }
 
 /**
@@ -234,22 +296,91 @@ export async function reorderProjectMedia(
 /**
  * Delete a project media item after reference checks (per
  * docs/architecture/06_MEDIA_LIBRARY.md §8). This removes Firestore metadata but
- * NOT the storage binary — callers should also delete the storage object and, if
+ * NOT the underlying binary — callers should also delete the Cloudinary asset
+ * (and any legacy Firebase object) and, if
  * it was the cover, clear the project's coverMediaId.
  */
+/**
+ * What a delete operation hands back so the caller can remove the underlying
+ * binary. Both identities are returned because a record may be legacy-only
+ * (storagePath), Cloudinary-only (publicId), or transitional (both).
+ */
+export interface DeletedMediaAsset {
+  storagePath: string | null
+  publicId: string | null
+  resourceType: CloudinaryResourceType
+}
+
+/** Read the asset identity off a raw Firestore media document. */
+function readAssetIdentity(data: Record<string, unknown>): DeletedMediaAsset {
+  return {
+    storagePath: (data.storagePath as string) ?? null,
+    publicId: (data.publicId as string) ?? null,
+    resourceType: (data.resourceType as CloudinaryResourceType) ?? 'image',
+  }
+}
+
+/**
+ * Remove every global media/ library index doc that points at the same asset,
+ * matching on publicId first and falling back to storagePath so both legacy and
+ * Cloudinary-era index entries are cleaned up.
+ */
+async function deleteLibraryIndexEntries(asset: DeletedMediaAsset): Promise<void> {
+  const seen = new Set<string>()
+  const queries: Promise<FirebaseFirestore.QuerySnapshot>[] = []
+  if (asset.publicId) {
+    queries.push(firestore().collection('media').where('publicId', '==', asset.publicId).get())
+  }
+  if (asset.storagePath) {
+    queries.push(firestore().collection('media').where('storagePath', '==', asset.storagePath).get())
+  }
+  for (const snap of await Promise.all(queries)) {
+    for (const doc of snap.docs) {
+      if (seen.has(doc.id)) continue
+      seen.add(doc.id)
+      await doc.ref.delete()
+    }
+  }
+}
+
+/**
+ * Apply a metadata patch to every global media/ library index doc that points at
+ * the same asset, matching on publicId first and falling back to storagePath so
+ * both legacy and Cloudinary-era index entries stay in sync.
+ */
+async function updateLibraryIndexEntries(
+  asset: DeletedMediaAsset,
+  patch: Record<string, unknown>
+): Promise<void> {
+  const seen = new Set<string>()
+  const queries: Promise<FirebaseFirestore.QuerySnapshot>[] = []
+  if (asset.publicId) {
+    queries.push(firestore().collection('media').where('publicId', '==', asset.publicId).get())
+  }
+  if (asset.storagePath) {
+    queries.push(firestore().collection('media').where('storagePath', '==', asset.storagePath).get())
+  }
+  for (const snap of await Promise.all(queries)) {
+    for (const doc of snap.docs) {
+      if (seen.has(doc.id)) continue
+      seen.add(doc.id)
+      await doc.ref.update(patch)
+    }
+  }
+}
+
 export async function deleteProjectMedia(
   session: AdminSession | null,
   projectId: string,
   mediaId: string
-): Promise<{ wasCover: boolean; storagePath: string | null }> {
+): Promise<{ wasCover: boolean } & DeletedMediaAsset> {
   requireRole(session, 'content')
 
   const ref = firestore().collection('projects').doc(projectId).collection('media').doc(mediaId)
   const snap = await ref.get()
   if (!snap.exists) throw new ApiError(404, 'Media item not found.')
 
-  const media = snap.data()!
-  const storagePath: string | null = media.storagePath ?? null
+  const asset = readAssetIdentity(snap.data()!)
 
   const projectSnap = await firestore().collection('projects').doc(projectId).get()
   const wasCover = projectSnap.data()?.coverMediaId === mediaId
@@ -259,14 +390,9 @@ export async function deleteProjectMedia(
     await projectSnap.ref.update({ coverMediaId: null, updatedAt: new Date() })
   }
 
-  // Remove library index docs pointing at the same storage path.
-  if (storagePath) {
-    const lib = await firestore().collection('media').where('storagePath', '==', storagePath).get()
-    for (const libDoc of lib.docs) await libDoc.ref.delete()
-  }
-
+  await deleteLibraryIndexEntries(asset)
   await ref.delete()
-  return { wasCover, storagePath }
+  return { wasCover, ...asset }
 }
 
 /**
@@ -282,16 +408,9 @@ export async function createBlogMedia(
   const authSession = await requireMediaAdmin(session)
 
   if (!input.postId) throw new ApiError(400, 'postId is required.')
-  if (!input.storagePath) throw new ApiError(400, 'storagePath is required.')
   if (!input.fileName) throw new ApiError(400, 'fileName is required.')
 
-  const expectedPrefix = `media/blog/${input.postId}/`
-  if (!input.storagePath.startsWith(expectedPrefix)) {
-    throw new ApiError(
-      400,
-      `Storage path must live under ${expectedPrefix} (storage.rules only permits media/{ownerType}/{ownerId}).`,
-    )
-  }
+  const identity = resolveMediaIdentity(input, `media/blog/${input.postId}/`)
 
   const now = new Date()
   const ref = firestore().collection('blogPosts').doc(input.postId)
@@ -300,7 +419,9 @@ export async function createBlogMedia(
 
   const mediaDoc = ref.collection('media').doc()
   await mediaDoc.set({
-    storagePath: input.storagePath,
+    storagePath: identity.storagePath ?? null,
+    publicId: identity.publicId ?? null,
+    resourceType: identity.resourceType ?? null,
     fileName: input.fileName,
     kind: input.kind,
     alt: cleanPartial(input.alt),
@@ -315,10 +436,12 @@ export async function createBlogMedia(
   })
 
   // Global media/ library index (docs/architecture/06_MEDIA_LIBRARY.md §4).
-  // Use a deterministic doc id derived from the storage path so re-registering
-  // the same path upserts instead of duplicating the index entry.
-  await firestore().collection('media').doc(indexIdForPath(input.storagePath)).set({
-    storagePath: input.storagePath,
+  // Use a deterministic doc id derived from the asset identity so re-registering
+  // the same asset upserts instead of duplicating the index entry.
+  await firestore().collection('media').doc(indexIdForMedia(identity)).set({
+    storagePath: identity.storagePath ?? null,
+    publicId: identity.publicId ?? null,
+    resourceType: identity.resourceType ?? null,
     public: true,
     ownerType: 'blog',
     ownerId: input.postId,
@@ -375,20 +498,18 @@ export async function updateBlogMedia(
 
   // Mirror the full patched metadata into the library index (not just updatedAt),
   // so the global picker stays consistent with the per-owner subcollection.
+  // Matched on publicId (Cloudinary era) or storagePath (legacy); a record may
+  // carry either, so both are queried and de-duplicated by doc id.
   const c = await ref.get()
-  const storagePath = c.data()?.storagePath
-  if (storagePath) {
-    const index: Record<string, unknown> = { updatedAt: new Date() }
-    if (patch.kind) index.kind = patch.kind
-    if (patch.alt) index.alt = cleanPartial(patch.alt)
-    if (patch.caption) index.caption = cleanPartial(patch.caption)
-    if (typeof patch.width === 'number') index.width = patch.width
-    if (typeof patch.height === 'number') index.height = patch.height
-    if (typeof patch.mimeType === 'string') index.mimeType = patch.mimeType
-    if (typeof patch.sizeBytes === 'number') index.sizeBytes = patch.sizeBytes
-    const lib = await firestore().collection('media').where('storagePath', '==', storagePath).get()
-    for (const libDoc of lib.docs) await libDoc.ref.update(index)
-  }
+  const index: Record<string, unknown> = { updatedAt: new Date() }
+  if (patch.kind) index.kind = patch.kind
+  if (patch.alt) index.alt = cleanPartial(patch.alt)
+  if (patch.caption) index.caption = cleanPartial(patch.caption)
+  if (typeof patch.width === 'number') index.width = patch.width
+  if (typeof patch.height === 'number') index.height = patch.height
+  if (typeof patch.mimeType === 'string') index.mimeType = patch.mimeType
+  if (typeof patch.sizeBytes === 'number') index.sizeBytes = patch.sizeBytes
+  await updateLibraryIndexEntries(readAssetIdentity(c.data()!), index)
 }
 
 /**
@@ -423,22 +544,22 @@ export async function reorderBlogMedia(
 /**
  * Delete a blog post media item after reference checks (per
  * docs/architecture/06_MEDIA_LIBRARY.md §8). This removes Firestore metadata but
- * NOT the storage binary — callers should also delete the storage object and, if
+ * NOT the underlying binary — callers should also delete the Cloudinary asset
+ * (and any legacy Firebase object) and, if
  * it was the cover, clear the post's coverMediaId.
  */
 export async function deleteBlogMedia(
   session: AdminSession | null,
   postId: string,
   mediaId: string
-): Promise<{ wasCover: boolean; storagePath: string | null }> {
+): Promise<{ wasCover: boolean } & DeletedMediaAsset> {
   requireRole(session, 'content')
 
   const ref = firestore().collection('blogPosts').doc(postId).collection('media').doc(mediaId)
   const snap = await ref.get()
   if (!snap.exists) throw new ApiError(404, 'Media item not found.')
 
-  const media = snap.data()!
-  const storagePath: string | null = media.storagePath ?? null
+  const asset = readAssetIdentity(snap.data()!)
 
   const postSnap = await firestore().collection('blogPosts').doc(postId).get()
   const wasCover = postSnap.data()?.coverMediaId === mediaId
@@ -448,20 +569,17 @@ export async function deleteBlogMedia(
     await postSnap.ref.update({ coverMediaId: null, updatedAt: new Date() })
   }
 
-  // Remove library index docs pointing at the same storage path.
-  if (storagePath) {
-    const lib = await firestore().collection('media').where('storagePath', '==', storagePath).get()
-    for (const libDoc of lib.docs) await libDoc.ref.delete()
-  }
-
+  await deleteLibraryIndexEntries(asset)
   await ref.delete()
-  return { wasCover, storagePath }
+  return { wasCover, ...asset }
 }
 
 /** A single record in the global media/ library index. */
 export interface MediaLibraryItem {
   id: string
-  storagePath: string
+  storagePath?: string
+  publicId?: string
+  resourceType?: CloudinaryResourceType
   public: boolean
   ownerType: MediaOwnerType
   ownerId?: string
@@ -495,15 +613,15 @@ export async function listMediaLibrary(
 /**
  * Delete a media item from the global library index (media/{mediaId}) plus the
  * source subcollection doc (e.g. projects/{id}/media/{mediaId}) that mirrors it,
- * and return the storage path so the caller can remove the binary. Reference
+ * and return the asset identity so the caller can remove the binary. Reference
  * checks per docs/architecture/06_MEDIA_LIBRARY.md §8: refuse if another entity
- * still references the storage path (a cover reference). All index docs sharing
- * the storage path are removed, so legacy duplicates are cleaned up too.
+ * still references the asset (a cover reference). Matching is done on publicId
+ * (Cloudinary era) or storagePath (legacy), so both kinds of record are handled.
  */
 export async function deleteMediaLibrary(
   session: AdminSession | null,
   mediaId: string
-): Promise<{ storagePath: string; ownerType: MediaOwnerType; ownerId?: string }> {
+): Promise<{ ownerType: MediaOwnerType; ownerId?: string } & DeletedMediaAsset> {
   requireRole(session, 'media')
 
   const libRef = firestore().collection('media').doc(mediaId)
@@ -511,83 +629,52 @@ export async function deleteMediaLibrary(
   if (!libSnap.exists) throw new ApiError(404, 'Media item not found.')
 
   const data = libSnap.data()!
-  const storagePath: string | undefined = data.storagePath
+  const asset = readAssetIdentity(data)
   const ownerType: MediaOwnerType | undefined = data.ownerType
   const ownerId: string | undefined = data.ownerId
 
-  if (!storagePath) throw new ApiError(400, 'Media item is missing a storage path.')
+  if (!asset.storagePath && !asset.publicId) {
+    throw new ApiError(400, 'Media item is missing an asset identity.')
+  }
   if (!ownerType) throw new ApiError(400, 'Media item is missing an owner type.')
 
-  // Reference check: refuse deletion while this storage path is still the cover
-  // of its owning project or blog post (docs/architecture/06_MEDIA_LIBRARY.md §8).
-  if (ownerType === 'project' && ownerId) {
-    const projectSnap = await firestore().collection('projects').doc(ownerId).get()
-    if (projectSnap.exists && projectSnap.data()?.coverMediaId) {
-      const subSnap = await firestore()
-        .collection('projects')
-        .doc(ownerId)
-        .collection('media')
-        .where('storagePath', '==', storagePath)
-        .get()
-      const isCover = subSnap.docs.some((d) => d.id === projectSnap.data()?.coverMediaId)
-      if (isCover) {
-        throw new ApiError(409, 'This media is the cover of a project. Change the cover before deleting it.')
-      }
-    }
+  const ownerCollection = ownerType === 'project' ? 'projects' : ownerType === 'blog' ? 'blogPosts' : null
+
+  // Locate the source subcollection docs that mirror this asset, matching on
+  // publicId (Cloudinary era) or storagePath (legacy). Both are checked because
+  // a transitional record carries both.
+  const findMirrorDocs = async (): Promise<FirebaseFirestore.QueryDocumentSnapshot[]> => {
+    if (!ownerCollection || !ownerId) return []
+    const col = firestore().collection(ownerCollection).doc(ownerId).collection('media')
+    const docs: FirebaseFirestore.QueryDocumentSnapshot[] = []
+    if (asset.publicId) docs.push(...(await col.where('publicId', '==', asset.publicId).get()).docs)
+    if (asset.storagePath) docs.push(...(await col.where('storagePath', '==', asset.storagePath).get()).docs)
+    // De-duplicate: a transitional record matches both queries.
+    const byId = new Map(docs.map((d) => [d.id, d]))
+    return Array.from(byId.values())
   }
-  if (ownerType === 'blog' && ownerId) {
-    const postSnap = await firestore().collection('blogPosts').doc(ownerId).get()
-    if (postSnap.exists && postSnap.data()?.coverMediaId) {
-      const subSnap = await firestore()
-        .collection('blogPosts')
-        .doc(ownerId)
-        .collection('media')
-        .where('storagePath', '==', storagePath)
-        .get()
-      const isCover = subSnap.docs.some((d) => d.id === postSnap.data()?.coverMediaId)
-      if (isCover) {
-        throw new ApiError(409, 'This media is the cover of a blog post. Change the cover before deleting it.')
-      }
+
+  const mirrorDocs = await findMirrorDocs()
+
+  // Reference check: refuse deletion while this asset is still the cover of its
+  // owning project or blog post (docs/architecture/06_MEDIA_LIBRARY.md §8).
+  if (ownerCollection && ownerId) {
+    const ownerSnap = await firestore().collection(ownerCollection).doc(ownerId).get()
+    const coverMediaId = ownerSnap.data()?.coverMediaId
+    if (coverMediaId && mirrorDocs.some((d) => d.id === coverMediaId)) {
+      const noun = ownerType === 'project' ? 'a project' : 'a blog post'
+      throw new ApiError(409, `This media is the cover of ${noun}. Change the cover before deleting it.`)
     }
   }
 
-  // Remove any source subcollection docs that mirror this storage path (so the
-  // per-owner gallery stays consistent with the library index).
-  if (ownerType === 'project' && ownerId) {
-    const sub = await firestore()
-      .collection('projects')
-      .doc(ownerId)
-      .collection('media')
-      .where('storagePath', '==', storagePath)
-      .get()
-    for (const subDoc of sub.docs) await subDoc.ref.delete()
-  }
-  if (ownerType === 'blog' && ownerId) {
-    const sub = await firestore()
-      .collection('blogPosts')
-      .doc(ownerId)
-      .collection('media')
-      .where('storagePath', '==', storagePath)
-      .get()
-    for (const subDoc of sub.docs) await subDoc.ref.delete()
-  }
+  // Remove the mirroring subcollection docs so the per-owner gallery stays
+  // consistent with the library index.
+  for (const doc of mirrorDocs) await doc.ref.delete()
 
-  // Remove every index doc pointing at this storage path (covers legacy
-  // duplicates created before the deterministic-id fix).
-  const lib = await firestore().collection('media').where('storagePath', '==', storagePath).get()
-  for (const libDoc of lib.docs) await libDoc.ref.delete()
+  // Remove every index doc pointing at this asset, by either identity.
+  await deleteLibraryIndexEntries(asset)
 
-  return { storagePath, ownerType, ownerId }
-}
-
-/**
- * Deterministic id for a global media/ index doc, keyed off the storage path so
- * the same binary is never indexed twice. A stable, filesystem-safe encoding of
- * the path (no '/', no '.' prefix, ≤ 1500 bytes) keeps the id a valid Firestore
- * doc id while remaining unique per distinct path.
- */
-function indexIdForPath(storagePath: string): string {
-  return Buffer.from(storagePath, 'utf8').toString('base64url')
+  return { ownerType, ownerId, ...asset }
 }
 
 function cleanPartial(v?: Partial<BilingualText>): Partial<BilingualText> | null {

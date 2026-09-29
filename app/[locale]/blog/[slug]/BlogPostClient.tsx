@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { firebaseStorage } from '@/src/lib/firebase/client'
+import { cloudinaryUrl } from '@/src/lib/cloudinary/url'
 import { useTheme } from '../../Providers'
 import { ArrowUpRight, Briefcase, Camera, Code2, Users, X } from 'lucide-react'
 import Image from 'next/image'
@@ -21,37 +22,50 @@ function Eyebrow({ label }: { label: string }) {
   )
 }
 
-interface BlogPostClientProps {
-  locale: string
-  post: PublicBlogPost
-  siteSettings: PublicSiteSettings | null
-}
+/* Resolve a media record -> display URL.
 
-/* Resolve a Storage path → download URL. The public DAL stores a Storage
-   path (media/{ownerType}/{ownerId}/...), NOT a URL, so the binary must be
-   resolved via getDownloadURL before it can be shown as an <img>. */
-function useMediaUrl(path: string | null | undefined): string {
-  const [url, setUrl] = useState('')
+   Cloudinary records resolve synchronously from publicId (delivery URLs are
+   public and need no credentials, so nothing sensitive reaches the browser).
+   Legacy records that only carry a Firebase storagePath are still resolved via
+   getDownloadURL — retained solely for pre-migration documents. */
+function useMediaUrl(media: {
+  publicId?: string | null
+  resourceType?: 'image' | 'video' | null
+  storagePath?: string | null
+} | null | undefined): string {
+  const publicId = media?.publicId ?? ''
+  const resourceType = media?.resourceType ?? 'image'
+  const path = media?.storagePath ?? ''
+
+  const direct = cloudinaryUrl(publicId, resourceType)
+  const [legacyUrl, setLegacyUrl] = useState('')
 
   useEffect(() => {
-    if (!path) {
-      setUrl('')
+    // Cloudinary records need no async resolution.
+    if (direct || !path) {
+      setLegacyUrl('')
       return
     }
     let cancelled = false
     getDownloadURL(storageRef(firebaseStorage, path))
       .then((resolved) => {
-        if (!cancelled) setUrl(resolved)
+        if (!cancelled) setLegacyUrl(resolved)
       })
       .catch(() => {
-        if (!cancelled) setUrl('')
+        if (!cancelled) setLegacyUrl('')
       })
     return () => {
       cancelled = true
     }
-  }, [path])
+  }, [direct, path])
 
-  return url
+  return direct || legacyUrl
+}
+
+interface BlogPostClientProps {
+  locale: string
+  post: PublicBlogPost
+  siteSettings: PublicSiteSettings | null
 }
 
 /* ------------------------------------------------------------------ */
@@ -96,7 +110,7 @@ export default function BlogPostClient({ locale, post, siteSettings }: BlogPostC
   const coverMedia = post.media.find((m) => m.id === post.coverMediaId)
   const galleryMedia = post.media.filter((m) => m.id !== post.coverMediaId)
 
-  const coverUrl = useMediaUrl(coverMedia?.storagePath)
+  const coverUrl = useMediaUrl(coverMedia)
 
   const publishedLabel = (() => {
     if (!post.publishedAt) return ''
@@ -333,7 +347,7 @@ function GalleryImage({
   media: PublicBlogPost['media'][number]
   displayLocale: 'en' | 'ar'
 }) {
-  const url = useMediaUrl(media.storagePath)
+  const url = useMediaUrl(media)
   const alt = media.alt[displayLocale]?.trim() || media.alt.en?.trim() || ''
   const caption = media.caption[displayLocale]?.trim() || media.caption.en?.trim() || ''
 

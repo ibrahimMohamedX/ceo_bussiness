@@ -3,19 +3,24 @@
 // Client-side media uploader for a project's or blog post's gallery.
 //
 // Upload flow (matches the storage/CRUD split in src/lib/admin/media.ts):
-//   1. The client uploads the raw blob DIRECTLY to Cloud Storage under
-//      media/{ownerType}/{ownerId}/{fileName} using the client Firebase SDK.
-//      storage.rules gates the write on isAnyAdmin() (the signed-in client token),
-//      and only permits the media/{ownerType}/{ownerId}/... shape.
-//   2. The client then POSTs the metadata { storagePath, fileName, kind, ... } to
-//      the server route /admin/api/{projects|blog}/[id]/media, which authorizes
-//      (editor+) and records Firestore metadata in the owner subcollection and
-//      the global media/ index. The server never touches the raw blob.
+//   1. The client POSTs the raw file as multipart/form-data to
+//      /admin/api/media/upload, which authorizes (editor+) and streams the bytes
+//      to Cloudinary via src/lib/cloudinary/media.ts. The Cloudinary API
+//      key/secret never reach the browser.
+//   2. The client then POSTs the returned Cloudinary identity
+//      { publicId, resourceType, ... } to the server route
+//      /admin/api/{projects|blog}/[id]/media, which records Firestore metadata in
+//      the owner subcollection and the global media/ index.
 // The cover is selected on the owner doc via coverMediaId (PATCH on the owner).
+//
+// Legacy compatibility: records written before the Cloudinary migration carry
+// only a Firebase storagePath. Those are still rendered by resolving a download
+// URL through the client Firebase SDK; nothing new is ever written that way.
 
 import { useEffect, useRef, useState } from 'react'
-import { ref as storageRef, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage'
+import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { firebaseStorage } from '@/src/lib/firebase/client'
+import { cloudinaryUrl } from '@/src/lib/cloudinary/url'
 import type { ProjectMediaKind, BlogPostMediaKind } from '@/src/lib/admin/media'
 import { Select } from './ui'
 
@@ -47,24 +52,48 @@ export type MediaOwnerType = 'project' | 'blog'
 // Media records across both owner types expose the same fields the gallery needs.
 export interface MediaItem {
   id: string
-  storagePath: string
+  storagePath?: string
   fileName?: string
   kind: string
   sortOrder: number
+  publicId?: string
+  resourceType?: 'image' | 'video'
 }
 
-// Resolve Firebase Storage download URLs for each storagePath. The metadata
-// stores a Storage path (media/{ownerType}/{ownerId}/...), NOT a URL, so the
-// binary must be resolved via getDownloadURL before it can be shown as an <img>.
-function useMediaUrls(paths: string[]): Record<string, string> {
+// Legacy Firebase Storage records carry storagePath; Cloudinary records carry
+// publicId + resourceType. Coerce to a stable string so a record written under
+// either model can be rendered without a non-null assertion at every call site.
+export const getStoragePath = (m: MediaItem): string => m.storagePath ?? ''
+export const getPublicId = (m: MediaItem): string => m.publicId ?? ''
+export const getResourceType = (m: MediaItem): 'image' | 'video' => m.resourceType ?? 'image'
+
+// Resolve a display URL for each media record.
+//
+// Cloudinary records resolve synchronously from publicId (delivery URLs are
+// public and need no credentials). Legacy records that only carry a Firebase
+// storagePath still need getDownloadURL — that path is retained solely for
+// pre-migration documents and is never used for anything newly uploaded.
+function useMediaUrls(items: MediaItem[]): Record<string, string> {
   const [urls, setUrls] = useState<Record<string, string>>({})
-  const key = paths.join('|')
+  // Key on both identities so a record that gains a publicId re-resolves.
+  const key = items.map((m) => `${m.id}:${getPublicId(m)}:${getStoragePath(m)}`).join('|')
+
   useEffect(() => {
     let cancelled = false
-    const pending = paths.filter((p) => !urls[p])
-    if (pending.length === 0) return
+    const next: Record<string, string> = {}
+    const legacy: string[] = []
+
+    for (const m of items) {
+      const direct = cloudinaryUrl(getPublicId(m), getResourceType(m))
+      if (direct) next[m.id] = direct
+      else if (getStoragePath(m)) legacy.push(getStoragePath(m))
+    }
+
+    setUrls((prev) => ({ ...prev, ...next }))
+    if (legacy.length === 0) return
+
     Promise.all(
-      pending.map(async (p) => {
+      legacy.map(async (p) => {
         try {
           return [p, await getDownloadURL(storageRef(firebaseStorage, p))] as const
         } catch {
@@ -74,9 +103,15 @@ function useMediaUrls(paths: string[]): Record<string, string> {
     ).then((resolved) => {
       if (cancelled) return
       setUrls((prev) => {
-        const next = { ...prev }
-        for (const [p, url] of resolved) next[p] = url
-        return next
+        const merged = { ...prev }
+        // Legacy URLs are keyed by storagePath; map back to the record id.
+        for (const m of items) {
+          const p = getStoragePath(m)
+          if (!p) continue
+          const hit = resolved.find(([path]) => path === p)
+          if (hit) merged[m.id] = hit[1]
+        }
+        return merged
       })
     })
     return () => {
@@ -84,6 +119,7 @@ function useMediaUrls(paths: string[]): Record<string, string> {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key])
+
   return urls
 }
 
@@ -118,14 +154,10 @@ export function MediaUploader({
   const kindOptions = isProject ? PROJECT_KINDS : BLOG_KINDS
 
   const ordered = media.slice().sort((a, b) => a.sortOrder - b.sortOrder)
-  const urls = useMediaUrls(ordered.map((m) => m.storagePath))
+  const urls = useMediaUrls(ordered)
 
   const kindLabel = (k: string) =>
     kindOptions.find((x) => x.value === k)?.label ?? k
-
-  const storagePrefix = isProject
-    ? `media/projects/${ownerId}/`
-    : `media/blog/${ownerId}/`
 
   const apiBase = isProject
     ? `/admin/api/projects/${ownerId}/media`
@@ -161,34 +193,51 @@ export function MediaUploader({
     setBusy(true)
     setUploadingCount((c) => c + 1)
     setProgress(0)
-    let path = ''
+    let uploadedPublicId = ''
+    let uploadedResourceType: 'image' | 'video' = 'image'
     try {
-      const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_')
-      path = `${storagePrefix}${Date.now()}-${safeName}`
-      const ref = storageRef(firebaseStorage, path)
-      const task = uploadBytesResumable(ref, file)
-      await new Promise<void>((resolve, reject) => {
-        task.on(
-          'state_changed',
-          (snap) =>
-            setProgress(snap.totalBytes > 0 ? snap.bytesTransferred / snap.totalBytes : 0),
-          reject,
-          () => resolve(),
-        )
+      // Step 1: stream the bytes to Cloudinary through the server route. The
+      // Cloudinary API key/secret stay server-side.
+      const form = new FormData()
+      form.append('file', file)
+      form.append('ownerType', ownerType)
+      form.append('ownerId', ownerId)
+      const uploadRes = await fetch('/admin/api/media/upload', {
+        method: 'POST',
+        body: form,
       })
+      if (!uploadRes.ok) {
+        const data = (await uploadRes.json()) as { error?: string }
+        throw new Error(data.error ?? 'Upload failed.')
+      }
+      const uploaded = (await uploadRes.json()) as {
+        publicId: string
+        resourceType: 'image' | 'video'
+        width: number | null
+        height: number | null
+        sizeBytes: number
+        mimeType: string
+      }
+      uploadedPublicId = uploaded.publicId
+      uploadedResourceType = uploaded.resourceType
+      setProgress(1)
 
+      // Step 2: register the Cloudinary identity as Firestore metadata.
       const res = await fetch(apiBase, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          storagePath: path,
+          publicId: uploaded.publicId,
+          resourceType: uploaded.resourceType,
           fileName: file.name,
           kind,
           alt: {},
           caption: {},
           sortOrder: media.length + uploadingCount,
-          mimeType: file.type || 'application/octet-stream',
-          sizeBytes: file.size,
+          mimeType: uploaded.mimeType || file.type || 'application/octet-stream',
+          sizeBytes: uploaded.sizeBytes ?? file.size,
+          width: uploaded.width ?? undefined,
+          height: uploaded.height ?? undefined,
         }),
       })
       if (!res.ok) {
@@ -198,13 +247,21 @@ export function MediaUploader({
       await onChanged()
     } catch (e) {
       setError(e instanceof Error ? e.message : 'Upload failed.')
-      // If the binary reached Storage but metadata registration failed, remove the
-      // orphaned blob so the gallery does not accumulate unreachable files.
-      if (path) {
+      // If the binary reached Cloudinary but metadata registration failed, ask the
+      // server to destroy the orphan so the gallery does not accumulate
+      // unreachable assets. Best effort only; a lingering orphan is harmless.
+      if (uploadedPublicId) {
         try {
-          await deleteObject(storageRef(firebaseStorage, path))
+          await fetch('/admin/api/media/upload', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              publicId: uploadedPublicId,
+              resourceType: uploadedResourceType,
+            }),
+          })
         } catch {
-          // Best effort only; a lingering orphan is harmless.
+          // Best effort only.
         }
       }
     } finally {
@@ -278,10 +335,10 @@ export function MediaUploader({
                 className="relative flex flex-col overflow-hidden rounded-lg border border-[var(--border)] bg-[var(--card)]"
               >
                 <div className="flex aspect-[4/3] items-center justify-center overflow-hidden bg-black/20">
-                  {urls[m.storagePath] ? (
+                  {urls[m.id] ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={urls[m.storagePath]}
+                      src={urls[m.id]}
                       alt={m.fileName ?? m.id}
                       className="h-full w-full object-cover"
                       loading="lazy"

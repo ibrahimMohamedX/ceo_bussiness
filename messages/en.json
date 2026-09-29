@@ -237,6 +237,9 @@
         "line2": "engineered."
       },
       "description": "Three representative systems shipped across aerospace, manufacturing, and healthcare. Built to production grade — measured, validated, and supported through their full lifecycle."
+    },
+    "detail": {
+      "back": "All Work"
     }
   },
   "BlogPage": {

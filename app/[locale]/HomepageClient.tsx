@@ -7,6 +7,7 @@ import { ArrowUpRight, CircleCheckBig, Code2, Cog, Cpu, Database, Factory, GitBr
 import Image from 'next/image'
 import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { firebaseStorage } from '@/src/lib/firebase/client'
+import { cloudinaryUrl } from '@/src/lib/cloudinary/url'
 import type { PublicProject } from '@/src/lib/public/projects'
 import type { PublicTestimonial } from '@/src/lib/public/testimonials'
 import type { PublicFaq } from '@/src/lib/public/faq'
@@ -23,31 +24,44 @@ function Eyebrow({ label }: { label: string }) {
   )
 }
 
-/* Resolve a Storage path -> download URL. The public DAL stores a Storage path
-   (media/{ownerType}/{ownerId}/...), NOT a URL, so the binary must be resolved
-   via getDownloadURL before it can be shown as an <img>. */
-function useMediaUrl(path: string | null | undefined): string {
-  const [url, setUrl] = useState('')
+/* Resolve a media record -> display URL.
+
+   Cloudinary records resolve synchronously from publicId (delivery URLs are
+   public and need no credentials, so nothing sensitive reaches the browser).
+   Legacy records that only carry a Firebase storagePath are still resolved via
+   getDownloadURL — retained solely for pre-migration documents. */
+function useMediaUrl(media: {
+  publicId?: string | null
+  resourceType?: 'image' | 'video' | null
+  storagePath?: string | null
+} | null | undefined): string {
+  const publicId = media?.publicId ?? ''
+  const resourceType = media?.resourceType ?? 'image'
+  const path = media?.storagePath ?? ''
+
+  const direct = cloudinaryUrl(publicId, resourceType)
+  const [legacyUrl, setLegacyUrl] = useState('')
 
   useEffect(() => {
-    if (!path) {
-      setUrl('')
+    // Cloudinary records need no async resolution.
+    if (direct || !path) {
+      setLegacyUrl('')
       return
     }
     let cancelled = false
     getDownloadURL(storageRef(firebaseStorage, path))
       .then((resolved) => {
-        if (!cancelled) setUrl(resolved)
+        if (!cancelled) setLegacyUrl(resolved)
       })
       .catch(() => {
-        if (!cancelled) setUrl('')
+        if (!cancelled) setLegacyUrl('')
       })
     return () => {
       cancelled = true
     }
-  }, [path])
+  }, [direct, path])
 
-  return url
+  return direct || legacyUrl
 }
 
 interface HomepageClientProps {
@@ -319,7 +333,7 @@ function FeaturedProjectCard({ project, locale, index, ctaLabel }: {
   const title = project.title[projectLocale]
   const summary = project.summary[projectLocale]
   const coverImage = project.media.find((m) => m.id === project.coverMediaId)
-  const coverUrl = useMediaUrl(coverImage?.storagePath)
+  const coverUrl = useMediaUrl(coverImage)
 
   return (
     <a className="project-card" href={`/${locale}/portfolio/${project.slug}`}>

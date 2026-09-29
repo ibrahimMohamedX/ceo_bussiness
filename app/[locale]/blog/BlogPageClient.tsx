@@ -7,6 +7,7 @@ import { ArrowUpRight, Briefcase, Camera, Code2, Users, X } from 'lucide-react'
 import Image from 'next/image'
 import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { firebaseStorage } from '@/src/lib/firebase/client'
+import { cloudinaryUrl } from '@/src/lib/cloudinary/url'
 import type { PublicBlogPost } from '@/src/lib/public/blog'
 import type { PublicSiteSettings } from '@/src/lib/public/settings'
 
@@ -21,29 +22,44 @@ function Eyebrow({ label }: { label: string }) {
   )
 }
 
-/* Resolve a Storage path -> download URL. See BlogPostClient for rationale. */
-function useMediaUrl(path: string | null | undefined): string {
-  const [url, setUrl] = useState('')
+/* Resolve a media record -> display URL.
+
+   Cloudinary records resolve synchronously from publicId (delivery URLs are
+   public and need no credentials, so nothing sensitive reaches the browser).
+   Legacy records that only carry a Firebase storagePath are still resolved via
+   getDownloadURL — retained solely for pre-migration documents. */
+function useMediaUrl(media: {
+  publicId?: string | null
+  resourceType?: 'image' | 'video' | null
+  storagePath?: string | null
+} | null | undefined): string {
+  const publicId = media?.publicId ?? ''
+  const resourceType = media?.resourceType ?? 'image'
+  const path = media?.storagePath ?? ''
+
+  const direct = cloudinaryUrl(publicId, resourceType)
+  const [legacyUrl, setLegacyUrl] = useState('')
 
   useEffect(() => {
-    if (!path) {
-      setUrl('')
+    // Cloudinary records need no async resolution.
+    if (direct || !path) {
+      setLegacyUrl('')
       return
     }
     let cancelled = false
     getDownloadURL(storageRef(firebaseStorage, path))
       .then((resolved) => {
-        if (!cancelled) setUrl(resolved)
+        if (!cancelled) setLegacyUrl(resolved)
       })
       .catch(() => {
-        if (!cancelled) setUrl('')
+        if (!cancelled) setLegacyUrl('')
       })
     return () => {
       cancelled = true
     }
-  }, [path])
+  }, [direct, path])
 
-  return url
+  return direct || legacyUrl
 }
 
 interface BlogPageClientProps {
@@ -162,7 +178,7 @@ export default function BlogPageClient({ locale, posts, categories, tags, siteSe
               const title = post.title[displayLocale]
               const category = post.category
               const coverImage = post.media.find((m) => m.id === post.coverMediaId)
-              const coverUrl = useMediaUrl(coverImage?.storagePath)
+              const coverUrl = useMediaUrl(coverImage)
 
               const href = `/${locale}/blog/${post.slug}`
 

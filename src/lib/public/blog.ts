@@ -1,7 +1,13 @@
 'use server'
 
 import { getPublicFirestore } from '@/src/lib/firebase/admin'
-import type { BlogPostRecord, BlogPostMedia, BlogPostMediaKind, BilingualText } from '@/src/lib/admin/blog'
+import type {
+  BlogPostRecord,
+  BlogPostMedia,
+  BlogPostMediaKind,
+  BilingualText,
+} from '@/src/lib/admin/blog'
+import type { CloudinaryResourceType } from '@/src/lib/admin/media'
 
 /**
  * Public-facing blog post record with bilingual fields and media
@@ -32,6 +38,8 @@ export interface PublicBlogPostMedia {
   id: string
   kind: BlogPostMediaKind
   storagePath: string
+  publicId: string
+  resourceType: CloudinaryResourceType
   alt: BilingualText
   caption: BilingualText
   width: number | null
@@ -62,7 +70,9 @@ function toPublicBlogPost(record: BlogPostRecord): PublicBlogPost {
     media: record.media.map((m) => ({
       id: m.id,
       kind: m.kind,
-      storagePath: m.storagePath,
+      storagePath: m.storagePath ?? '',
+      publicId: m.publicId ?? '',
+      resourceType: m.resourceType ?? 'image',
       alt: { en: m.alt.en ?? '', ar: m.alt.ar ?? '' },
       caption: { en: m.caption.en ?? '', ar: m.caption.ar ?? '' },
       width: m.width ?? null,

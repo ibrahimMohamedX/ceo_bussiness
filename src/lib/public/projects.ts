@@ -1,45 +1,52 @@
-'use server'
+"use server";
 
-import { getPublicFirestore } from '@/src/lib/firebase/admin'
-import type { ProjectRecord, ProjectMedia, ProjectMediaKind, BilingualText } from '@/src/lib/admin/projects'
+import { getPublicFirestore } from "@/src/lib/firebase/admin";
+import type {
+  ProjectRecord,
+  ProjectMediaKind,
+  BilingualText,
+} from "@/src/lib/admin/projects";
+import type { CloudinaryResourceType } from "@/src/lib/admin/media";
 
 /**
  * Public-facing project record with bilingual fields and media
  * Used by public pages (homepage, portfolio) - only published projects
  */
 export interface PublicProject {
-  id: string
-  slug: string
-  title: BilingualText
-  summary: BilingualText
-  description: BilingualText
-  category: ProjectRecord['category']
-  technologies: string[]
-  industries: string[]
-  featured: boolean
-  status: 'published' // Only published projects exposed publicly
-  coverMediaId: string | undefined
-  sortOrder: number
-  media: PublicProjectMedia[]
-  createdAt: string
-  updatedAt: string
+  id: string;
+  slug: string;
+  title: BilingualText;
+  summary: BilingualText;
+  description: BilingualText;
+  category: ProjectRecord["category"];
+  technologies: string[];
+  industries: string[];
+  featured: boolean;
+  status: "published"; // Only published projects exposed publicly
+  coverMediaId: string | undefined;
+  sortOrder: number;
+  media: PublicProjectMedia[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 /**
  * Public-facing project media item
  */
 export interface PublicProjectMedia {
-  id: string
-  kind: ProjectMediaKind
-  storagePath: string
-  alt: BilingualText
-  caption: BilingualText
-  width: number | null
-  height: number | null
-  sortOrder: number
-  isCover: boolean
-  createdAt: string
-  updatedAt: string
+  id: string;
+  kind: ProjectMediaKind;
+  storagePath: string;
+  publicId: string;
+  resourceType: CloudinaryResourceType;
+  alt: BilingualText;
+  caption: BilingualText;
+  width: number | null;
+  height: number | null;
+  sortOrder: number;
+  isCover: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 /**
@@ -50,32 +57,43 @@ function toPublicProject(record: ProjectRecord): PublicProject {
   return {
     id: record.id,
     slug: record.slug,
-    title: record.title,
-    summary: record.summary,
-    description: { en: record.description?.en ?? '', ar: record.description?.ar ?? '' },
-    category: record.category,
-    technologies: record.technologies,
-    industries: record.industries,
-    featured: record.featured,
-    status: 'published' as const,
+    // BilingualText is an object; the previous "" fallback produced a string and
+    // rendered blank instead of an empty localized pair.
+    title: { en: record.title?.en ?? "", ar: record.title?.ar ?? "" },
+    summary: { en: record.summary?.en ?? "", ar: record.summary?.ar ?? "" },
+    description: {
+      en: record.description?.en ?? "",
+      ar: record.description?.ar ?? "",
+    },
+    category: record.category ?? "",
+    // Always an array. Legacy documents predating these fields have no value at
+    // all; coercing to "" here made consumers call .slice().map() on a string,
+    // which threw and blanked the whole projects list.
+    technologies: Array.isArray(record.technologies) ? record.technologies : [],
+    industries: Array.isArray(record.industries) ? record.industries : [],
+    featured: record.featured === true,
+    status: "published" as const,
     coverMediaId: record.coverMediaId,
     sortOrder: record.sortOrder,
-    media: record.media.map((m) => ({
-      id: m.id,
-      kind: m.kind,
-      storagePath: m.storagePath,
-      alt: { en: m.alt.en ?? '', ar: m.alt.ar ?? '' },
-      caption: { en: m.caption.en ?? '', ar: m.caption.ar ?? '' },
-      width: m.width ?? null,
-      height: m.height ?? null,
-      sortOrder: m.sortOrder,
-      isCover: m.id === record.coverMediaId,
-      createdAt: m.createdAt.toString(),
-      updatedAt: m.updatedAt.toString(),
-    })),
+    media:
+      record.media?.map((m) => ({
+        id: m.id,
+        kind: m.kind ?? "",
+        storagePath: m.storagePath ?? "",
+        publicId: m.publicId ?? '',
+        resourceType: m.resourceType ?? 'image',
+        alt: { en: m.alt.en ?? "", ar: m.alt.ar ?? "" },
+        caption: { en: m.caption.en ?? "", ar: m.caption.ar ?? "" },
+        width: m.width ?? null,
+        height: m.height ?? null,
+        sortOrder: m.sortOrder,
+        isCover: m.id === record.coverMediaId,
+        createdAt: m.createdAt.toString(),
+        updatedAt: m.updatedAt.toString(),
+      })) ?? [],
     createdAt: record.createdAt.toString(),
     updatedAt: record.updatedAt.toString(),
-  }
+  };
 }
 
 /**
@@ -84,79 +102,85 @@ function toPublicProject(record: ProjectRecord): PublicProject {
  * Server-side only - uses Admin SDK via firebase-admin
  */
 export async function getPublishedProjects(): Promise<PublicProject[]> {
-  const db = getPublicFirestore()
-  if (!db) return []
+  const db = getPublicFirestore();
+  if (!db) return [];
   const snapshot = await db
-    .collection('projects')
-    .where('status', '==', 'published')
-    .orderBy('sortOrder', 'asc')
-    .orderBy('createdAt', 'desc')
-    .get()
+    .collection("projects")
+    .where("status", "==", "published")
+    .orderBy("sortOrder", "asc")
+    .orderBy("createdAt", "desc")
+    .get();
 
-  const projects: PublicProject[] = []
+  const projects: PublicProject[] = [];
   for (const doc of snapshot.docs) {
-    const data = doc.data() as ProjectRecord
-    projects.push(toPublicProject({ ...data, id: doc.id }))
+    const data = doc.data() as ProjectRecord;
+    projects.push(toPublicProject({ ...data, id: doc.id }));
   }
-  return projects
+  return projects;
 }
 
 /**
  * Fetches featured published projects for homepage
  * Limited to featured projects, ordered by sortOrder
  */
-export async function getFeaturedProjects(limitCount = 3): Promise<PublicProject[]> {
-  const db = getPublicFirestore()
-  if (!db) return []
+export async function getFeaturedProjects(
+  limitCount = 3,
+): Promise<PublicProject[]> {
+  const db = getPublicFirestore();
+  if (!db) return [];
   const snapshot = await db
-    .collection('projects')
-    .where('status', '==', 'published')
-    .where('featured', '==', true)
-    .orderBy('sortOrder', 'asc')
-    .orderBy('createdAt', 'desc')
+    .collection("projects")
+    .where("status", "==", "published")
+    .where("featured", "==", true)
+    .orderBy("sortOrder", "asc")
+    .orderBy("createdAt", "desc")
     .limit(limitCount)
-    .get()
+    .get();
 
-  const projects: PublicProject[] = []
+  const projects: PublicProject[] = [];
   for (const doc of snapshot.docs) {
-    const data = doc.data() as ProjectRecord
-    projects.push(toPublicProject({ ...data, id: doc.id }))
+    const data = doc.data() as ProjectRecord;
+    projects.push(toPublicProject({ ...data, id: doc.id }));
   }
-  return projects
+  return projects;
 }
 
 /**
  * Fetches a single published project by slug
  * Returns null if not found or not published
  */
-export async function getPublishedProjectBySlug(slug: string): Promise<PublicProject | null> {
-  const db = getPublicFirestore()
-  if (!db) return null
+export async function getPublishedProjectBySlug(
+  slug: string,
+): Promise<PublicProject | null> {
+  const db = getPublicFirestore();
+  if (!db) return null;
   const snapshot = await db
-    .collection('projects')
-    .where('slug', '==', slug)
-    .where('status', '==', 'published')
+    .collection("projects")
+    .where("slug", "==", slug)
+    .where("status", "==", "published")
     .limit(1)
-    .get()
+    .get();
 
-  if (snapshot.empty) return null
+  if (snapshot.empty) return null;
 
-  const doc = snapshot.docs[0]
-  const data = doc.data() as ProjectRecord
-  return toPublicProject({ ...data, id: doc.id })
+  const doc = snapshot.docs[0];
+  const data = doc.data() as ProjectRecord;
+  return toPublicProject({ ...data, id: doc.id });
 }
 
 /**
  * Fetches project categories for filtering
  * Returns unique categories from published projects
  */
-export async function getProjectCategories(): Promise<ProjectRecord['category'][]> {
-  const projects = await getPublishedProjects()
-  const categories = new Set<ProjectRecord['category']>()
+export async function getProjectCategories(): Promise<
+  ProjectRecord["category"][]
+> {
+  const projects = await getPublishedProjects();
+  const categories = new Set<ProjectRecord["category"]>();
   for (const p of projects) {
-    categories.add(p.category)
+    categories.add(p.category);
   }
-  return Array.from(categories)
+  return Array.from(categories);
 }
 
 /**
@@ -164,14 +188,14 @@ export async function getProjectCategories(): Promise<ProjectRecord['category'][
  * Returns unique technologies array
  */
 export async function getProjectTechnologies(): Promise<string[]> {
-  const projects = await getPublishedProjects()
-  const technologies = new Set<string>()
+  const projects = await getPublishedProjects();
+  const technologies = new Set<string>();
   for (const p of projects) {
     for (const t of p.technologies) {
-      technologies.add(t)
+      technologies.add(t);
     }
   }
-  return Array.from(technologies).sort()
+  return Array.from(technologies).sort();
 }
 
 /**
@@ -179,12 +203,12 @@ export async function getProjectTechnologies(): Promise<string[]> {
  * Returns unique industries array
  */
 export async function getProjectIndustries(): Promise<string[]> {
-  const projects = await getPublishedProjects()
-  const industries = new Set<string>()
+  const projects = await getPublishedProjects();
+  const industries = new Set<string>();
   for (const p of projects) {
     for (const i of p.industries) {
-      industries.add(i)
+      industries.add(i);
     }
   }
-  return Array.from(industries).sort()
+  return Array.from(industries).sort();
 }

@@ -7,6 +7,7 @@ import {
   deleteBlogMedia,
   updateBlogMedia,
 } from '@/src/lib/admin/media'
+import { deleteMedia } from '@/src/lib/cloudinary/media'
 
 interface Ctx {
   params: Promise<{ id: string; mediaId: string }>
@@ -37,11 +38,14 @@ export async function DELETE(_request: Request, ctx: Ctx) {
   const session = await verifySession()
   try {
     const { id, mediaId } = await ctx.params
-    const { storagePath } = await deleteBlogMedia(session, id, mediaId)
-    // Remove the storage binary referenced by the deleted metadata (single
-    // authoritative cleanup; client may additionally validate via SDK).
-    if (storagePath) {
-      await getAdminStorage().bucket().file(storagePath).delete().catch(() => {})
+    const asset = await deleteBlogMedia(session, id, mediaId)
+    // Remove the underlying binary. Cloudinary is the primary store; the Firebase
+    // object is only touched for legacy records that still carry a storagePath.
+    if (asset.publicId) {
+      await deleteMedia(asset.publicId, asset.resourceType).catch(() => {})
+    }
+    if (asset.storagePath) {
+      await getAdminStorage().bucket().file(asset.storagePath).delete().catch(() => {})
     }
     return NextResponse.json({ ok: true })
   } catch (e) {

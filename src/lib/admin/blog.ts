@@ -2,7 +2,9 @@ import 'server-only'
 
 import { getAdminFirestore, getAdminStorage } from '@/src/lib/firebase/admin'
 import { can, type AdminFeature } from '@/src/lib/admin/roles'
+import { deleteMedia } from '@/src/lib/cloudinary/media'
 import type { AdminSession } from '@/src/lib/admin/session'
+import type { CloudinaryResourceType } from '@/src/lib/admin/media'
 
 // Server-only data-access layer for Blog Posts CRUD.
 //
@@ -25,7 +27,9 @@ export interface BilingualText {
 
 export interface BlogPostMedia {
   id: string
-  storagePath: string
+  storagePath?: string
+  publicId?: string
+  resourceType?: CloudinaryResourceType
   fileName: string
   kind: BlogPostMediaKind
   alt: { en?: string; ar?: string }
@@ -105,6 +109,8 @@ async function toRecord(postId: string): Promise<BlogPostRecord> {
     return {
       id: md.id,
       storagePath: m.storagePath ?? '',
+      publicId: m.publicId ?? '',
+      resourceType: m.resourceType ?? 'image',
       fileName: m.fileName ?? '',
       kind: (m.kind as BlogPostMediaKind) ?? 'gallery',
       alt: m.alt ?? {},
@@ -234,13 +240,23 @@ export async function deleteBlogPost(
   for (const md of mediaSnap.docs) {
     const media = md.data()
     const storagePath = media.storagePath
+    const publicId = media.publicId
+    const resourceType = media.resourceType ?? 'image'
+    // Destroy the Cloudinary asset first (primary store). Best effort: a missing
+    // or already-deleted asset must not block removing the owning document.
+    if (publicId) {
+      await deleteMedia(publicId, resourceType).catch(() => {})
+    }
+    // Legacy Firebase object, if this record predates the Cloudinary migration.
     if (storagePath) {
-      // Try clean of the binary.
       await bucket.file(storagePath).delete().catch(() => {})
     }
-    // Attempt to remove the media/ library metadata doc that points at the same path.
-    if (storagePath) {
-      const lib = await mediaLibrary.where('storagePath', '==', storagePath).get()
+    // Remove the media/ library metadata docs that point at the same asset,
+    // matching on either identity so legacy and Cloudinary-era entries are cleaned.
+    const libQueries = []
+    if (publicId) libQueries.push(mediaLibrary.where('publicId', '==', publicId).get())
+    if (storagePath) libQueries.push(mediaLibrary.where('storagePath', '==', storagePath).get())
+    for (const lib of await Promise.all(libQueries)) {
       for (const libDoc of lib.docs) await libDoc.ref.delete()
     }
     await md.ref.delete()

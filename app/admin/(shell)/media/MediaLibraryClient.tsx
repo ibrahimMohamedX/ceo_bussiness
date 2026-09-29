@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ref as storageRef, getDownloadURL } from 'firebase/storage'
 import { firebaseStorage } from '@/src/lib/firebase/client'
+import { cloudinaryUrl } from '@/src/lib/cloudinary/url'
 import { ConfirmDialog } from '@/components/admin/ConfirmDialog'
 import { Select, cls } from '@/components/admin/ui'
 import type { MediaLibraryItem, MediaOwnerType } from '@/src/lib/admin/media'
@@ -29,41 +30,62 @@ function formatBytes(bytes?: number | null): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-// Resolve Firebase Storage download URLs for each storagePath. The library index
-// stores a Storage path (media/{ownerType}/{ownerId}/...), NOT a URL, so the
-// binary must be resolved via getDownloadURL before it can be shown as an <img>.
-function useMediaUrls(paths: string[]): Record<string, string> {
+// Resolve a display URL for each media record.
+//
+// Cloudinary records resolve synchronously from publicId (delivery URLs are
+// public and need no credentials). Legacy records that only carry a Firebase
+// storagePath still need getDownloadURL — retained solely for pre-migration
+// documents, never used for anything newly uploaded.
+const getStoragePath = (m: MediaLibraryItem): string => m.storagePath ?? ''
+const getPublicId = (m: MediaLibraryItem): string => m.publicId ?? ''
+const getResourceType = (m: MediaLibraryItem): 'image' | 'video' => m.resourceType ?? 'image'
+
+// The stable identifier for a record: the Cloudinary publicId when present,
+// otherwise the legacy Firebase storage path. Used for the copy affordance so a
+// migrated record never copies an empty string.
+const mediaIdentifier = (m: MediaLibraryItem): string =>
+  getPublicId(m) || getStoragePath(m)
+
+function useMediaUrls(items: MediaLibraryItem[]): Record<string, string> {
   const [urls, setUrls] = useState<Record<string, string>>({})
+  const key = items.map((m) => `${m.id}:${getPublicId(m)}:${getStoragePath(m)}`).join('|')
+
   useEffect(() => {
     let cancelled = false
-    const pending = new Set(paths)
-    // Only resolve paths we don't already have (avoid re-fetching on filter change).
-    setUrls((prev) => {
-      const next = { ...prev }
-      for (const p of Array.from(pending)) if (next[p]) pending.delete(p)
-      return next
-    })
+    const direct: Record<string, string> = {}
+    const legacy: { id: string; path: string }[] = []
+
+    for (const m of items) {
+      const url = cloudinaryUrl(getPublicId(m), getResourceType(m))
+      if (url) direct[m.id] = url
+      else if (getStoragePath(m)) legacy.push({ id: m.id, path: getStoragePath(m) })
+    }
+
+    setUrls((prev) => ({ ...prev, ...direct }))
+    if (legacy.length === 0) return
+
     Promise.all(
-      Array.from(pending).map(async (p) => {
+      legacy.map(async ({ id, path }) => {
         try {
-          const url = await getDownloadURL(storageRef(firebaseStorage, p))
-          return [p, url] as const
+          return [id, await getDownloadURL(storageRef(firebaseStorage, path))] as const
         } catch {
-          return [p, ''] as const
+          return [id, ''] as const
         }
       }),
     ).then((resolved) => {
       if (cancelled) return
       setUrls((prev) => {
         const next = { ...prev }
-        for (const [p, url] of resolved) next[p] = url
+        for (const [id, url] of resolved) next[id] = url
         return next
       })
     })
     return () => {
       cancelled = true
     }
-  }, [paths.join('|')])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [key])
+
   return urls
 }
 
@@ -80,7 +102,7 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
     [media, filter],
   )
 
-  const urls = useMediaUrls(rows.map((m) => m.storagePath))
+  const urls = useMediaUrls(rows)
 
   const deleting = media.find((m) => m.id === deletingId) ?? null
 
@@ -148,10 +170,10 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
               className="group overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--card)]"
             >
               <div className="relative aspect-video w-full overflow-hidden bg-[var(--card)]/60">
-                {urls[m.storagePath] ? (
+                {getResourceType(m) === 'image' && urls[m.id] ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={urls[m.storagePath]}
+                    src={urls[m.id]}
                     alt={m.alt?.en ?? m.fileName}
                     className="h-full w-full object-cover"
                     loading="lazy"
@@ -181,10 +203,10 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
                 <div className="flex items-center gap-1.5 pt-1">
                   <button
                     type="button"
-                    onClick={() => handleCopy(m.storagePath)}
+                    onClick={() => handleCopy(mediaIdentifier(m))}
                     className={cls.btnGhost + ' px-2.5 py-1 text-[11px]'}
                   >
-                    {copied === m.storagePath ? 'Copied' : 'Copy path'}
+                    {copied === mediaIdentifier(m) ? 'Copied' : 'Copy path'}
                   </button>
                   <button
                     type="button"
