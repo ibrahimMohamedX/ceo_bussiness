@@ -1,54 +1,50 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
-import {
-  Field,
-  LocalizedTextField,
-  cls,
-} from '@/components/admin/ui'
-import type { SiteSettingsRecord } from '@/src/lib/admin/settings'
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Field, LocalizedTextField, cls } from "@/components/admin/ui";
+import type { SiteSettingsRecord } from "@/src/lib/admin/settings";
 
-/**
- * Singleton settings editor for the siteSettings/global document (About page
- * company info: name, contact details, address, social links). Reuses the
- * shared admin form primitives; no CRUD table — a single editable record.
- */
 export default function SettingsEditorClient({
   initial,
 }: {
-  initial: SiteSettingsRecord
+  initial: SiteSettingsRecord;
 }) {
-  const router = useRouter()
+  const router = useRouter();
 
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [saved, setSaved] = useState(false)
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
-  const [companyName, setCompanyName] = useState(initial.companyName ?? '')
-  const [contactEmail, setContactEmail] = useState(initial.contactEmail ?? '')
-  const [contactPhone, setContactPhone] = useState(initial.contactPhone ?? '')
+  const [companyName, setCompanyName] = useState(initial.companyName ?? "");
+  const [contactEmail, setContactEmail] = useState(initial.contactEmail ?? "");
+  const [contactPhone, setContactPhone] = useState(initial.contactPhone ?? "");
   const [address, setAddress] = useState({
-    en: initial.address?.en ?? '',
-    ar: initial.address?.ar ?? '',
-  })
+    en: initial.address?.en ?? "",
+    ar: initial.address?.ar ?? "",
+  });
   const [socialLinks, setSocialLinks] = useState({
-    linkedin: initial.socialLinks?.linkedin ?? '',
-    github: initial.socialLinks?.github ?? '',
-    instagram: initial.socialLinks?.instagram ?? '',
-    facebook: initial.socialLinks?.facebook ?? '',
-    x: initial.socialLinks?.x ?? '',
-  })
+    linkedin: initial.socialLinks?.linkedin ?? "",
+    github: initial.socialLinks?.github ?? "",
+    instagram: initial.socialLinks?.instagram ?? "",
+    facebook: initial.socialLinks?.facebook ?? "",
+    x: initial.socialLinks?.x ?? "",
+  });
 
   const handleSave = async () => {
-    if (!companyName.trim())
-      return setError('Company name is required')
-    if (contactEmail.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim()))
-      return setError('Contact email must be a valid email address')
+    if (!companyName.trim()) {
+      return setError("Company name is required");
+    }
+    if (
+      contactEmail.trim() &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail.trim())
+    ) {
+      return setError("Contact email must be a valid email address");
+    }
 
-    setError(null)
-    setSaved(false)
-    setBusy(true)
+    setError(null);
+    setSaved(false);
+    setBusy(true);
     try {
       const input = {
         companyName: companyName.trim(),
@@ -65,151 +61,194 @@ export default function SettingsEditorClient({
           facebook: socialLinks.facebook.trim() || undefined,
           x: socialLinks.x.trim() || undefined,
         },
-      }
+      };
 
-      const res = await fetch('/admin/api/settings', {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/admin/api/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(input),
-      })
+      });
       if (!res.ok) {
-        const data = (await res.json()) as { error?: string }
-        throw new Error(data.error ?? 'Save failed')
+        const data = (await res.json()) as { error?: string };
+        throw new Error(data.error ?? "Save failed");
       }
-      setSaved(true)
-      router.refresh()
+      setSaved(true);
+      router.refresh();
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Save failed')
+      setError(e instanceof Error ? e.message : "Save failed");
     } finally {
-      setBusy(false)
+      setBusy(false);
     }
-  }
+  };
 
   return (
-    <div className="space-y-6 max-w-4xl">
-      <div className="flex items-center justify-between">
-        <h1 className="text-[20px] font-bold text-[var(--foreground)]">Settings</h1>
-        <p className="text-[12px] text-[var(--muted-foreground)]">
-          Company info shown on the public About page
+    <div className="max-w-5xl space-y-8 pb-12">
+      {/* Page Header */}
+      <div className="border-b border-[var(--border)] pb-5">
+        <h1 className="text-2xl font-bold tracking-tight text-[var(--foreground)]">
+          Site Settings
+        </h1>
+        <p className="text-xs text-[var(--muted-foreground)] mt-1">
+          Manage general organization info, contact details, and external social
+          media links.
         </p>
       </div>
 
       {error && (
-        <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-3 text-[13px] text-red-400">
+        <div className="rounded-xl border border-red-500/20 bg-red-500/10 p-4 text-sm font-medium text-red-500">
           {error}
         </div>
       )}
       {saved && (
-        <div className="rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-3 text-[13px] text-emerald-400">
-          Settings saved.
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm font-medium text-emerald-500">
+          Settings updated successfully.
         </div>
       )}
 
-      <form onSubmit={(e) => { e.preventDefault(); handleSave() }} className="space-y-6">
-        <fieldset className={cls.fieldset}>
-          <legend className={cls.legend}>Company</legend>
-          <Field label="Company name" htmlFor="companyName">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSave();
+        }}
+        className="space-y-6"
+      >
+        {/* Company Identity */}
+        <div className={cls.card}>
+          <div>
+            <h2 className={cls.cardTitle}>Company Identity</h2>
+            <p className={cls.cardDescription}>
+              Primary brand metadata visible across the website.
+            </p>
+          </div>
+          <Field label="Company / Brand Name" htmlFor="companyName">
             <input
               id="companyName"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
               className={cls.input}
-              placeholder="NODAL"
+              placeholder="e.g. NODAL Solutions"
+              required
             />
           </Field>
-        </fieldset>
+        </div>
 
-        <fieldset className={cls.fieldset}>
-          <legend className={cls.legend}>Contact</legend>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <Field label="Contact email" htmlFor="contactEmail">
+        {/* Contact Information */}
+        <div className={cls.card}>
+          <div>
+            <h2 className={cls.cardTitle}>Contact Details</h2>
+            <p className={cls.cardDescription}>
+              Public communication channels for client inquiries.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            <Field label="Contact Email" htmlFor="contactEmail">
               <input
                 id="contactEmail"
                 type="email"
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
                 className={cls.input}
-                placeholder="hello@nodal.dev"
+                placeholder="contact@company.com"
               />
             </Field>
-            <Field label="Contact phone" htmlFor="contactPhone" hint="Optional">
+            <Field
+              label="Contact Phone"
+              htmlFor="contactPhone"
+              hint="Include country code (e.g. +20...)"
+            >
               <input
                 id="contactPhone"
                 value={contactPhone}
                 onChange={(e) => setContactPhone(e.target.value)}
                 className={cls.input}
-                placeholder="+1 555 000 0000"
+                placeholder="+20 100 000 0000"
               />
             </Field>
           </div>
           <LocalizedTextField
             id="address"
-            label="Address"
+            label="Physical Address"
             en={address.en}
             ar={address.ar}
-            dir="ltr"
             onChange={setAddress}
             area
           />
-        </fieldset>
+        </div>
 
-        <fieldset className={cls.fieldset}>
-          <legend className={cls.legend}>Social links</legend>
-          <div className="grid gap-4 sm:grid-cols-2">
+        {/* Social Profiles */}
+        <div className={cls.card}>
+          <div>
+            <h2 className={cls.cardTitle}>Social Profiles</h2>
+            <p className={cls.cardDescription}>
+              External URLs to company social media pages.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
             <Field label="LinkedIn URL" htmlFor="linkedin">
               <input
                 id="linkedin"
                 value={socialLinks.linkedin}
-                onChange={(e) => setSocialLinks({ ...socialLinks, linkedin: e.target.value })}
+                onChange={(e) =>
+                  setSocialLinks({ ...socialLinks, linkedin: e.target.value })
+                }
                 className={cls.input}
-                placeholder="https://linkedin.com/company/…"
+                placeholder="https://linkedin.com/company/..."
               />
             </Field>
             <Field label="GitHub URL" htmlFor="github">
               <input
                 id="github"
                 value={socialLinks.github}
-                onChange={(e) => setSocialLinks({ ...socialLinks, github: e.target.value })}
+                onChange={(e) =>
+                  setSocialLinks({ ...socialLinks, github: e.target.value })
+                }
                 className={cls.input}
-                placeholder="https://github.com/…"
+                placeholder="https://github.com/..."
               />
             </Field>
             <Field label="Instagram URL" htmlFor="instagram">
               <input
                 id="instagram"
                 value={socialLinks.instagram}
-                onChange={(e) => setSocialLinks({ ...socialLinks, instagram: e.target.value })}
+                onChange={(e) =>
+                  setSocialLinks({ ...socialLinks, instagram: e.target.value })
+                }
                 className={cls.input}
-                placeholder="https://instagram.com/…"
+                placeholder="https://instagram.com/..."
               />
             </Field>
             <Field label="Facebook URL" htmlFor="facebook">
               <input
                 id="facebook"
                 value={socialLinks.facebook}
-                onChange={(e) => setSocialLinks({ ...socialLinks, facebook: e.target.value })}
+                onChange={(e) =>
+                  setSocialLinks({ ...socialLinks, facebook: e.target.value })
+                }
                 className={cls.input}
-                placeholder="https://facebook.com/…"
+                placeholder="https://facebook.com/..."
               />
             </Field>
             <Field label="X (Twitter) URL" htmlFor="x">
               <input
                 id="x"
                 value={socialLinks.x}
-                onChange={(e) => setSocialLinks({ ...socialLinks, x: e.target.value })}
+                onChange={(e) =>
+                  setSocialLinks({ ...socialLinks, x: e.target.value })
+                }
                 className={cls.input}
-                placeholder="https://x.com/…"
+                placeholder="https://x.com/..."
               />
             </Field>
           </div>
-        </fieldset>
+        </div>
 
-        <div className="flex justify-end gap-3 pt-4 border-t border-[var(--border)]">
+        {/* Save Bar */}
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-[var(--border)]">
           <button type="submit" className={cls.btnPrimary} disabled={busy}>
-            {busy ? 'Saving…' : 'Save settings'}
+            {busy ? "Saving Changes..." : "Save Settings"}
           </button>
         </div>
       </form>
     </div>
-  )
+  );
 }

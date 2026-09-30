@@ -1,5 +1,5 @@
 ﻿"use client";
-
+import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
 import { useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useTheme } from "../Providers";
@@ -195,7 +195,7 @@ export default function ServicesPageClient({
           </button>
         </div>
 
-        <a className="nav-action" href={`${home}#contact`}>
+        <a className="nav-action" href={PROJECT_CTA_URL}>
           {t("Navbar.cta")} <ArrowUpRight size={15} />
         </a>
       </nav>
@@ -212,7 +212,7 @@ export default function ServicesPageClient({
         </h1>
         <p>{t("ServicesPage.description")}</p>
         <div className="hero-actions">
-          <a className="button-primary" href={`#contact`}>
+          <a className="button-primary" href={PROJECT_CTA_URL}>
             {t("ServicesPage.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#process`}>
@@ -341,7 +341,7 @@ export default function ServicesPageClient({
           </h2>
           <p>{t("ContactCta.description")}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={`#contact`}>
+            <a className="button-primary" href={PROJECT_CTA_URL}>
               {t("ContactCta.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={`#contact`}>
@@ -524,4 +524,11 @@ export default function ServicesPageClient({
     </main>
   );
 }
+
+
+
+
+
+
+
 

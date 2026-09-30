@@ -1,3 +1,5 @@
+﻿"use client";
+import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
 'use client'
 
 import { useCallback } from 'react'
@@ -26,7 +28,7 @@ import {
 } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
-/*  EYEBROW — reused section label (site-consistent)                   */
+/*  EYEBROW â€” reused section label (site-consistent)                   */
 /* ------------------------------------------------------------------ */
 function Eyebrow({ label }: { label: string }) {
   return (
@@ -39,7 +41,7 @@ function Eyebrow({ label }: { label: string }) {
 /* ------------------------------------------------------------------ */
 /*  About page                                                         */
 /*  A direct child of [locale]. Navbar/Footer are homepage-identical.  */
-/*  Copy is translated and factual — engineering culture first, no     */
+/*  Copy is translated and factual â€” engineering culture first, no     */
 /*  invented history or dated events.                                  */
 /* ------------------------------------------------------------------ */
 export default function AboutPageClient({
@@ -107,7 +109,7 @@ export default function AboutPageClient({
 
   return (
     <main className="foundation-shell">
-      {/* ── Navbar (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Navbar (homepage-identical; cross-page anchors) â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
         <a className="brand" href={home} aria-label="Nodal home">
           <span className="brand-mark"><span /><span /><span /></span>
@@ -127,7 +129,7 @@ export default function AboutPageClient({
           <div className="locale-switcher">
             <a href={enHref} className={`locale-link${locale === 'en' ? ' active' : ''}`} aria-label="English" data-locale="en">EN</a>
             <span className="locale-divider">/</span>
-            <a href={arHref} className={`locale-link${locale === 'ar' ? ' active' : ''}`} aria-label="العربية" data-locale="ar">ع</a>
+            <a href={arHref} className={`locale-link${locale === 'ar' ? ' active' : ''}`} aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©" data-locale="ar">Ø¹</a>
           </div>
 
           <button
@@ -152,21 +154,21 @@ export default function AboutPageClient({
           </button>
         </div>
 
-        <a className="nav-action" href={`${home}#contact`}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
+        <a className="nav-action" href={PROJECT_CTA_URL}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
       </nav>
 
-      {/* ── 1. Hero ── */}
+      {/* â”€â”€ 1. Hero â”€â”€ */}
       <section className="services-page-overview" id="overview">
         <div className="eyebrow"><span className="eyebrow-dot" /> {t('AboutPage.hero.eyebrow')}</div>
         <h1>{t('AboutPage.hero.title.line1')}<br /><em>{t('AboutPage.hero.title.line2')}</em></h1>
         <p>{t('AboutPage.hero.description')}</p>
         <div className="hero-actions">
-          <a className="button-primary" href={`#contact`}>{t('AboutPage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
+          <a className="button-primary" href={PROJECT_CTA_URL}>{t('AboutPage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
           <a className="button-secondary" href={`#values`}>{t('AboutPage.hero.secondaryCta')} <ArrowUpRight size={15} /></a>
         </div>
       </section>
 
-      {/* ── 2. Mission ── */}
+      {/* â”€â”€ 2. Mission â”€â”€ */}
       <section className="software-grid-section" id="mission">
         <div className="software-section-intro">
           <Eyebrow label={t('AboutPage.mission.eyebrow')} />
@@ -189,7 +191,7 @@ export default function AboutPageClient({
         </div>
       </section>
 
-      {/* ── 3. Vision ── */}
+      {/* â”€â”€ 3. Vision â”€â”€ */}
       <section className="software-grid-section" id="vision">
         <div className="software-section-intro">
           <Eyebrow label={t('AboutPage.vision.eyebrow')} />
@@ -212,7 +214,7 @@ export default function AboutPageClient({
         </div>
       </section>
 
-      {/* ── 4. Story ── */}
+      {/* â”€â”€ 4. Story â”€â”€ */}
       <section className="services-page-discipline" id="story">
         <div className="services-page-discipline-head">
           <div className="process-number" aria-hidden="true">{t('AboutPage.story.number')}</div>
@@ -225,7 +227,7 @@ export default function AboutPageClient({
         <a className="service-link" href={`#team`}>{t('AboutPage.story.link')} <ArrowUpRight size={13} /></a>
       </section>
 
-      {/* ── 5. Team ── */}
+      {/* â”€â”€ 5. Team â”€â”€ */}
       <section className="software-grid-section" id="team">
         <div className="software-section-intro">
           <Eyebrow label={t('AboutPage.team.eyebrow')} />
@@ -248,7 +250,7 @@ export default function AboutPageClient({
         </div>
       </section>
 
-      {/* ── 6. Values ── */}
+      {/* â”€â”€ 6. Values â”€â”€ */}
       <section className="software-grid-section" id="values">
         <div className="software-section-intro">
           <Eyebrow label={t('AboutPage.values.eyebrow')} />
@@ -271,7 +273,7 @@ export default function AboutPageClient({
         </div>
       </section>
 
-      {/* ── 7. Timeline (how we work) ── */}
+      {/* â”€â”€ 7. Timeline (how we work) â”€â”€ */}
       <section className="process-section" id="process">
         <div className="process-intro">
           <Eyebrow label={t('AboutPage.timeline.eyebrow')} />
@@ -293,7 +295,7 @@ export default function AboutPageClient({
         </div>
       </section>
 
-      {/* ── Contact CTA (reused) ── */}
+      {/* â”€â”€ Contact CTA (reused) â”€â”€ */}
       <section className="contact-cta-section" id="contact" aria-labelledby="about-contact-cta-title">
         <div className="contact-cta-glow" aria-hidden="true" />
         <div className="contact-cta-intro">
@@ -301,13 +303,13 @@ export default function AboutPageClient({
           <h2 id="about-contact-cta-title">{t('ContactCta.title.line1')}<br /><em>{t('ContactCta.title.line2')}</em></h2>
           <p>{t('ContactCta.description')}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={`#contact`}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
+            <a className="button-primary" href={PROJECT_CTA_URL}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
             <a className="button-secondary" href={`#contact`}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
           </div>
         </div>
       </section>
 
-      {/* ── Footer (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Footer (homepage-identical; cross-page anchors) â”€â”€ */}
       <footer className="footer-section" id="footer" aria-labelledby="about-footer-tagline">
         <div className="footer-grid">
           <div className="footer-brand">
@@ -397,3 +399,9 @@ export default function AboutPageClient({
     </main>
   )
 }
+
+
+
+
+
+

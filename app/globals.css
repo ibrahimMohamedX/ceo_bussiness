@@ -93,6 +93,15 @@ button {
   font-weight: 700;
   letter-spacing: 0.18em;
 }
+/* Admin-uploaded logo. Height matches .brand-mark so the navbar's vertical
+   rhythm is unchanged whether a logo is set or the CSS mark is used. */
+.brand-logo {
+  height: 22px;
+  width: auto;
+  max-width: 140px;
+  object-fit: contain;
+  display: block;
+}
 .brand-mark {
   width: 19px;
   height: 19px;
@@ -2590,7 +2599,7 @@ html[dir="rtl"] .service-link {
   }
 }
 
-@media (min-width: 1101) and (max-width: 1350px) {
+@media (min-width: 1101px) and (max-width: 1350px) {
   .technologies-grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -4528,8 +4537,30 @@ html.light .software-section-intro > p {
 .faq-empty {
   text-align: center;
 }
+.project-cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.project-cover-image {
+  object-fit: cover;
+}
 .project-cover-wrapper {
   position: relative;
+}
+.blog-post-card .project-cover {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.blog-post-card .project-cover-image {
+  object-fit: cover;
 }
 /* =========================================================
    DIGITAL CORE - SCI-FI HUD COMPONENT (RTL & LIGHT/DARK READY)

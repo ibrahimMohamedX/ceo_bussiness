@@ -1,5 +1,5 @@
-"use client";
-
+﻿"use client";
+import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useTheme } from "./Providers";
@@ -64,7 +64,7 @@ import type { PublicFaq } from "@/src/lib/public/faq";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
 
 /* ------------------------------------------------------------------ */
-/*  EYEBROW — reused section label (site-consistent)                   */
+/*  EYEBROW â€” reused section label (site-consistent)                   */
 /* ------------------------------------------------------------------ */
 function Eyebrow({ label }: { label: string }) {
   return (
@@ -79,7 +79,7 @@ function Eyebrow({ label }: { label: string }) {
    Cloudinary records resolve synchronously from publicId (delivery URLs are
    public and need no credentials, so nothing sensitive reaches the browser).
    Legacy records that only carry a Firebase storagePath are still resolved via
-   getDownloadURL — retained solely for pre-migration documents. */
+   getDownloadURL â€” retained solely for pre-migration documents. */
 function useMediaUrl(
   media:
     | {
@@ -128,17 +128,17 @@ interface HomepageClientProps {
 }
 
 /* ------------------------------------------------------------------ */
-/*  DigitalCore — parallax hero visual (unchanged)                    */
+/*  DigitalCore â€” parallax hero visual (unchanged)                    */
 /* ------------------------------------------------------------------ */
 function DigitalCore({ t }: { t: ReturnType<typeof useTranslations> }) {
   const coreRef = useRef<HTMLDivElement>(null);
-  // Index position maps to `.asset-layer-N` classes in globals.css (index → N+1).
+  // Index position maps to `.asset-layer-N` classes in globals.css (index â†’ N+1).
   // Do NOT reindex or reorder: each layer must keep its assigned layer class so
   // the per-layer blend/opacity/animation stays correct.
   // All six layers resolve to verified local copies in /public/hero/ (sourced from
   // docs/assets/), replacing the dead Vercel Blob URLs. Background_Effects.png,
   // Glow_Auras.png and Holographic_Grid.png are present in docs/assets but are NOT
-  // part of this 6-layer composition (no original slot) — not added to avoid redesign.
+  // part of this 6-layer composition (no original slot) â€” not added to avoid redesign.
   const layers = [
     "/hero/hero-glow.webp",
     "/hero/hero-rings.png",
@@ -457,7 +457,7 @@ function FaqItem({
 /*  FeaturedProjectCard                                                */
 /*  Extracted so useMediaUrl (a hook) runs at a component's top level.  */
 /*  Calling it inside .map() tied the hook count to the projects list  */
-/*  length — a Rules of Hooks violation that crashes hydration as      */
+/*  length â€” a Rules of Hooks violation that crashes hydration as      */
 /*  soon as the featured list changes between renders.                  */
 /* ------------------------------------------------------------------ */
 function FeaturedProjectCard({
@@ -574,7 +574,7 @@ export default function HomepageClient({
 
   return (
     <main className="foundation-shell">
-      {/* ── Navbar ── */}
+      {/* â”€â”€ Navbar â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
         <a className="brand" href={`/${locale}`} aria-label="Nodal home">
           <span className="brand-mark">
@@ -595,7 +595,7 @@ export default function HomepageClient({
           <a href="#contact">{t("Navbar.links.contact")}</a>
         </div>
 
-        {/* ── Locale switcher + Theme toggle group ── */}
+        {/* â”€â”€ Locale switcher + Theme toggle group â”€â”€ */}
         <div className="nav-controls">
           <div className="locale-switcher">
             <a
@@ -610,10 +610,10 @@ export default function HomepageClient({
             <a
               href={arHref}
               className={`locale-link${locale === "ar" ? " active" : ""}`}
-              aria-label="العربية"
+              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              ع
+              Ø¹
             </a>
           </div>
 
@@ -661,17 +661,17 @@ export default function HomepageClient({
           </button>
         </div>
 
-        <a className="nav-action" href="#hero">
+        <a className="nav-action" href={PROJECT_CTA_URL}>
           {t("Navbar.cta")} <ArrowUpRight size={15} />
         </a>
       </nav>
 
-      {/* ── Hero ── */}
+      {/* â”€â”€ Hero â”€â”€ */}
       <section className="hero section-grid" id="hero">
         <div className="hero-copy">
           <div className="eyebrow">
             <span className="eyebrow-dot" /> {t("Hero.eyebrow.software")}{" "}
-            <span>•</span> {t("Hero.eyebrow.embedded")} <span>•</span>{" "}
+            <span>â€¢</span> {t("Hero.eyebrow.embedded")} <span>â€¢</span>{" "}
             {t("Hero.eyebrow.ai")}
           </div>
           <h1>
@@ -683,7 +683,7 @@ export default function HomepageClient({
           </h1>
           <p className="hero-lede">{t("Hero.description")}</p>
           <div className="hero-actions">
-            <a className="button-primary" href="#services">
+            <a className="button-primary" href={PROJECT_CTA_URL}>
               {t("Hero.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={servicesHref}>
@@ -712,7 +712,7 @@ export default function HomepageClient({
         <DigitalCore t={t} />
       </section>
 
-      {/* ── Services ── */}
+      {/* â”€â”€ Services â”€â”€ */}
       <section className="services" id="services">
         <div className="services-intro">
           <Eyebrow label={t("Services.eyebrow")} />
@@ -772,7 +772,7 @@ export default function HomepageClient({
         </div>
       </section>
 
-      {/* ── Industries ── */}
+      {/* â”€â”€ Industries â”€â”€ */}
       <section className="industries" id="industries">
         <div className="industries-intro">
           <Eyebrow label={t("Industries.eyebrow")} />
@@ -815,7 +815,7 @@ export default function HomepageClient({
         </div>
       </section>
 
-      {/* ── Engineering Process ── */}
+      {/* â”€â”€ Engineering Process â”€â”€ */}
       <section className="process-section" id="process">
         <div className="process-intro">
           <Eyebrow label={t("Process.eyebrow")} />
@@ -881,7 +881,7 @@ export default function HomepageClient({
         </div>
       </section>
 
-      {/* ── Featured Projects ── */}
+      {/* â”€â”€ Featured Projects â”€â”€ */}
       <section className="projects-section" id="projects">
         <div className="projects-intro">
           <div className="projects-intro-head">
@@ -913,7 +913,7 @@ export default function HomepageClient({
         </div>
       </section>
 
-      {/* ── Technologies ── */}
+      {/* â”€â”€ Technologies â”€â”€ */}
       <section className="technologies-section" id="technologies">
         <div className="technologies-intro">
           <Eyebrow label={t("Technologies.eyebrow")} />
@@ -931,7 +931,7 @@ export default function HomepageClient({
         </div>
       </section>
 
-      {/* ── Why PROJEX ── */}
+      {/* â”€â”€ Why PROJEX â”€â”€ */}
       <section className="why-projex-section" id="why-projex">
         <div className="why-projex-intro">
           <Eyebrow label={t("WhyProjex.eyebrow")} />
@@ -1008,7 +1008,7 @@ export default function HomepageClient({
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      {/*  11 — Contact CTA (centered heading + dual CTA + glow bg)       */}
+      {/*  11 â€” Contact CTA (centered heading + dual CTA + glow bg)       */}
       {/* ---------------------------------------------------------------- */}
       <section
         className="contact-cta-section"
@@ -1025,7 +1025,7 @@ export default function HomepageClient({
           </h2>
           <p>{t("ContactCta.description")}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href="#services">
+            <a className="button-primary" href={PROJECT_CTA_URL}>
               {t("ContactCta.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href="#services">
@@ -1036,7 +1036,7 @@ export default function HomepageClient({
       </section>
 
       {/* ---------------------------------------------------------------- */}
-      {/*  12 — Footer (4 columns + bottom bar, minimal, glass top border) */}
+      {/*  12 â€” Footer (4 columns + bottom bar, minimal, glass top border) */}
       {/* ---------------------------------------------------------------- */}
       <footer
         className="footer-section"
@@ -1214,3 +1214,10 @@ export default function HomepageClient({
     </main>
   );
 }
+
+
+
+
+
+
+

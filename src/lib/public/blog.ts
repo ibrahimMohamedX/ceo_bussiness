@@ -3,16 +3,12 @@
 import { getPublicFirestore } from "@/src/lib/firebase/admin";
 import type {
   BlogPostRecord,
-  BlogPostMedia,
   BlogPostMediaKind,
   BilingualText,
 } from "@/src/lib/admin/blog";
 import type { CloudinaryResourceType } from "@/src/lib/admin/media";
+import { cloudinaryUrl } from "@/src/lib/cloudinary/url";
 
-/**
- * Public-facing blog post record with bilingual fields and media
- * Used by public pages (blog listing, blog detail) - only published posts
- */
 export interface PublicBlogPost {
   id: string;
   slug: string;
@@ -22,7 +18,7 @@ export interface PublicBlogPost {
   category: string;
   tags: string[];
   authorName: string;
-  status: "published"; // Only published posts exposed publicly
+  status: "published";
   coverMediaId: string | undefined;
   sortOrder: number;
   media: PublicBlogPostMedia[];
@@ -31,15 +27,13 @@ export interface PublicBlogPost {
   updatedAt: string;
 }
 
-/**
- * Public-facing blog post media item
- */
 export interface PublicBlogPostMedia {
   id: string;
   kind: BlogPostMediaKind;
   storagePath: string;
   publicId: string;
   resourceType: CloudinaryResourceType;
+  url: string;
   alt: BilingualText;
   caption: BilingualText;
   width: number | null;
@@ -50,53 +44,139 @@ export interface PublicBlogPostMedia {
   updatedAt: string;
 }
 
-/**
- * Converts admin BlogPostRecord to public PublicBlogPost
- * Filters and transforms data for public consumption
- */
-function toPublicBlogPost(record: BlogPostRecord): PublicBlogPost {
+function toMillis(
+  value:
+    | FirebaseFirestore.Timestamp
+    | {
+        seconds?: number;
+        nanoseconds?: number;
+        _seconds?: number;
+        _nanoseconds?: number;
+      }
+    | number
+    | Date
+    | null
+    | undefined,
+): number | undefined {
+  if (value == null) return undefined;
+
+  if (typeof value === "number") return value;
+
+  if (value instanceof Date) return value.getTime();
+
+  if (typeof (value as FirebaseFirestore.Timestamp).toMillis === "function") {
+    return (value as FirebaseFirestore.Timestamp).toMillis();
+  }
+
+  const raw = value as {
+    seconds?: number;
+    nanoseconds?: number;
+    _seconds?: number;
+    _nanoseconds?: number;
+  };
+
+  const seconds = raw.seconds ?? raw._seconds;
+  const nanoseconds = raw.nanoseconds ?? raw._nanoseconds ?? 0;
+
+  if (typeof seconds !== "number") return undefined;
+
+  return seconds * 1000 + Math.floor(nanoseconds / 1_000_000);
+}
+
+function mapMedia(
+  mediaDocs: FirebaseFirestore.QueryDocumentSnapshot[],
+  coverMediaId?: string,
+): PublicBlogPostMedia[] {
+  return mediaDocs.map((mediaDoc) => {
+    const m = mediaDoc.data();
+
+    const publicId = m.publicId ?? "";
+    const resourceType =
+      (m.resourceType as CloudinaryResourceType | undefined) ?? "image";
+
+    const createdAtMillis = toMillis(m.createdAt);
+    const updatedAtMillis = toMillis(m.updatedAt);
+
+    return {
+      id: mediaDoc.id,
+      kind: (m.kind as BlogPostMediaKind) ?? "gallery",
+      storagePath: m.storagePath ?? "",
+      publicId,
+      resourceType,
+      url: cloudinaryUrl(publicId, resourceType),
+      alt: {
+        en: m.alt?.en ?? "",
+        ar: m.alt?.ar ?? "",
+      },
+      caption: {
+        en: m.caption?.en ?? "",
+        ar: m.caption?.ar ?? "",
+      },
+      width: m.width ?? null,
+      height: m.height ?? null,
+      sortOrder: m.sortOrder ?? 0,
+      isCover: mediaDoc.id === coverMediaId,
+      createdAt: createdAtMillis ? new Date(createdAtMillis).toISOString() : "",
+      updatedAt: updatedAtMillis ? new Date(updatedAtMillis).toISOString() : "",
+    };
+  });
+}
+
+async function toPublicBlogPost(
+  postDoc: FirebaseFirestore.QueryDocumentSnapshot,
+): Promise<PublicBlogPost> {
+  const data = postDoc.data() as BlogPostRecord;
+
+  // IMPORTANT:
+  // Blog media is stored in the nested `media` subcollection,
+  // not inside the blogPosts document itself.
+  const mediaSnapshot = await postDoc.ref
+    .collection("media")
+    .orderBy("sortOrder", "asc")
+    .get();
+
+  const media = mapMedia(mediaSnapshot.docs, data.coverMediaId);
+
+  const publishedAtMillis = toMillis(data.publishedAt);
+  const createdAtMillis = toMillis(data.createdAt);
+  const updatedAtMillis = toMillis(data.updatedAt);
+
   return {
-    id: record.id,
-    slug: record.slug,
-    title: record.title,
-    excerpt: record.excerpt,
-    content: { en: record.content?.en ?? "", ar: record.content?.ar ?? "" },
-    category: record.category,
-    tags: record.tags,
-    authorName: record.authorName,
-    status: "published" as const,
-    coverMediaId: record.coverMediaId,
-    sortOrder: record.sortOrder,
-    media:
-      record?.media?.map((m) => ({
-        id: m.id,
-        kind: m.kind,
-        storagePath: m.storagePath ?? "",
-        publicId: m.publicId ?? "",
-        resourceType: m.resourceType ?? "image",
-        alt: { en: m.alt.en ?? "", ar: m.alt.ar ?? "" },
-        caption: { en: m.caption.en ?? "", ar: m.caption.ar ?? "" },
-        width: m.width ?? null,
-        height: m.height ?? null,
-        sortOrder: m.sortOrder,
-        isCover: m.id === record.coverMediaId,
-        createdAt: m.createdAt.toString(),
-        updatedAt: m.updatedAt.toString(),
-      })) ?? [],
-    publishedAt: record.publishedAt?.toString() ?? record.createdAt.toString(),
-    createdAt: record.createdAt.toString(),
-    updatedAt: record.updatedAt.toString(),
+    id: postDoc.id,
+    slug: data.slug ?? "",
+    title: {
+      en: data.title?.en ?? "",
+      ar: data.title?.ar ?? "",
+    },
+    excerpt: {
+      en: data.excerpt?.en ?? "",
+      ar: data.excerpt?.ar ?? "",
+    },
+    content: {
+      en: data.content?.en ?? "",
+      ar: data.content?.ar ?? "",
+    },
+    category: data.category ?? "",
+    tags: Array.isArray(data.tags) ? data.tags : [],
+    authorName: data.authorName ?? "",
+    status: "published",
+    coverMediaId: data.coverMediaId,
+    sortOrder: data.sortOrder ?? 0,
+    media,
+    publishedAt: publishedAtMillis
+      ? new Date(publishedAtMillis).toISOString()
+      : createdAtMillis
+        ? new Date(createdAtMillis).toISOString()
+        : "",
+    createdAt: createdAtMillis ? new Date(createdAtMillis).toISOString() : "",
+    updatedAt: updatedAtMillis ? new Date(updatedAtMillis).toISOString() : "",
   };
 }
 
-/**
- * Fetches all published blog posts for public pages
- * Ordered by sortOrder asc, then publishedAt desc
- * Server-side only - uses Admin SDK via firebase-admin
- */
 export async function getPublishedBlogPosts(): Promise<PublicBlogPost[]> {
   const db = getPublicFirestore();
   if (!db) return [];
+
   const snapshot = await db
     .collection("blogPosts")
     .where("status", "==", "published")
@@ -104,24 +184,15 @@ export async function getPublishedBlogPosts(): Promise<PublicBlogPost[]> {
     .orderBy("publishedAt", "desc")
     .get();
 
-  const posts: PublicBlogPost[] = [];
-  for (const doc of snapshot.docs) {
-    const data = doc.data() as BlogPostRecord;
-    posts.push(toPublicBlogPost({ ...data, id: doc.id }));
-  }
-  return posts;
+  return Promise.all(snapshot.docs.map((doc) => toPublicBlogPost(doc)));
 }
 
-/**
- * Fetches featured published blog posts for homepage
- * Limited to featured posts, ordered by sortOrder
- * Note: Blog posts don't have a 'featured' field, so we use sortOrder to determine priority
- */
 export async function getFeaturedBlogPosts(
   limitCount = 3,
 ): Promise<PublicBlogPost[]> {
   const db = getPublicFirestore();
   if (!db) return [];
+
   const snapshot = await db
     .collection("blogPosts")
     .where("status", "==", "published")
@@ -130,23 +201,15 @@ export async function getFeaturedBlogPosts(
     .limit(limitCount)
     .get();
 
-  const posts: PublicBlogPost[] = [];
-  for (const doc of snapshot.docs) {
-    const data = doc.data() as BlogPostRecord;
-    posts.push(toPublicBlogPost({ ...data, id: doc.id }));
-  }
-  return posts;
+  return Promise.all(snapshot.docs.map((doc) => toPublicBlogPost(doc)));
 }
 
-/**
- * Fetches a single published blog post by slug
- * Returns null if not found or not published
- */
 export async function getPublishedBlogPostBySlug(
   slug: string,
 ): Promise<PublicBlogPost | null> {
   const db = getPublicFirestore();
   if (!db) return null;
+
   const snapshot = await db
     .collection("blogPosts")
     .where("slug", "==", slug)
@@ -156,35 +219,35 @@ export async function getPublishedBlogPostBySlug(
 
   if (snapshot.empty) return null;
 
-  const doc = snapshot.docs[0];
-  const data = doc.data() as BlogPostRecord;
-  return toPublicBlogPost({ ...data, id: doc.id });
+  return toPublicBlogPost(snapshot.docs[0]);
 }
 
-/**
- * Fetches blog post categories for filtering
- * Returns unique categories from published posts
- */
 export async function getBlogPostCategories(): Promise<string[]> {
   const posts = await getPublishedBlogPosts();
+
   const categories = new Set<string>();
-  for (const p of posts) {
-    categories.add(p.category);
+
+  for (const post of posts) {
+    if (post.category) {
+      categories.add(post.category);
+    }
   }
+
   return Array.from(categories).sort();
 }
 
-/**
- * Fetches all tags used in published blog posts
- * Returns unique tags array
- */
 export async function getBlogPostTags(): Promise<string[]> {
   const posts = await getPublishedBlogPosts();
+
   const tags = new Set<string>();
-  for (const p of posts) {
-    for (const t of p.tags) {
-      tags.add(t);
+
+  for (const post of posts) {
+    for (const tag of post.tags) {
+      if (tag) {
+        tags.add(tag);
+      }
     }
   }
+
   return Array.from(tags).sort();
 }

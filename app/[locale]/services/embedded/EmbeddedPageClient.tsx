@@ -1,4 +1,6 @@
-﻿'use client'
+﻿"use client";
+import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
+'use client'
 
 import { useCallback } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
@@ -232,7 +234,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
           </button>
         </div>
 
-        <a className="nav-action" href={`${home}#contact`}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
+        <a className="nav-action" href={PROJECT_CTA_URL}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
       </nav>
 
       {/* â”€â”€ 1. Discipline hero â”€â”€ */}
@@ -241,7 +243,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         <h1>{service ? service.title[locale as 'en' | 'ar'] : t('EmbeddedPage.hero.title.line1')}<br /><em>{t('EmbeddedPage.hero.title.line2')}</em></h1>
         <p>{service ? service.summary[locale as 'en' | 'ar'] : t('EmbeddedPage.hero.description')}</p>
         <div className="hero-actions">
-          <a className="button-primary" href={`#contact`}>{t('EmbeddedPage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
+          <a className="button-primary" href={PROJECT_CTA_URL}>{t('EmbeddedPage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
           <a className="button-secondary" href={`#process`}>{t('EmbeddedPage.hero.secondaryCta')} <ArrowUpRight size={15} /></a>
         </div>
       </section>
@@ -395,7 +397,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
           <h2 id="embedded-contact-cta-title">{t('ContactCta.title.line1')}<br /><em>{t('ContactCta.title.line2')}</em></h2>
           <p>{t('ContactCta.description')}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={`#contact`}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
+            <a className="button-primary" href={PROJECT_CTA_URL}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
             <a className="button-secondary" href={`#contact`}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
           </div>
         </div>
@@ -480,3 +482,10 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
     </main>
   )
 }
+
+
+
+
+
+
+

@@ -1,3 +1,5 @@
+﻿"use client";
+import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
 'use client'
 
 import { useCallback } from 'react'
@@ -32,7 +34,7 @@ import type { PublicService } from '@/src/lib/public/services'
 import type { PublicSiteSettings } from '@/src/lib/public/settings'
 
 /* ------------------------------------------------------------------ */
-/*  EYEBROW — reused section label (site-consistent)                   */
+/*  EYEBROW â€” reused section label (site-consistent)                   */
 /* ------------------------------------------------------------------ */
 function Eyebrow({ label }: { label: string }) {
   return (
@@ -141,7 +143,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
 
   return (
     <main className="foundation-shell">
-      {/* ── Navbar (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Navbar (homepage-identical; cross-page anchors) â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
         <a className="brand" href={home} aria-label="Nodal home">
           <span className="brand-mark"><span /><span /><span /></span>
@@ -161,7 +163,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
           <div className="locale-switcher">
             <a href={enHref} className={`locale-link${locale === 'en' ? ' active' : ''}`} aria-label="English" data-locale="en">EN</a>
             <span className="locale-divider">/</span>
-            <a href={arHref} className={`locale-link${locale === 'ar' ? ' active' : ''}`} aria-label="العربية" data-locale="ar">ع</a>
+            <a href={arHref} className={`locale-link${locale === 'ar' ? ' active' : ''}`} aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©" data-locale="ar">Ø¹</a>
           </div>
 
           <button
@@ -186,21 +188,21 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
           </button>
         </div>
 
-        <a className="nav-action" href={`${home}#contact`}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
+        <a className="nav-action" href={PROJECT_CTA_URL}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
       </nav>
 
-      {/* ── 1. Discipline hero ── */}
+      {/* â”€â”€ 1. Discipline hero â”€â”€ */}
       <section className="services-page-overview" id="overview">
         <div className="eyebrow"><span className="eyebrow-dot" /> {service ? service.title[locale as 'en' | 'ar'] : t('AIPage.hero.eyebrow')}</div>
         <h1>{service ? service.title[locale as 'en' | 'ar'] : t('AIPage.hero.title.line1')}<br /><em>{t('AIPage.hero.title.line2')}</em></h1>
         <p>{service ? service.summary[locale as 'en' | 'ar'] : t('AIPage.hero.description')}</p>
         <div className="hero-actions">
-          <a className="button-primary" href={`#contact`}>{t('AIPage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
+          <a className="button-primary" href={PROJECT_CTA_URL}>{t('AIPage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
           <a className="button-secondary" href={`#process`}>{t('AIPage.hero.secondaryCta')} <ArrowUpRight size={15} /></a>
         </div>
       </section>
 
-      {/* ── 2. What we build ── */}
+      {/* â”€â”€ 2. What we build â”€â”€ */}
       <section className="services-page-discipline" id="what-we-build">
         <div className="services-page-discipline-head">
           <div className="process-number" aria-hidden="true">{t('AIPage.whatWeBuild.number')}</div>
@@ -218,7 +220,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
         <a className="service-link" href={`#process`}>{t('AIPage.whatWeBuild.link')} <ArrowUpRight size={13} /></a>
       </section>
 
-      {/* ── 3. AI capabilities ── */}
+      {/* â”€â”€ 3. AI capabilities â”€â”€ */}
       <section className="software-grid-section" id="capabilities">
         <div className="software-section-intro">
           <Eyebrow label={t('AIPage.capabilities.eyebrow')} />
@@ -238,7 +240,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
         </div>
       </section>
 
-      {/* ── 4. AI & ML technology stack ── */}
+      {/* â”€â”€ 4. AI & ML technology stack â”€â”€ */}
       <section className="software-stack-section" id="technologies">
         <div className="software-section-intro">
           <Eyebrow label={t('AIPage.stack.eyebrow')} />
@@ -271,7 +273,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
         </div>
       </section>
 
-      {/* ── 5. Engineering process (six steps) ── */}
+      {/* â”€â”€ 5. Engineering process (six steps) â”€â”€ */}
       <section className="process-section" id="process">
         <div className="process-intro">
           <Eyebrow label={t('AIPage.process.eyebrow')} />
@@ -293,7 +295,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
         </div>
       </section>
 
-      {/* ── 6. AI reliability & evaluation ── */}
+      {/* â”€â”€ 6. AI reliability & evaluation â”€â”€ */}
       <section className="software-grid-section" id="reliability">
         <div className="software-section-intro">
           <Eyebrow label={t('AIPage.reliability.eyebrow')} />
@@ -316,7 +318,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
         </div>
       </section>
 
-      {/* ── 7. Relevant work (repo-represented AI project) ── */}
+      {/* â”€â”€ 7. Relevant work (repo-represented AI project) â”€â”€ */}
       <section className="projects-section" id="work">
         <div className="projects-intro">
           <div className="projects-intro-head">
@@ -341,7 +343,7 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
         </div>
       </section>
 
-      {/* ── Contact CTA (reused) ── */}
+      {/* â”€â”€ Contact CTA (reused) â”€â”€ */}
       <section className="contact-cta-section" id="contact" aria-labelledby="ai-contact-cta-title">
         <div className="contact-cta-glow" aria-hidden="true" />
         <div className="contact-cta-intro">
@@ -349,13 +351,13 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
           <h2 id="ai-contact-cta-title">{t('ContactCta.title.line1')}<br /><em>{t('ContactCta.title.line2')}</em></h2>
           <p>{t('ContactCta.description')}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={`#contact`}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
+            <a className="button-primary" href={PROJECT_CTA_URL}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
             <a className="button-secondary" href={`#contact`}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
           </div>
         </div>
       </section>
 
-      {/* ── Footer (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Footer (homepage-identical; cross-page anchors) â”€â”€ */}
       <footer className="footer-section" id="footer" aria-labelledby="ai-footer-tagline">
         <div className="footer-grid">
           <div className="footer-brand">
@@ -434,3 +436,9 @@ export default function AIPageClient({ locale, service, siteSettings }: AIPageCl
     </main>
   )
 }
+
+
+
+
+
+

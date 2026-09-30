@@ -118,8 +118,8 @@ export async function POST(request: Request) {
     if (!file.name) {
       throw new ApiError(400, 'Uploaded file has no filename.')
     }
-    if (ownerType !== 'project' && ownerType !== 'blog') {
-      throw new ApiError(400, "ownerType must be 'project' or 'blog'.")
+    if (ownerType !== 'project' && ownerType !== 'blog' && ownerType !== 'settings') {
+      throw new ApiError(400, "ownerType must be 'project', 'blog' or 'settings'.")
     }
     if (!ownerId) throw new ApiError(400, 'ownerId is required.')
     if (!ACCEPTED_MIME.test(file.type)) {

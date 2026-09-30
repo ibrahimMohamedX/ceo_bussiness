@@ -1,5 +1,5 @@
-"use client";
-
+﻿"use client";
+import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
 import { useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ref as storageRef, getDownloadURL } from "firebase/storage";
@@ -12,7 +12,7 @@ import type { PublicProject } from "@/src/lib/public/projects";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
 
 /* ------------------------------------------------------------------ */
-/*  EYEBROW — reused section label (site-consistent)                   */
+/*  EYEBROW â€” reused section label (site-consistent)                   */
 /* ------------------------------------------------------------------ */
 function Eyebrow({ label }: { label: string }) {
   return (
@@ -27,7 +27,7 @@ function Eyebrow({ label }: { label: string }) {
    Cloudinary records resolve synchronously from publicId (delivery URLs are
    public and need no credentials, so nothing sensitive reaches the browser).
    Legacy records that only carry a Firebase storagePath are still resolved via
-   getDownloadURL — retained solely for pre-migration documents. */
+   getDownloadURL â€” retained solely for pre-migration documents. */
 function useMediaUrl(
   media:
     | {
@@ -189,10 +189,10 @@ export default function ProjectDetailClient({
             <a
               href={arHref}
               className={`locale-link${currentLocale === "ar" ? " active" : ""}`}
-              aria-label="العربية"
+              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              ع
+              Ø¹
             </a>
           </div>
 
@@ -238,7 +238,7 @@ export default function ProjectDetailClient({
           </button>
         </div>
 
-        <a className="nav-action" href={`${home}#contact`}>
+        <a className="nav-action" href={PROJECT_CTA_URL}>
           {t("Navbar.cta")} <ArrowUpRight size={15} />
         </a>
       </nav>
@@ -246,7 +246,7 @@ export default function ProjectDetailClient({
       <article className="blog-detail" aria-labelledby="project-detail-title">
         <header className="blog-detail-header">
           <a className="blog-detail-back" href={portfolioHref}>
-            ← {t.has("detail.back") ? t("detail.back") : "Back to Projects"}
+            â† {t.has("detail.back") ? t("detail.back") : "Back to Projects"}
           </a>
           {project.category && (
             <span className="blog-post-category">{project.category}</span>
@@ -328,7 +328,7 @@ export default function ProjectDetailClient({
           </h2>
           <p>{t("BlogPage.cta.description")}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href="#contact">
+            <a className="button-primary" href={PROJECT_CTA_URL}>
               {t("BlogPage.cta.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={portfolioHref}>
@@ -511,7 +511,7 @@ export default function ProjectDetailClient({
 }
 
 /* ------------------------------------------------------------------ */
-/*  GalleryImage — resolves a gallery media item and renders its image. */
+/*  GalleryImage â€” resolves a gallery media item and renders its image. */
 /* ------------------------------------------------------------------ */
 function GalleryImage({
   media,
@@ -537,7 +537,7 @@ function GalleryImage({
         />
       ) : (
         <div className="blog-detail-gallery-placeholder" aria-hidden="true">
-          <span>🖼</span>
+          <span>ðŸ–¼</span>
         </div>
       )}
       {caption && (
@@ -548,3 +548,10 @@ function GalleryImage({
     </figure>
   );
 }
+
+
+
+
+
+
+

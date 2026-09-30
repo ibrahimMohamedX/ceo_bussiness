@@ -20,6 +20,14 @@ export interface PublicSiteSettings {
     facebook?: string
     x?: string
   }
+  /**
+   * Navbar brand label per language. When a language is empty the navbar falls
+   * back to the i18n Navbar.brand string, so an unset brand renders as before.
+   */
+  brandName?: { en?: string; ar?: string }
+  /** Cloudinary identity of the navbar logo; absent => the CSS brand mark. */
+  brandLogoPublicId?: string
+  brandLogoResourceType?: 'image' | 'video'
 }
 
 /**
@@ -41,5 +49,8 @@ export async function getSiteSettings(): Promise<PublicSiteSettings | null> {
     contactPhone: data.contactPhone ?? '',
     address: data.address ?? {},
     socialLinks: data.socialLinks ?? {},
+    brandName: data.brandName ?? {},
+    brandLogoPublicId: data.brandLogoPublicId ?? undefined,
+    brandLogoResourceType: data.brandLogoResourceType ?? undefined,
   }
 }

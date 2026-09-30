@@ -1,5 +1,5 @@
-"use client";
-
+﻿"use client";
+import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "../Providers";
@@ -12,7 +12,7 @@ import type { PublicProject } from "@/src/lib/public/projects";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
 
 /* ------------------------------------------------------------------ */
-/*  EYEBROW — reused section label (site-consistent)                   */
+/*  EYEBROW â€” reused section label (site-consistent)                   */
 /* ------------------------------------------------------------------ */
 function Eyebrow({ label }: { label: string }) {
   return (
@@ -27,7 +27,7 @@ function Eyebrow({ label }: { label: string }) {
    Cloudinary records resolve synchronously from publicId (delivery URLs are
    public and need no credentials, so nothing sensitive reaches the browser).
    Legacy records that only carry a Firebase storagePath are still resolved via
-   getDownloadURL — retained solely for pre-migration documents. */
+   getDownloadURL â€” retained solely for pre-migration documents. */
 function useMediaUrl(
   media:
     | {
@@ -68,7 +68,7 @@ function useMediaUrl(
 }
 
 /* ------------------------------------------------------------------ */
-/*  PROJECT CARD — module-level so useMediaUrl runs at top level       */
+/*  PROJECT CARD â€” module-level so useMediaUrl runs at top level       */
 /*  (Rules of Hooks: never inside projects.map()).                     */
 /* ------------------------------------------------------------------ */
 function ProjectCard({
@@ -184,7 +184,7 @@ export default function PortfolioPageClient({
 
   return (
     <main className="foundation-shell">
-      {/* ── Navbar (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Navbar (homepage-identical; cross-page anchors) â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
         <a className="brand" href={home} aria-label="Nodal home">
           <span className="brand-mark">
@@ -218,10 +218,10 @@ export default function PortfolioPageClient({
             <a
               href={arHref}
               className={`locale-link${locale === "ar" ? " active" : ""}`}
-              aria-label="العربية"
+              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              ع
+              Ø¹
             </a>
           </div>
 
@@ -267,12 +267,12 @@ export default function PortfolioPageClient({
           </button>
         </div>
 
-        <a className="nav-action" href={`${home}#contact`}>
+        <a className="nav-action" href={PROJECT_CTA_URL}>
           {t("Navbar.cta")} <ArrowUpRight size={15} />
         </a>
       </nav>
 
-      {/* ── 1. Portfolio hero ── */}
+      {/* â”€â”€ 1. Portfolio hero â”€â”€ */}
       <section className="services-page-overview" id="overview">
         <div className="eyebrow">
           <span className="eyebrow-dot" /> {t("PortfolioPage.hero.eyebrow")}
@@ -284,7 +284,7 @@ export default function PortfolioPageClient({
         </h1>
         <p>{t("PortfolioPage.hero.description")}</p>
         <div className="hero-actions">
-          <a className="button-primary" href={`#contact`}>
+          <a className="button-primary" href={PROJECT_CTA_URL}>
             {t("PortfolioPage.hero.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#work`}>
@@ -293,7 +293,7 @@ export default function PortfolioPageClient({
         </div>
       </section>
 
-      {/* ── 2. Featured projects grid (repo-represented projects) ── */}
+      {/* â”€â”€ 2. Featured projects grid (repo-represented projects) â”€â”€ */}
       <section
         className="projects-section portfolio-page-work"
         id="work"
@@ -335,7 +335,7 @@ export default function PortfolioPageClient({
         </div>
       </section>
 
-      {/* ── Contact CTA (reused) ── */}
+      {/* â”€â”€ Contact CTA (reused) â”€â”€ */}
       <section
         className="contact-cta-section"
         id="contact"
@@ -351,7 +351,7 @@ export default function PortfolioPageClient({
           </h2>
           <p>{t("ContactCta.description")}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={`#contact`}>
+            <a className="button-primary" href={PROJECT_CTA_URL}>
               {t("ContactCta.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={`#contact`}>
@@ -361,7 +361,7 @@ export default function PortfolioPageClient({
         </div>
       </section>
 
-      {/* ── Footer (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Footer (homepage-identical; cross-page anchors) â”€â”€ */}
       <footer
         className="footer-section"
         id="footer"
@@ -534,3 +534,10 @@ export default function PortfolioPageClient({
     </main>
   );
 }
+
+
+
+
+
+
+
