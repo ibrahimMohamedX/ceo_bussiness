@@ -1,7 +1,6 @@
 ﻿"use client";
-import { PROJECT_CTA_URL, ENGINEERS_WHATSAPP_URL } from "@/src/lib/project-cta";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import { useTheme } from "./Providers";
 import {
   ArrowUpRight,
@@ -62,6 +61,12 @@ import type { PublicProject } from "@/src/lib/public/projects";
 import type { PublicTestimonial } from "@/src/lib/public/testimonials";
 import type { PublicFaq } from "@/src/lib/public/faq";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
+import {
+  getEngineersWhatsAppUrl,
+  getProjectCtaUrl,
+} from "@/src/lib/project-cta";
+import { Brand } from "@/components/Brand";
+import { FooterBrandLogo } from "@/components/FooterBrandLogo";
 
 /* ------------------------------------------------------------------ */
 /*  EYEBROW â€” reused section label (site-consistent)                   */
@@ -576,14 +581,11 @@ export default function HomepageClient({
     <main className="foundation-shell">
       {/* â”€â”€ Navbar â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
-        <a className="brand" href={`/${locale}`} aria-label="Nodal home">
-          <span className="brand-mark">
-            <span />
-            <span />
-            <span />
-          </span>
-          <span>{t("Navbar.brand")}</span>
-        </a>
+        <Brand
+          locale={locale}
+          home={`/${locale}`}
+          siteSettings={siteSettings}
+        />
 
         <div className="nav-links">
           <a href="#services">{t("Navbar.links.services")}</a>
@@ -661,7 +663,7 @@ export default function HomepageClient({
           </button>
         </div>
 
-        <a className="nav-action" href={PROJECT_CTA_URL}>
+        <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
           {t("Navbar.cta")} <ArrowUpRight size={15} />
         </a>
       </nav>
@@ -683,7 +685,7 @@ export default function HomepageClient({
           </h1>
           <p className="hero-lede">{t("Hero.description")}</p>
           <div className="hero-actions">
-            <a className="button-primary" href={PROJECT_CTA_URL}>
+            <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>
               {t("Hero.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={servicesHref}>
@@ -1025,10 +1027,13 @@ export default function HomepageClient({
           </h2>
           <p>{t("ContactCta.description")}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={PROJECT_CTA_URL}>
+            <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>
               {t("ContactCta.primaryCta")} <ArrowUpRight size={16} />
             </a>
-            <a className="button-secondary" href={ENGINEERS_WHATSAPP_URL}>
+            <a
+              className="button-secondary"
+              href={getEngineersWhatsAppUrl(siteSettings)}
+            >
               {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
             </a>
           </div>
@@ -1046,7 +1051,14 @@ export default function HomepageClient({
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="footer-brand-name">
-              {siteSettings?.companyName || t("Navbar.brand")}
+              <FooterBrandLogo siteSettings={siteSettings} />
+              <span>
+                {siteSettings?.brandName?.[
+                  locale === "ar" ? "ar" : "en"
+                ]?.trim() ||
+                  siteSettings?.companyName ||
+                  t("Navbar.brand")}
+              </span>
             </div>
             <p className="footer-tagline" id="footer-tagline">
               {t("Footer.tagline")}
@@ -1188,7 +1200,10 @@ export default function HomepageClient({
             <p className="footer-contact-prompt">
               {t("Footer.columns.contact.prompt")}
             </p>
-            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>
+            <a
+              className="footer-contact-cta"
+              href={getProjectCtaUrl(siteSettings)}
+            >
               {t("Footer.columns.contact.cta")}
               <ArrowUpRight size={16} />
             </a>
@@ -1214,16 +1229,3 @@ export default function HomepageClient({
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

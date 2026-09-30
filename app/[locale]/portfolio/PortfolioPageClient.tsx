@@ -1,5 +1,4 @@
 ﻿"use client";
-import { PROJECT_CTA_URL, ENGINEERS_WHATSAPP_URL } from "@/src/lib/project-cta";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useTheme } from "../Providers";
@@ -186,14 +185,7 @@ export default function PortfolioPageClient({
     <main className="foundation-shell">
       {/* â”€â”€ Navbar (homepage-identical; cross-page anchors) â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
-        <a className="brand" href={home} aria-label="Nodal home">
-          <span className="brand-mark">
-            <span />
-            <span />
-            <span />
-          </span>
-          <span>{t("Navbar.brand")}</span>
-        </a>
+        <Brand locale={locale} home={home} siteSettings={siteSettings} />
 
         <div className="nav-links">
           <a href={`${home}#services`}>{t("Navbar.links.services")}</a>
@@ -267,7 +259,7 @@ export default function PortfolioPageClient({
           </button>
         </div>
 
-        <a className="nav-action" href={PROJECT_CTA_URL}>
+        <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
           {t("Navbar.cta")} <ArrowUpRight size={15} />
         </a>
       </nav>
@@ -284,7 +276,7 @@ export default function PortfolioPageClient({
         </h1>
         <p>{t("PortfolioPage.hero.description")}</p>
         <div className="hero-actions">
-          <a className="button-primary" href={PROJECT_CTA_URL}>
+          <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>
             {t("PortfolioPage.hero.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#work`}>
@@ -351,10 +343,10 @@ export default function PortfolioPageClient({
           </h2>
           <p>{t("ContactCta.description")}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={PROJECT_CTA_URL}>
+            <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>
               {t("ContactCta.primaryCta")} <ArrowUpRight size={16} />
             </a>
-            <a className="button-secondary" href={ENGINEERS_WHATSAPP_URL}>
+            <a className="button-secondary" href={getEngineersWhatsAppUrl(siteSettings, locale)}>
               {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
             </a>
           </div>
@@ -370,7 +362,8 @@ export default function PortfolioPageClient({
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="footer-brand-name">
-              {siteSettings?.companyName || t("Navbar.brand")}
+              <FooterBrandLogo siteSettings={siteSettings} />
+            <span>{siteSettings?.brandName?.[locale === "ar" ? "ar" : "en"]?.trim() || siteSettings?.companyName || t("Navbar.brand")}</span>
             </div>
             <p className="footer-tagline" id="portfolio-footer-tagline">
               {t("Footer.tagline")}
@@ -492,7 +485,7 @@ export default function PortfolioPageClient({
                 </a>
               </li>
               <li>
-                <a href={ENGINEERS_WHATSAPP_URL}>
+                <a href={getEngineersWhatsAppUrl(siteSettings, locale)}>
                   {t("Footer.columns.resources.links.contact")}
                 </a>
               </li>
@@ -509,7 +502,7 @@ export default function PortfolioPageClient({
             <p className="footer-contact-prompt">
               {t("Footer.columns.contact.prompt")}
             </p>
-            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>
+            <a className="footer-contact-cta" href={getProjectCtaUrl(siteSettings)}>
               {t("Footer.columns.contact.cta")}
               <ArrowUpRight size={16} />
             </a>
@@ -534,6 +527,13 @@ export default function PortfolioPageClient({
     </main>
   );
 }
+
+
+
+
+
+
+
 
 
 

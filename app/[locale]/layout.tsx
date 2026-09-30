@@ -1,4 +1,4 @@
-import { Analytics } from "@vercel/analytics/next";
+﻿import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/src/i18n/routing";
@@ -49,6 +49,7 @@ export default async function LocaleLayout({
         <Providers locale={locale} messages={messages}>
           {children}
         </Providers>
+
         {process.env.NODE_ENV === "production" && <Analytics />}
       </body>
     </html>

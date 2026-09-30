@@ -1,5 +1,4 @@
 ﻿"use client";
-import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
 import { useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { ref as storageRef, getDownloadURL } from "firebase/storage";
@@ -157,14 +156,7 @@ export default function ProjectDetailClient({
   return (
     <main className="foundation-shell">
       <nav className="topbar" aria-label="Primary navigation">
-        <a className="brand" href={home} aria-label="Nodal home">
-          <span className="brand-mark">
-            <span />
-            <span />
-            <span />
-          </span>
-          <span>{t("Navbar.brand")}</span>
-        </a>
+        <Brand locale={locale} home={home} siteSettings={siteSettings} />
 
         <div className="nav-links">
           <a href={`${home}#services`}>{t("Navbar.links.services")}</a>
@@ -238,7 +230,7 @@ export default function ProjectDetailClient({
           </button>
         </div>
 
-        <a className="nav-action" href={PROJECT_CTA_URL}>
+        <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
           {t("Navbar.cta")} <ArrowUpRight size={15} />
         </a>
       </nav>
@@ -328,7 +320,7 @@ export default function ProjectDetailClient({
           </h2>
           <p>{t("BlogPage.cta.description")}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={PROJECT_CTA_URL}>
+            <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>
               {t("BlogPage.cta.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={portfolioHref}>
@@ -346,7 +338,8 @@ export default function ProjectDetailClient({
         <div className="footer-grid">
           <div className="footer-brand">
             <div className="footer-brand-name">
-              {siteSettings?.companyName || t("Navbar.brand")}
+              <FooterBrandLogo siteSettings={siteSettings} />
+            <span>{siteSettings?.brandName?.[locale === "ar" ? "ar" : "en"]?.trim() || siteSettings?.companyName || t("Navbar.brand")}</span>
             </div>
             <p className="footer-tagline" id="project-detail-footer-tagline">
               {t("Footer.tagline")}
@@ -485,7 +478,7 @@ export default function ProjectDetailClient({
             <p className="footer-contact-prompt">
               {t("Footer.columns.contact.prompt")}
             </p>
-            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>
+            <a className="footer-contact-cta" href={getProjectCtaUrl(siteSettings)}>
               {t("Footer.columns.contact.cta")}
               <ArrowUpRight size={16} />
             </a>
@@ -548,6 +541,13 @@ function GalleryImage({
     </figure>
   );
 }
+
+
+
+
+
+
+
 
 
 

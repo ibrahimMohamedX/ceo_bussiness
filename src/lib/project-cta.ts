@@ -1,4 +1,37 @@
-﻿export const PROJECT_CTA_URL = "https://landing-ideas.web.app/";
+﻿export const DEFAULT_PROJECT_CTA_URL = "https://landing-ideas.web.app/";
 
-export const ENGINEERS_WHATSAPP_URL =
-  "https://wa.me/201555686164?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%20%D8%A8%D9%83%D9%85%D8%8C%20%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AA%D9%88%D8%A7%D8%B5%D9%84%20%D9%85%D8%B9%20%D9%81%D8%B1%D9%8A%D9%82%20Archai%20Solutions.%0A%0AHello%2C%20I%27d%20like%20to%20get%20in%20touch%20with%20the%20Archai%20Solutions%20team.";
+export const DEFAULT_WHATSAPP_NUMBER = "201555686164";
+
+export const DEFAULT_WHATSAPP_MESSAGE_AR =
+  "مرحباً بكم، أرغب في التواصل مع فريق Archai Solutions.";
+
+export const DEFAULT_WHATSAPP_MESSAGE_EN =
+  "Hello, I'd like to get in touch with the Archai Solutions team.";
+
+type CTASettings = {
+  projectCtaUrl?: string | null;
+  whatsappNumber?: string | null;
+  whatsappMessageAr?: string | null;
+  whatsappMessageEn?: string | null;
+};
+
+export function getProjectCtaUrl(settings: CTASettings | null | undefined) {
+  return settings?.projectCtaUrl?.trim() || DEFAULT_PROJECT_CTA_URL;
+}
+
+export function getEngineersWhatsAppUrl(
+  settings: CTASettings | null | undefined,
+) {
+  const number =
+    settings?.whatsappNumber?.replace(/[^\d]/g, "") || DEFAULT_WHATSAPP_NUMBER;
+
+  const arabicMessage =
+    settings?.whatsappMessageAr?.trim() || DEFAULT_WHATSAPP_MESSAGE_AR;
+
+  const englishMessage =
+    settings?.whatsappMessageEn?.trim() || DEFAULT_WHATSAPP_MESSAGE_EN;
+
+  const message = `${arabicMessage}\n\n${englishMessage}`;
+
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}

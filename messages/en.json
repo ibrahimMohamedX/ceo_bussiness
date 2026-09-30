@@ -60,31 +60,19 @@
       "software": {
         "title": "Software Engineering",
         "description": "Architecting scalable, maintainable software systems built for performance and longevity. From cloud infrastructure to developer tooling.",
-        "tags": [
-          "Systems Architecture",
-          "Cloud-Native",
-          "DevOps"
-        ],
+        "tags": ["Systems Architecture", "Cloud-Native", "DevOps"],
         "link": "Learn More"
       },
       "embedded": {
         "title": "Embedded Systems",
         "description": "Precision firmware and hardware-aware software for microcontrollers, FPGAs, and edge devices where reliability and latency matter.",
-        "tags": [
-          "Firmware",
-          "RTOS",
-          "Edge Computing"
-        ],
+        "tags": ["Firmware", "RTOS", "Edge Computing"],
         "link": "Learn More"
       },
       "ai": {
         "title": "Artificial Intelligence",
         "description": "Intelligent systems that perceive, reason, and decide. From computer vision to predictive analytics and generative AI solutions.",
-        "tags": [
-          "Machine Learning",
-          "Computer Vision",
-          "LLMs"
-        ],
+        "tags": ["Machine Learning", "Computer Vision", "LLMs"],
         "link": "Learn More"
       }
     }
@@ -187,34 +175,19 @@
       {
         "title": "Orion Avionics Suite",
         "summary": "Safety-critical flight control software for next-gen commercial aircraft. DO-178C Level A certified with real-time deterministic scheduling.",
-        "tags": [
-          "C++",
-          "Ada",
-          "VxWorks",
-          "DO-178C"
-        ],
+        "tags": ["C++", "Ada", "VxWorks", "DO-178C"],
         "cta": "View Case Study"
       },
       {
         "title": "Apex Digital Twin Platform",
         "summary": "Industrial IoT platform enabling predictive maintenance across 200+ factory sites. 40% reduction in unplanned downtime.",
-        "tags": [
-          "TypeScript",
-          "Rust",
-          "Kafka",
-          "Kubernetes"
-        ],
+        "tags": ["TypeScript", "Rust", "Kafka", "Kubernetes"],
         "cta": "View Case Study"
       },
       {
         "title": "VitalLink Medical Gateway",
         "summary": "FDA Class IIb compliant connectivity hub for critical care devices. Secure HL7/FHIR integration with hospital EMR systems.",
-        "tags": [
-          "C",
-          "Zephyr RTOS",
-          "BLE",
-          "TLS 1.3"
-        ],
+        "tags": ["C", "Zephyr RTOS", "BLE", "TLS 1.3"],
         "cta": "View Case Study"
       }
     ]
@@ -292,61 +265,37 @@
           "category": "Embedded",
           "title": "Designing firmware that survives power loss",
           "summary": "How we structure embedded firmware around transactional state so a system can lose power at any instant and still recover to a known, safe state.",
-          "tags": [
-            "RTOS",
-            "Robustness",
-            "C++"
-          ]
+          "tags": ["RTOS", "Robustness", "C++"]
         },
         {
           "category": "Software",
           "title": "Structured logging beyond the console",
           "summary": "Why machine-readable, correlated logs scale better than human-readable output when diagnosing distributed systems in production.",
-          "tags": [
-            "Observability",
-            "SLOs",
-            "Reliability"
-          ]
+          "tags": ["Observability", "SLOs", "Reliability"]
         },
         {
           "category": "AI",
           "title": "Grounding model output: retrieval before generation",
           "summary": "A practical look at retrieval-augmented generation and why grounding an answer in documents you control beats hoping for a memorized one.",
-          "tags": [
-            "RAG",
-            "LLMs",
-            "Principles"
-          ]
+          "tags": ["RAG", "LLMs", "Principles"]
         },
         {
           "category": "Software",
           "title": "Measuring real-world performance, not benchmarks",
           "summary": "Why we instrument the critical path of production systems and view performance as a property of the running system rather than a lab number.",
-          "tags": [
-            "Performance",
-            "Profiling",
-            "Design"
-          ]
+          "tags": ["Performance", "Profiling", "Design"]
         },
         {
           "category": "Embedded",
           "title": "Interrupt latency and deterministic systems",
           "summary": "How careful interrupt design and bounded response times let embedded systems meet strict timing guarantees under real load.",
-          "tags": [
-            "RTOS",
-            "Timing",
-            "Hardware"
-          ]
+          "tags": ["RTOS", "Timing", "Hardware"]
         },
         {
           "category": "AI",
           "title": "Edge inference for constrained hardware",
           "summary": "A guide to running inference on devices with limited compute and memory, and the trade-offs that shape where a model is deployed.",
-          "tags": [
-            "Edge AI",
-            "Optimization",
-            "Deployment"
-          ]
+          "tags": ["Edge AI", "Optimization", "Deployment"]
         }
       ]
     },
@@ -391,11 +340,7 @@
       "title": "The software layer of your most ambitious systems.",
       "lede": "We design and deliver production-grade software across the stack — bringing precision, reliability, and measurable performance to everything we ship.",
       "desc": "Every engagement starts with a disciplined spec and ends with a system that runs for years. We own the full lifecycle: discovery, architecture, development, testing, deployment, and long-term support.",
-      "tags": [
-        "Systems Architecture",
-        "Cloud-Native",
-        "Developer Tooling"
-      ],
+      "tags": ["Systems Architecture", "Cloud-Native", "Developer Tooling"],
       "link": "Explore the Process"
     },
     "capabilities": {
@@ -526,11 +471,7 @@
       "title": "The intelligence embedded in real-world hardware.",
       "lede": "We design firmware and embedded software that runs reliably on real silicon — deterministic, resource-conscious, and built to the physical limits of the device.",
       "desc": "From bare-metal firmware to real-time operating systems and edge deployments, we own the full stack of the device. Requirements, schematics, firmware, integration, and on-device validation.",
-      "tags": [
-        "Firmware Development",
-        "RTOS",
-        "Edge Computing"
-      ],
+      "tags": ["Firmware Development", "RTOS", "Edge Computing"],
       "link": "Explore the Process"
     },
     "capabilities": {
@@ -675,11 +616,7 @@
       "title": "AI integrated into production software.",
       "lede": "We design and ship intelligent systems that perceive, reason, and decide — grounded in real data and validated rigorously before anything ships.",
       "desc": "Every engagement starts with a well-scoped problem and ends with a deployed, monitored system. We own the full lifecycle: problem definition, data and context, model and architecture, development, evaluation, and deployment & monitoring.",
-      "tags": [
-        "Machine Learning",
-        "Computer Vision",
-        "LLMs"
-      ],
+      "tags": ["Machine Learning", "Computer Vision", "LLMs"],
       "link": "Explore the Process"
     },
     "capabilities": {
@@ -1176,7 +1113,7 @@
       "facebook": "Facebook"
     },
     "bottomBar": {
-      "copyright": "© {year} NODAL. All rights reserved.",
+      "copyright": "© {year}All rights reserved.",
       "privacy": "Privacy Policy",
       "terms": "Terms of Service"
     }

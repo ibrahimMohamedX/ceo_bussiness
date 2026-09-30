@@ -1,5 +1,4 @@
 ﻿"use client";
-import { PROJECT_CTA_URL, ENGINEERS_WHATSAPP_URL } from "@/src/lib/project-cta";
 'use client'
 
 import { useCallback } from 'react'
@@ -159,10 +158,7 @@ export default function SoftwarePageClient({ locale, service, siteSettings }: So
     <main className="foundation-shell">
       {/* â”€â”€ Navbar (homepage-identical; cross-page anchors) â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
-        <a className="brand" href={home} aria-label="Nodal home">
-          <span className="brand-mark"><span /><span /><span /></span>
-          <span>{t('Navbar.brand')}</span>
-        </a>
+        <Brand locale={locale} home={home} siteSettings={siteSettings} />
 
         <div className="nav-links">
           <a href={`${home}#services`}>{t('Navbar.links.services')}</a>
@@ -202,7 +198,7 @@ export default function SoftwarePageClient({ locale, service, siteSettings }: So
           </button>
         </div>
 
-        <a className="nav-action" href={PROJECT_CTA_URL}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
+        <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
       </nav>
 
       {/* â”€â”€ 1. Discipline hero â”€â”€ */}
@@ -211,7 +207,7 @@ export default function SoftwarePageClient({ locale, service, siteSettings }: So
         <h1>{service ? service.title[locale as 'en' | 'ar'] : t('SoftwarePage.hero.title.line1')}<br /><em>{t('SoftwarePage.hero.title.line2')}</em></h1>
         <p>{service ? service.summary[locale as 'en' | 'ar'] : t('SoftwarePage.hero.description')}</p>
         <div className="hero-actions">
-          <a className="button-primary" href={PROJECT_CTA_URL}>{t('SoftwarePage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
+          <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>{t('SoftwarePage.hero.primaryCta')} <ArrowUpRight size={16} /></a>
           <a className="button-secondary" href={`#process`}>{t('SoftwarePage.hero.secondaryCta')} <ArrowUpRight size={15} /></a>
         </div>
       </section>
@@ -365,8 +361,8 @@ export default function SoftwarePageClient({ locale, service, siteSettings }: So
           <h2 id="software-contact-cta-title">{t('ContactCta.title.line1')}<br /><em>{t('ContactCta.title.line2')}</em></h2>
           <p>{t('ContactCta.description')}</p>
           <div className="contact-cta-actions">
-            <a className="button-primary" href={PROJECT_CTA_URL}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
-            <a className="button-secondary" href={ENGINEERS_WHATSAPP_URL}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
+            <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
+            <a className="button-secondary" href={getEngineersWhatsAppUrl(siteSettings, locale)}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
           </div>
         </div>
       </section>
@@ -375,7 +371,8 @@ export default function SoftwarePageClient({ locale, service, siteSettings }: So
       <footer className="footer-section" id="footer" aria-labelledby="software-footer-tagline">
         <div className="footer-grid">
           <div className="footer-brand">
-            <div className="footer-brand-name">{siteSettings?.companyName || t('Navbar.brand')}</div>
+            <div className="footer-brand-name"><FooterBrandLogo siteSettings={siteSettings} />
+            <span>{siteSettings?.brandName?.[locale === "ar" ? "ar" : "en"]?.trim() || siteSettings?.companyName || t("Navbar.brand")}</span></div>
             <p className="footer-tagline" id="software-footer-tagline">{t('Footer.tagline')}</p>
             <div className="footer-social" aria-label={t('Footer.social.label')}>
               {socialLinks.map(({ key, href, label, Icon }) =>
@@ -430,7 +427,7 @@ export default function SoftwarePageClient({ locale, service, siteSettings }: So
           <nav className="footer-col footer-col-contact" aria-label={t('Footer.columns.contact.heading')}>
             <h3 className="footer-heading">{t('Footer.columns.contact.heading')}</h3>
             <p className="footer-contact-prompt">{t('Footer.columns.contact.prompt')}</p>
-            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>{t('Footer.columns.contact.cta')}<ArrowUpRight size={16} /></a>
+            <a className="footer-contact-cta" href={getProjectCtaUrl(siteSettings)}>{t('Footer.columns.contact.cta')}<ArrowUpRight size={16} /></a>
           </nav>
         </div>
 
@@ -450,6 +447,13 @@ export default function SoftwarePageClient({ locale, service, siteSettings }: So
     </main>
   )
 }
+
+
+
+
+
+
+
 
 
 
