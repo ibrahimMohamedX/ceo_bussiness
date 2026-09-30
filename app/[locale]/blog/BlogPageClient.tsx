@@ -1,4 +1,12 @@
 ﻿"use client";
+
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaLinkedinIn,
+  FaGithub,
+  FaXTwitter,
+} from "react-icons/fa6";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useTheme } from "../Providers";
@@ -69,27 +77,27 @@ export default function BlogPageClient({
       key: "github",
       href: social.github,
       label: t("Footer.social.github"),
-      Icon: Code2,
+      Icon: FaGithub,
     },
     {
       key: "linkedin",
       href: social.linkedin,
       label: t("Footer.social.linkedin"),
-      Icon: Briefcase,
+      Icon: FaLinkedinIn,
     },
     {
       key: "instagram",
       href: social.instagram,
       label: t("Footer.social.instagram"),
-      Icon: Camera,
+      Icon: FaInstagram,
     },
     {
       key: "facebook",
       href: social.facebook,
       label: t("Footer.social.facebook"),
-      Icon: Users,
+      Icon: FaFacebookF,
     },
-    { key: "x", href: social.x, label: t("Footer.social.twitter"), Icon: X },
+    { key: "x", href: social.x, label: t("Footer.social.twitter"), Icon: FaXTwitter },
   ];
 
   // Filter posts by locale for display
@@ -495,3 +503,5 @@ export default function BlogPageClient({
     </main>
   );
 }
+
+

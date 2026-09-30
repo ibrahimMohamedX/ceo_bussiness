@@ -96,7 +96,7 @@ button {
 /* Admin-uploaded logo. Height matches .brand-mark so the navbar's vertical
    rhythm is unchanged whether a logo is set or the CSS mark is used. */
 .brand-logo {
-  height: 22px;
+  height: 45px;
   width: auto;
   max-width: 140px;
   object-fit: contain;
