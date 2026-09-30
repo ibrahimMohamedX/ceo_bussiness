@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Field, LocalizedTextField, cls } from "@/components/admin/ui";
+import {
+  BrandLogoField,
+  type BrandLogoValue,
+} from "@/components/admin/BrandLogoField";
 import type { SiteSettingsRecord } from "@/src/lib/admin/settings";
 
 export default function SettingsEditorClient({
@@ -30,6 +34,19 @@ export default function SettingsEditorClient({
     facebook: initial.socialLinks?.facebook ?? "",
     x: initial.socialLinks?.x ?? "",
   });
+  const [brandName, setBrandName] = useState({
+    en: initial.brandName?.en ?? "",
+    ar: initial.brandName?.ar ?? "",
+  });
+  // null means "no logo" — either never set, or explicitly removed by the admin.
+  const [brandLogo, setBrandLogo] = useState<BrandLogoValue | null>(
+    initial.brandLogoPublicId
+      ? {
+          publicId: initial.brandLogoPublicId,
+          resourceType: initial.brandLogoResourceType ?? "image",
+        }
+      : null,
+  );
 
   const handleSave = async () => {
     if (!companyName.trim()) {

@@ -1,5 +1,5 @@
 ﻿"use client";
-import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
+import { PROJECT_CTA_URL, ENGINEERS_WHATSAPP_URL } from "@/src/lib/project-cta";
 import { useCallback } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { useTheme } from "../Providers";
@@ -344,7 +344,7 @@ export default function ServicesPageClient({
             <a className="button-primary" href={PROJECT_CTA_URL}>
               {t("ContactCta.primaryCta")} <ArrowUpRight size={16} />
             </a>
-            <a className="button-secondary" href={`#contact`}>
+            <a className="button-secondary" href={ENGINEERS_WHATSAPP_URL}>
               {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
             </a>
           </div>
@@ -482,7 +482,7 @@ export default function ServicesPageClient({
                 </a>
               </li>
               <li>
-                <a href={`#contact`}>
+                <a href={ENGINEERS_WHATSAPP_URL}>
                   {t("Footer.columns.resources.links.contact")}
                 </a>
               </li>
@@ -499,7 +499,7 @@ export default function ServicesPageClient({
             <p className="footer-contact-prompt">
               {t("Footer.columns.contact.prompt")}
             </p>
-            <a className="footer-contact-cta" href={`#contact`}>
+            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>
               {t("Footer.columns.contact.cta")}
               <ArrowUpRight size={16} />
             </a>
@@ -524,6 +524,13 @@ export default function ServicesPageClient({
     </main>
   );
 }
+
+
+
+
+
+
+
 
 
 

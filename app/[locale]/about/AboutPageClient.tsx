@@ -1,5 +1,5 @@
 ﻿"use client";
-import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
+import { PROJECT_CTA_URL, ENGINEERS_WHATSAPP_URL } from "@/src/lib/project-cta";
 'use client'
 
 import { useCallback } from 'react'
@@ -304,7 +304,7 @@ export default function AboutPageClient({
           <p>{t('ContactCta.description')}</p>
           <div className="contact-cta-actions">
             <a className="button-primary" href={PROJECT_CTA_URL}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
-            <a className="button-secondary" href={`#contact`}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
+            <a className="button-secondary" href={ENGINEERS_WHATSAPP_URL}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
           </div>
         </div>
       </section>
@@ -379,7 +379,7 @@ export default function AboutPageClient({
             {siteSettings?.address?.[locale as 'en' | 'ar'] ? (
               <p className="footer-contact-prompt">{siteSettings.address[locale as 'en' | 'ar']}</p>
             ) : null}
-            <a className="footer-contact-cta" href={`#contact`}>{t('Footer.columns.contact.cta')}<ArrowUpRight size={16} /></a>
+            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>{t('Footer.columns.contact.cta')}<ArrowUpRight size={16} /></a>
           </nav>
         </div>
 
@@ -399,6 +399,14 @@ export default function AboutPageClient({
     </main>
   )
 }
+
+
+
+
+
+
+
+
 
 
 

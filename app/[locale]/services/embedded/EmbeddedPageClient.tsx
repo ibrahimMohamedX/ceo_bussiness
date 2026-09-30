@@ -1,5 +1,5 @@
 ﻿"use client";
-import { PROJECT_CTA_URL } from "@/src/lib/project-cta";
+import { PROJECT_CTA_URL, ENGINEERS_WHATSAPP_URL } from "@/src/lib/project-cta";
 'use client'
 
 import { useCallback } from 'react'
@@ -398,7 +398,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
           <p>{t('ContactCta.description')}</p>
           <div className="contact-cta-actions">
             <a className="button-primary" href={PROJECT_CTA_URL}>{t('ContactCta.primaryCta')} <ArrowUpRight size={16} /></a>
-            <a className="button-secondary" href={`#contact`}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
+            <a className="button-secondary" href={ENGINEERS_WHATSAPP_URL}>{t('ContactCta.secondaryCta')} <ArrowUpRight size={15} /></a>
           </div>
         </div>
       </section>
@@ -462,7 +462,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
           <nav className="footer-col footer-col-contact" aria-label={t('Footer.columns.contact.heading')}>
             <h3 className="footer-heading">{t('Footer.columns.contact.heading')}</h3>
             <p className="footer-contact-prompt">{t('Footer.columns.contact.prompt')}</p>
-            <a className="footer-contact-cta" href={`#contact`}>{t('Footer.columns.contact.cta')}<ArrowUpRight size={16} /></a>
+            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>{t('Footer.columns.contact.cta')}<ArrowUpRight size={16} /></a>
           </nav>
         </div>
 
@@ -482,6 +482,14 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
     </main>
   )
 }
+
+
+
+
+
+
+
+
 
 
 

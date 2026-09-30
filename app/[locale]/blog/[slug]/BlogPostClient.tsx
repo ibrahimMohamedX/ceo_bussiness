@@ -464,7 +464,7 @@ export default function BlogPostClient({
             <p className="footer-contact-prompt">
               {t("Footer.columns.contact.prompt")}
             </p>
-            <a className="footer-contact-cta" href={`#contact`}>
+            <a className="footer-contact-cta" href={PROJECT_CTA_URL}>
               {t("Footer.columns.contact.cta")}
               <ArrowUpRight size={16} />
             </a>
@@ -529,6 +529,7 @@ function GalleryImage({
     </figure>
   );
 }
+
 
 
 
