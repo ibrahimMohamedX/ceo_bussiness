@@ -172,7 +172,8 @@ button {
   box-shadow: 0 0 10px var(--primary);
 }
 h1 {
-  font-size: clamp(34px, 8vw, 32px);
+  /* font-size: clamp(34px, 8vw, 32px); */
+  font-size: 90px;
   line-height: 0.91;
   letter-spacing: -0.075em;
   font-weight: 500;
@@ -254,7 +255,7 @@ h2 span {
 .digital-core::after {
   content: "";
   position: absolute;
-  inset: 18px;
+  inset: -18px;
   border: 1px solid rgba(110, 231, 242, 0.08);
   border-radius: 10px;
   pointer-events: none;
@@ -827,7 +828,7 @@ h2 span {
   gap: 48px;
 }
 .industries-intro {
-  display: grid;
+  /* display: grid; */
   grid-template-columns: 0.72fr 1.28fr;
   gap: 8%;
   align-items: end;
@@ -1397,9 +1398,11 @@ h2 span {
   }
   .core-status {
     left: 20px;
+    display: none;
   }
   .core-coordinates {
     right: 20px;
+    /* display: none; */
   }
   .hero-actions {
     align-items: stretch;
@@ -2209,8 +2212,8 @@ html[dir="rtl"] .blog-detail-body {
 }
 
 .technologies-intro {
-  text-align: center;
-  max-width: 720px;
+  /* text-align: center;
+  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
@@ -2235,6 +2238,7 @@ html[dir="rtl"] .blog-detail-body {
   line-height: 1.6;
   font-size: 16px;
   margin: 0;
+  max-width: 420px;
 }
 
 /* Category grid: 7 columns on desktop (one per category) */
@@ -2418,7 +2422,7 @@ html[dir="rtl"] .technologies-intro {
 
 /* ── RTL Support ── */
 html[dir="rtl"] .topbar {
-  flex-direction: row-reverse;
+  /* flex-direction: row-reverse; */
 }
 html[dir="rtl"] .nav-links {
   flex-direction: row-reverse;
@@ -2586,6 +2590,12 @@ html[dir="rtl"] .service-link {
   }
 }
 
+@media (min-width: 1101) and (max-width: 1350px) {
+  .technologies-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
 /* ── Why PROJEX ──────────────────────────────────────────────────────── */
 .why-projex-section {
   width: min(100% - 80px, 1280px);
@@ -2594,8 +2604,8 @@ html[dir="rtl"] .service-link {
 }
 
 .why-projex-intro {
-  text-align: center;
-  max-width: 720px;
+  /* text-align: center;
+  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
@@ -2620,6 +2630,7 @@ html[dir="rtl"] .service-link {
   line-height: 1.6;
   font-size: 16px;
   margin: 0;
+  max-width: 420px;
 }
 
 /* Editorial layout: 2 pillars (featured) + 4 supporting cards */
@@ -2876,8 +2887,8 @@ html[dir="rtl"] .why-projex-intro {
 }
 
 .testimonials-intro {
-  text-align: center;
-  max-width: 720px;
+  /* text-align: center;
+  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
@@ -2902,6 +2913,7 @@ html[dir="rtl"] .why-projex-intro {
   line-height: 1.6;
   font-size: 16px;
   margin: 0;
+  max-width: 420px;
 }
 
 /* 3 / 2 / 1 responsive cascade */
@@ -3101,13 +3113,14 @@ html[dir="rtl"] .testimonials-intro {
 }
 
 .faq-intro {
-  text-align: center;
-  max-width: 720px;
+  /* text-align: center;
+  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
 .faq-intro .eyebrow {
   margin-bottom: 16px;
+  text-align: center;
 }
 
 .faq-intro h2 {
@@ -3127,6 +3140,7 @@ html[dir="rtl"] .testimonials-intro {
   line-height: 1.6;
   font-size: 16px;
   margin: 0;
+  max-width: 420px;
 }
 
 /* Single-column accordion — content column at Forms width */
@@ -3442,7 +3456,7 @@ html[dir="rtl"] .faq-question {
 .contact-cta-intro {
   position: relative;
   z-index: 1;
-  max-width: 720px;
+  /* max-width: 720px; */
   margin: 0 auto;
 }
 
@@ -4283,5 +4297,482 @@ html.light .software-section-intro > p {
     justify-content: center;
     width: 100%;
     max-width: 320px;
+  }
+}
+/* !!!!! */
+/* =========================================
+   1. الحاوية الرئيسية (HUD Container)
+   ========================================= */
+.digital-core {
+  --neon-cyan: #00f0ff;
+  --dark-glass: rgba(4, 15, 30, 0.65);
+  --glass-border: rgba(0, 240, 255, 0.2);
+
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+  font-family: "Courier New", Courier, monospace;
+  color: var(--neon-cyan);
+
+  /* تفعيل تأثير الماوس (Parallax) القادم من الـ Hook */
+  transform: translate(var(--parallax-x, 0), var(--parallax-y, 0));
+  transition: transform 0.1s ease-out;
+}
+
+/* =========================================
+   2. المجسم المركزي (السر في منع التداخل)
+   ========================================= */
+.asset-stack {
+  position: absolute;
+  top: 50%;
+  /* إزاحة المجسم لليسار قليلاً لترك مساحة للقائمة اليمنى */
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 600px; /* تحديد حجمه حتى لا يتمدد ويغطي الشاشة */
+  aspect-ratio: 1;
+  pointer-events: none;
+  z-index: 1;
+}
+[dir="rtl"] .asset-stack,
+:lang(ar) .asset-stack {
+  --dir-factor: -1;
+  right: 50%;
+  /* inset-inline-start: 65%; */
+}
+/* =========================================
+   3. اللوحات الزجاجية (الزوايا الأربعة)
+   ========================================= */
+.core-label,
+.core-readout,
+.core-status,
+.core-coordinates {
+  position: absolute;
+  z-index: 10;
+  background: var(--dark-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  padding: 8px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  text-transform: uppercase;
+}
+
+.core-label {
+  top: 0;
+  left: 0;
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  border-left: 3px solid var(--neon-cyan);
+}
+
+.core-readout {
+  top: 0;
+  right: 0;
+  text-align: right;
+  border-right: 3px solid var(--neon-cyan);
+}
+
+.core-readout span {
+  font-size: 0.7rem;
+  color: #8ab4f8;
+}
+
+.core-status {
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.8rem;
+  border-bottom: 2px solid var(--neon-cyan);
+}
+
+.core-status span[aria-hidden="true"] {
+  width: 8px;
+  height: 8px;
+  background: var(--neon-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--neon-cyan);
+  animation: pulse 1.5s infinite;
+}
+
+.core-coordinates {
+  bottom: 0;
+  right: 0;
+  font-size: 0.7rem;
+  color: #8ab4f8;
+  letter-spacing: 0.2em;
+}
+
+/* =========================================
+   4. القائمة الجانبية (بدون تداخل مع المجسم)
+   ========================================= */
+.core-side-labels {
+  position: absolute;
+  top: 50%;
+  right: 0; /* تثبيت في أقصى اليمين */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 260px; /* عرض ثابت يمنعها من التمدد فوق المجسم */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 20;
+}
+
+.core-side-labels li {
+  background: var(--dark-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-right: 3px solid var(--neon-cyan);
+  padding: 12px 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  transition: all 0.3s ease;
+}
+
+.core-side-labels li:hover {
+  background: rgba(0, 240, 255, 0.1);
+  border-color: var(--neon-cyan);
+  transform: translateX(-5px);
+}
+
+.core-side-labels b {
+  display: block;
+  font-size: 0.85rem;
+  color: #fff;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
+}
+
+.core-side-labels span {
+  display: block;
+  font-size: 0.65rem;
+  color: #8ab4f8;
+  letter-spacing: 0.05em;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+/* =========================================
+   5. التجاوب مع الشاشات (Responsive)
+   ========================================= */
+@media (max-width: 1100px) {
+  /* في الشاشات الأصغر، نلغي الإزاحة ونرتبهم عمودياً لمنع التداخل */
+  .digital-core {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3rem;
+    height: auto;
+    padding-top: 4rem;
+  }
+
+  .asset-stack {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    max-width: 500px;
+  }
+
+  .core-side-labels {
+    position: relative;
+    top: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+    max-width: 400px;
+  }
+  .core-status {
+    /* left: 0px; */
+    /* display: none; */
+    bottom: -60;
+    right: 100px;
+    left: 100px;
+    align-self: center;
+  }
+
+  .core-coordinates {
+    right: -20px;
+    display: none;
+
+    /* bottom: -60; */
+  }
+
+  .core-side-labels li {
+    border-right: none;
+    border-left: 3px solid var(--neon-cyan);
+  }
+  [dir="rtl"] .asset-stack,
+  :lang(ar) .asset-stack {
+    --dir-factor: -1;
+    right: 0;
+    /* inset-inline-start: 65%; */
+  }
+}
+.faq-empty {
+  text-align: center;
+}
+.project-cover-wrapper {
+  position: relative;
+}
+/* =========================================================
+   DIGITAL CORE - SCI-FI HUD COMPONENT (RTL & LIGHT/DARK READY)
+   ========================================================= */
+
+.digital-core {
+  /* ألوان الـ HUD ثابتة لضمان التباين العالي حتى لو الموقع Light Mode */
+  --hud-bg-canvas: #060a12;
+  --hud-cyan: #00f0ff;
+  --hud-cyan-glow: rgba(0, 240, 255, 0.4);
+  --hud-panel-bg: rgba(10, 20, 32, 0.8);
+  --hud-border: rgba(0, 240, 255, 0.25);
+  --hud-text-muted: #94a3b8;
+
+  position: relative;
+  width: 100%;
+  min-height: 580px;
+  background-color: var(--hud-bg-canvas);
+  border: 1px solid var(--hud-border);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.6),
+    inset 0 0 30px rgba(0, 240, 255, 0.05);
+  font-family: "Courier New", Courier, monospace;
+  color: var(--hud-cyan);
+
+  /* دعم حركة الماوس القادمة من الـ TSX Hook */
+  transform: translate(var(--parallax-x, 0), var(--parallax-y, 0));
+  transition: transform 0.1s ease-out;
+  box-sizing: border-box;
+}
+
+/* ---------------------------------------------------------
+   المجسم المركزي (Core Asset Stack)
+   --------------------------------------------------------- */
+.asset-stack {
+  position: absolute;
+  top: 50%;
+  /* إزاحة منطقية: تبتعد عن القوائم سواء في العربي أو الإنكليزي */
+  /* inset-inline-start: 35%; */
+  transform: translate(calc(-50% * var(--dir-factor, 1)), -50%);
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ضبط الاتجاه لتأثير العكس في العربية (RTL) */
+[dir="rtl"] .asset-stack,
+:lang(ar) .asset-stack {
+  --dir-factor: -1;
+  /* inset-inline-start: 65%; */
+}
+
+/* ---------------------------------------------------------
+   اللوحات الزجاجية العلوية والسفلية (الزوايا الأربعة)
+   --------------------------------------------------------- */
+.core-label,
+.core-readout,
+.core-status,
+.core-coordinates {
+  position: absolute;
+  z-index: 10;
+  background: var(--hud-panel-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--hud-border);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* أعلى البداية (Top-Start) */
+.core-label {
+  top: 20px;
+  inset-inline-start: 20px;
+  font-weight: bold;
+  border-inline-start: 3px solid var(--hud-cyan);
+}
+
+/* أعلى النهاية (Top-End) */
+.core-readout {
+  top: 20px;
+  inset-inline-end: 20px;
+  text-align: end;
+  border-inline-end: 3px solid var(--hud-cyan);
+}
+
+.core-readout span {
+  font-size: 0.68rem;
+  color: var(--hud-text-muted);
+}
+
+/* أسفل البداية (Bottom-Start) */
+.core-status {
+  bottom: 20px;
+  inset-inline-start: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid var(--hud-cyan);
+}
+
+.core-status span[aria-hidden="true"] {
+  width: 8px;
+  height: 8px;
+  background-color: var(--hud-cyan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--hud-cyan);
+  animation: hud-pulse 1.8s infinite ease-in-out;
+}
+
+/* أسفل النهاية (Bottom-End) */
+.core-coordinates {
+  bottom: 20px;
+  inset-inline-end: 20px;
+  color: var(--hud-text-muted);
+  font-size: 0.7rem;
+}
+
+/* ---------------------------------------------------------
+   القائمة الجانبية (Side Labels) - تنعكس تلقائياً مع العربي
+   --------------------------------------------------------- */
+.core-side-labels {
+  position: absolute;
+  top: 50%;
+  inset-inline-end: 20px; /* تلتصق بالطرف الخارجي للغة دائماً */
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  width: 240px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 10;
+}
+
+.core-side-labels li {
+  background: var(--hud-panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--hud-border);
+  border-inline-end: 3px solid var(--hud-cyan);
+  padding: 10px 14px;
+  border-radius: 6px;
+  transition: all 0.25s ease-out;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.core-side-labels li:hover {
+  background: rgba(0, 240, 255, 0.12);
+  border-color: var(--hud-cyan);
+}
+
+.core-side-labels b {
+  display: block;
+  font-size: 0.82rem;
+  color: #ffffff;
+  letter-spacing: 0.08em;
+  margin-bottom: 3px;
+  text-shadow: 0 0 6px var(--hud-cyan-glow);
+}
+
+.core-side-labels span {
+  display: block;
+  font-size: 0.68rem;
+  color: var(--hud-text-muted);
+  line-height: 1.35;
+}
+
+@keyframes hud-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.75);
+  }
+}
+
+/* ---------------------------------------------------------
+   التجاوب مع الشاشات والموبايل (Responsive Mobile/Tablet)
+   ========================================================= */
+@media (max-width: 1024px) {
+  .digital-core {
+    min-height: auto;
+    padding: 70px 16px 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  /* إلغاء الـ Absolute positioning للمجسم في الموبايل */
+  .asset-stack {
+    position: relative;
+    top: 0;
+    inset-inline-start: 0;
+    transform: none !important;
+    max-width: 380px;
+    margin: 1rem auto;
+  }
+
+  /* جعل القوائم تترتب أسفل المجسم بشكل عمودي نظيف */
+  .core-side-labels {
+    position: relative;
+    top: 0;
+    inset-inline-end: 0;
+    transform: none;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .core-side-labels li {
+    border-inline-end: none;
+    border-inline-start: 3px solid var(--hud-cyan);
+  }
+}
+
+@media (max-width: 640px) {
+  .core-label,
+  .core-readout {
+    top: 12px;
+    font-size: 0.65rem;
+    padding: 6px 10px;
+  }
+
+  .core-status,
+  .core-coordinates {
+    bottom: 12px;
+    font-size: 0.65rem;
+    padding: 6px 10px;
+  }
+
+  .asset-stack {
+    max-width: 280px;
   }
 }

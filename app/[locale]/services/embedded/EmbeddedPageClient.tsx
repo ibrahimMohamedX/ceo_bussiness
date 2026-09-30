@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useCallback } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
@@ -44,7 +44,7 @@ import type { PublicService } from '@/src/lib/public/services'
 import type { PublicSiteSettings } from '@/src/lib/public/settings'
 
 /* ------------------------------------------------------------------ */
-/*  EYEBROW — reused section label (site-consistent)                   */
+/*  EYEBROW â€” reused section label (site-consistent)                   */
 /* ------------------------------------------------------------------ */
 function Eyebrow({ label }: { label: string }) {
   return (
@@ -98,37 +98,37 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
   // Capabilities - use dynamic data from service if available, fallback to static
   const capabilities: CapabilityItem[] = service?.description
     ? [
-        { key: 'firmware', icon: Microchip, title: t('EmbeddedPage.capabilities.items.firmware.title'), desc: t('EmbeddedPage.capabilities.items.firmware.desc') },
-        { key: 'rtos', icon: Cpu, title: t('EmbeddedPage.capabilities.items.rtos.title'), desc: t('EmbeddedPage.capabilities.items.rtos.desc') },
-        { key: 'connectivity', icon: Bluetooth, title: t('EmbeddedPage.capabilities.items.connectivity.title'), desc: t('EmbeddedPage.capabilities.items.connectivity.desc') },
-        { key: 'hardware', icon: CircuitBoard, title: t('EmbeddedPage.capabilities.items.hardware.title'), desc: t('EmbeddedPage.capabilities.items.hardware.desc') },
+        { key: 'deterministic', icon: Microchip, title: t('EmbeddedPage.capabilities.items.deterministic.title'), desc: t('EmbeddedPage.capabilities.items.deterministic.desc') },
+        { key: 'closeToHardware', icon: Cpu, title: t('EmbeddedPage.capabilities.items.closeToHardware.title'), desc: t('EmbeddedPage.capabilities.items.closeToHardware.desc') },
+        { key: 'protocols', icon: Bluetooth, title: t('EmbeddedPage.capabilities.items.protocols.title'), desc: t('EmbeddedPage.capabilities.items.protocols.desc') },
+        { key: 'drivers', icon: CircuitBoard, title: t('EmbeddedPage.capabilities.items.drivers.title'), desc: t('EmbeddedPage.capabilities.items.drivers.desc') },
       ]
     : [
         { key: 'firmware', icon: Microchip, title: '', desc: '' },
-        { key: 'rtos', icon: Cpu, title: '', desc: '' },
+        { key: 'iot', icon: Cpu, title: '', desc: '' },
         { key: 'connectivity', icon: Bluetooth, title: '', desc: '' },
         { key: 'hardware', icon: CircuitBoard, title: '', desc: '' },
       ]
 
   const quality = [
-    { key: 'reliable', icon: ShieldCheck },
-    { key: 'deterministic', icon: Gauge },
-    { key: 'power-efficient', icon: Cpu },
-    { key: 'certifiable', icon: CheckCircle2 },
+    { key: 'hardwareInLoop', icon: ShieldCheck },
+    { key: 'integrationTest', icon: Gauge },
+    { key: 'realDevice', icon: Cpu },
+    { key: 'maintainable', icon: CheckCircle2 },
   ]
 
   const processSteps = [
     { key: 'requirements', icon: Search },
     { key: 'architecture', icon: Workflow },
     { key: 'firmware', icon: Code2 },
-    { key: 'bringup', icon: CircuitBoard },
-    { key: 'testing', icon: CheckCircle2 },
-    { key: 'deployment', icon: Rocket },
+    { key: 'integration', icon: CircuitBoard },
+    { key: 'validation', icon: CheckCircle2 },
+    { key: 'support', icon: Rocket },
   ]
 
   const stack = [
     {
-      key: 'mcus',
+      key: 'embedded',
       icon: Microchip,
       items: [
         { name: 'STM32', icon: Microchip },
@@ -140,7 +140,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
       ],
     },
     {
-      key: 'rtos',
+      key: 'iot',
       icon: Cog,
       items: [
         { name: 'FreeRTOS', icon: Cog },
@@ -187,7 +187,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
 
   return (
     <main className="foundation-shell">
-      {/* ── Navbar (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Navbar (homepage-identical; cross-page anchors) â”€â”€ */}
       <nav className="topbar" aria-label="Primary navigation">
         <a className="brand" href={home} aria-label="Nodal home">
           <span className="brand-mark"><span /><span /><span /></span>
@@ -207,7 +207,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
           <div className="locale-switcher">
             <a href={enHref} className={`locale-link${locale === 'en' ? ' active' : ''}`} aria-label="English" data-locale="en">EN</a>
             <span className="locale-divider">/</span>
-            <a href={arHref} className={`locale-link${locale === 'ar' ? ' active' : ''}`} aria-label="العربية" data-locale="ar">ع</a>
+            <a href={arHref} className={`locale-link${locale === 'ar' ? ' active' : ''}`} aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©" data-locale="ar">Ø¹</a>
           </div>
 
           <button
@@ -235,7 +235,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         <a className="nav-action" href={`${home}#contact`}>{t('Navbar.cta')} <ArrowUpRight size={15} /></a>
       </nav>
 
-      {/* ── 1. Discipline hero ── */}
+      {/* â”€â”€ 1. Discipline hero â”€â”€ */}
       <section className="services-page-overview" id="overview">
         <div className="eyebrow"><span className="eyebrow-dot" /> {service ? service.title[locale as 'en' | 'ar'] : t('EmbeddedPage.hero.eyebrow')}</div>
         <h1>{service ? service.title[locale as 'en' | 'ar'] : t('EmbeddedPage.hero.title.line1')}<br /><em>{t('EmbeddedPage.hero.title.line2')}</em></h1>
@@ -246,7 +246,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         </div>
       </section>
 
-      {/* ── 2. What we build ── */}
+      {/* â”€â”€ 2. What we build â”€â”€ */}
       <section className="services-page-discipline" id="what-we-build">
         <div className="services-page-discipline-head">
           <div className="process-number" aria-hidden="true">{t('EmbeddedPage.whatWeBuild.number')}</div>
@@ -264,7 +264,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         <a className="service-link" href={`#process`}>{t('EmbeddedPage.whatWeBuild.link')} <ArrowUpRight size={13} /></a>
       </section>
 
-      {/* ── 3. Engineering capabilities ── */}
+      {/* â”€â”€ 3. Engineering capabilities â”€â”€ */}
       <section className="software-grid-section" id="capabilities">
         <div className="software-section-intro">
           <Eyebrow label={t('EmbeddedPage.capabilities.eyebrow')} />
@@ -284,7 +284,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         </div>
       </section>
 
-      {/* ── 4. Technology stack ── */}
+      {/* â”€â”€ 4. Technology stack â”€â”€ */}
       <section className="software-stack-section" id="technologies">
         <div className="software-section-intro">
           <Eyebrow label={t('EmbeddedPage.stack.eyebrow')} />
@@ -317,7 +317,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         </div>
       </section>
 
-      {/* ── 5. Engineering process (six steps) ── */}
+      {/* â”€â”€ 5. Engineering process (six steps) â”€â”€ */}
       <section className="process-section" id="process">
         <div className="process-intro">
           <Eyebrow label={t('EmbeddedPage.process.eyebrow')} />
@@ -339,12 +339,12 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         </div>
       </section>
 
-      {/* ── 6. Quality / reliability ── */}
+      {/* â”€â”€ 6. Quality / reliability â”€â”€ */}
       <section className="software-grid-section" id="quality">
         <div className="software-section-intro">
-          <Eyebrow label={t('EmbeddedPage.quality.eyebrow')} />
-          <h2>{t('EmbeddedPage.quality.title.line1')}<br />{t('EmbeddedPage.quality.title.line2')}</h2>
-          <p>{t('EmbeddedPage.quality.description')}</p>
+          <Eyebrow label={t('EmbeddedPage.reliability.eyebrow')} />
+          <h2>{t('EmbeddedPage.reliability.title.line1')}<br />{t('EmbeddedPage.reliability.title.line2')}</h2>
+          <p>{t('EmbeddedPage.reliability.description')}</p>
         </div>
         <div className="software-card-grid">
           {quality.map((item, i) => {
@@ -353,8 +353,8 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
               <article key={item.key} className="why-projex-card" style={{ ['--card-index' as string]: i }}>
                 <div className="why-projex-icon"><Icon size={24} strokeWidth={1.5} /></div>
                 <div className="why-projex-card-body">
-                  <h3>{t(`EmbeddedPage.quality.items.${item.key}.title`)}</h3>
-                  <p>{t(`EmbeddedPage.quality.items.${item.key}.desc`)}</p>
+                  <h3>{t(`EmbeddedPage.reliability.items.${item.key}.title`)}</h3>
+                  <p>{t(`EmbeddedPage.reliability.items.${item.key}.desc`)}</p>
                 </div>
               </article>
             )
@@ -362,7 +362,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         </div>
       </section>
 
-      {/* ── 7. Relevant work ── */}
+      {/* â”€â”€ 7. Relevant work â”€â”€ */}
       <section className="projects-section" id="work">
         <div className="projects-intro">
           <div className="projects-intro-head">
@@ -387,7 +387,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         </div>
       </section>
 
-      {/* ── Pricing / contact CTA (reused) ── */}
+      {/* â”€â”€ Pricing / contact CTA (reused) â”€â”€ */}
       <section className="contact-cta-section" id="contact" aria-labelledby="embedded-contact-cta-title">
         <div className="contact-cta-glow" aria-hidden="true" />
         <div className="contact-cta-intro">
@@ -401,7 +401,7 @@ export default function EmbeddedPageClient({ locale, service, siteSettings }: Em
         </div>
       </section>
 
-      {/* ── Footer (homepage-identical; cross-page anchors) ── */}
+      {/* â”€â”€ Footer (homepage-identical; cross-page anchors) â”€â”€ */}
       <footer className="footer-section" id="footer" aria-labelledby="embedded-footer-tagline">
         <div className="footer-grid">
           <div className="footer-brand">

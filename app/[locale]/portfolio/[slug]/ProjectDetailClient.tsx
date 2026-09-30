@@ -19,7 +19,7 @@ function Eyebrow({ label }: { label: string }) {
     <div className="eyebrow">
       <span className="eyebrow-dot" /> {label}
     </div>
-  )
+  );
 }
 
 /* Resolve a media record -> display URL.
@@ -28,38 +28,43 @@ function Eyebrow({ label }: { label: string }) {
    public and need no credentials, so nothing sensitive reaches the browser).
    Legacy records that only carry a Firebase storagePath are still resolved via
    getDownloadURL — retained solely for pre-migration documents. */
-function useMediaUrl(media: {
-  publicId?: string | null
-  resourceType?: 'image' | 'video' | null
-  storagePath?: string | null
-} | null | undefined): string {
-  const publicId = media?.publicId ?? ''
-  const resourceType = media?.resourceType ?? 'image'
-  const path = media?.storagePath ?? ''
+function useMediaUrl(
+  media:
+    | {
+        publicId?: string | null;
+        resourceType?: "image" | "video" | null;
+        storagePath?: string | null;
+      }
+    | null
+    | undefined,
+): string {
+  const publicId = media?.publicId ?? "";
+  const resourceType = media?.resourceType ?? "image";
+  const path = media?.storagePath ?? "";
 
-  const direct = cloudinaryUrl(publicId, resourceType)
-  const [legacyUrl, setLegacyUrl] = useState('')
+  const direct = cloudinaryUrl(publicId, resourceType);
+  const [legacyUrl, setLegacyUrl] = useState("");
 
   useEffect(() => {
     // Cloudinary records need no async resolution.
     if (direct || !path) {
-      setLegacyUrl('')
-      return
+      setLegacyUrl("");
+      return;
     }
-    let cancelled = false
+    let cancelled = false;
     getDownloadURL(storageRef(firebaseStorage, path))
       .then((resolved) => {
-        if (!cancelled) setLegacyUrl(resolved)
+        if (!cancelled) setLegacyUrl(resolved);
       })
       .catch(() => {
-        if (!cancelled) setLegacyUrl('')
-      })
+        if (!cancelled) setLegacyUrl("");
+      });
     return () => {
-      cancelled = true
-    }
-  }, [direct, path])
+      cancelled = true;
+    };
+  }, [direct, path]);
 
-  return direct || legacyUrl
+  return direct || legacyUrl;
 }
 
 /* ------------------------------------------------------------------ */

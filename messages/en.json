@@ -580,6 +580,12 @@
         },
         "iot": {
           "title": "IoT & Connectivity"
+        },
+        "connectivity": {
+          "title": "Connectivity"
+        },
+        "tools": {
+          "title": "Tools & Development"
         }
       }
     },
