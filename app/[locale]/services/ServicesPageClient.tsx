@@ -1,10 +1,10 @@
+"use client";
 import {
   getProjectCtaUrl,
   getEngineersWhatsAppUrl,
 } from "@/src/lib/project-cta";
 import { FooterBrandLogo } from "@/components/FooterBrandLogo";
 import { Brand } from "@/components/Brand";
-("use client");
 
 import {
   FaFacebookF,

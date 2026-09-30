@@ -1,7 +1,7 @@
+"use client";
 import { getProjectCtaUrl } from "@/src/lib/project-cta";
 import { FooterBrandLogo } from "@/components/FooterBrandLogo";
 import { Brand } from "@/components/Brand";
-("use client");
 
 import {
   FaFacebookF,
