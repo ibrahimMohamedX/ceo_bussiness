@@ -1,14 +1,39 @@
+﻿import type { Metadata } from "next";
 import { AdminThemeProvider } from "@/components/admin/AdminThemeProvider";
+import { getSiteSettings } from "@/src/lib/public/settings";
+import { cloudinaryUrl } from "@/src/lib/cloudinary/url";
 
 import "../globals.css";
 
-// Parallel root layout for the ENTIRE admin tree (login + dashboard shell).
-// There is no root app/layout.tsx; this siblings the localized
-// app/[locale]/layout.tsx and renders its OWN <html>/<body>. Admin is
-// English-only and NOT localized. This root is deliberately guardless — the
-// session guard lives in app/admin/(shell)/layout.tsx so /admin/login is never
-// redirected back onto itself.
-export default function AdminLayout({
+export async function generateMetadata(): Promise<Metadata> {
+  const siteSettings = await getSiteSettings();
+
+  const logoUrl = cloudinaryUrl(
+    siteSettings?.brandLogoPublicId,
+    siteSettings?.brandLogoResourceType ?? "image",
+  );
+
+  return {
+    icons: {
+      icon: logoUrl
+        ? [{ url: logoUrl }]
+        : [
+            {
+              url: "/icon-light-32x32.png",
+              media: "(prefers-color-scheme: light)",
+            },
+            {
+              url: "/icon-dark-32x32.png",
+              media: "(prefers-color-scheme: dark)",
+            },
+            { url: "/icon.svg", type: "image/svg+xml" },
+          ],
+      apple: logoUrl || "/apple-icon.png",
+    },
+  };
+}
+
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;

@@ -2,6 +2,8 @@
 import type { Metadata, Viewport } from "next";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/src/i18n/routing";
+import { getSiteSettings } from "@/src/lib/public/settings";
+import { cloudinaryUrl } from "@/src/lib/cloudinary/url";
 import Providers from "./Providers";
 import "../globals.css";
 
@@ -9,20 +11,37 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-export const metadata: Metadata = {
-  title: "Nodal — Engineering Design Foundation",
-  description:
-    "A precise visual language for software engineering, embedded systems, and artificial intelligence.",
-  generator: "Nodal",
-  icons: {
-    icon: [
-      { url: "/icon-light-32x32.png", media: "(prefers-color-scheme: light)" },
-      { url: "/icon-dark-32x32.png", media: "(prefers-color-scheme: dark)" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: "/apple-icon.png",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const siteSettings = await getSiteSettings();
+
+  const logoUrl = cloudinaryUrl(
+    siteSettings?.brandLogoPublicId,
+    siteSettings?.brandLogoResourceType ?? "image",
+  );
+
+  return {
+    title: "Nodal — Engineering Design Foundation",
+    description:
+      "A precise visual language for software engineering, embedded systems, and artificial intelligence.",
+    generator: "Nodal",
+    icons: {
+      icon: logoUrl
+        ? [{ url: logoUrl }]
+        : [
+            {
+              url: "/icon-light-32x32.png",
+              media: "(prefers-color-scheme: light)",
+            },
+            {
+              url: "/icon-dark-32x32.png",
+              media: "(prefers-color-scheme: dark)",
+            },
+            { url: "/icon.svg", type: "image/svg+xml" },
+          ],
+      apple: logoUrl || "/apple-icon.png",
+    },
+  };
+}
 
 export const viewport: Viewport = {
   colorScheme: "dark",
