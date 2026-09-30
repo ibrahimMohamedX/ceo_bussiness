@@ -97,7 +97,12 @@ export default function BlogPageClient({
       label: t("Footer.social.facebook"),
       Icon: FaFacebookF,
     },
-    { key: "x", href: social.x, label: t("Footer.social.twitter"), Icon: FaXTwitter },
+    {
+      key: "x",
+      href: social.x,
+      label: t("Footer.social.twitter"),
+      Icon: FaXTwitter,
+    },
   ];
 
   // Filter posts by locale for display
@@ -132,10 +137,10 @@ export default function BlogPageClient({
             <a
               href={arHref}
               className={`locale-link${currentLocale === "ar" ? " active" : ""}`}
-              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
+              aria-label="Ø§Ù„عØ±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              Ø¹
+              ع
             </a>
           </div>
 
@@ -503,5 +508,3 @@ export default function BlogPageClient({
     </main>
   );
 }
-
-

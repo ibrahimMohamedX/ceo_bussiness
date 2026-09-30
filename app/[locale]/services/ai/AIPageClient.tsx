@@ -241,10 +241,10 @@ export default function AIPageClient({
             <a
               href={arHref}
               className={`locale-link${locale === "ar" ? " active" : ""}`}
-              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
+              aria-label="Ø§Ù„عØ±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              Ø¹
+              ع
             </a>
           </div>
 
@@ -732,4 +732,3 @@ export default function AIPageClient({
     </main>
   );
 }
-

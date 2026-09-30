@@ -1,4 +1,7 @@
-﻿"use client";
+import { getProjectCtaUrl } from "@/src/lib/project-cta";
+import { FooterBrandLogo } from "@/components/FooterBrandLogo";
+import { Brand } from "@/components/Brand";
+("use client");
 
 import {
   FaFacebookF,
@@ -129,7 +132,12 @@ export default function ProjectDetailClient({
       label: t("Footer.social.facebook"),
       Icon: FaFacebookF,
     },
-    { key: "x", href: social.x, label: t("Footer.social.twitter"), Icon: FaXTwitter },
+    {
+      key: "x",
+      href: social.x,
+      label: t("Footer.social.twitter"),
+      Icon: FaXTwitter,
+    },
   ];
 
   const displayLocale = currentLocale === "ar" ? "ar" : "en";
@@ -189,10 +197,10 @@ export default function ProjectDetailClient({
             <a
               href={arHref}
               className={`locale-link${currentLocale === "ar" ? " active" : ""}`}
-              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
+              aria-label="Ø§Ù„عØ±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              Ø¹
+              ع
             </a>
           </div>
 
@@ -347,7 +355,13 @@ export default function ProjectDetailClient({
           <div className="footer-brand">
             <div className="footer-brand-name">
               <FooterBrandLogo siteSettings={siteSettings} />
-            <span>{siteSettings?.brandName?.[locale === "ar" ? "ar" : "en"]?.trim() || siteSettings?.companyName || t("Navbar.brand")}</span>
+              <span>
+                {siteSettings?.brandName?.[
+                  locale === "ar" ? "ar" : "en"
+                ]?.trim() ||
+                  siteSettings?.companyName ||
+                  t("Navbar.brand")}
+              </span>
             </div>
             <p className="footer-tagline" id="project-detail-footer-tagline">
               {t("Footer.tagline")}
@@ -486,7 +500,10 @@ export default function ProjectDetailClient({
             <p className="footer-contact-prompt">
               {t("Footer.columns.contact.prompt")}
             </p>
-            <a className="footer-contact-cta" href={getProjectCtaUrl(siteSettings)}>
+            <a
+              className="footer-contact-cta"
+              href={getProjectCtaUrl(siteSettings)}
+            >
               {t("Footer.columns.contact.cta")}
               <ArrowUpRight size={16} />
             </a>
@@ -549,20 +566,3 @@ function GalleryImage({
     </figure>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

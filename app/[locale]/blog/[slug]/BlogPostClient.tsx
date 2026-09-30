@@ -95,7 +95,12 @@ export default function BlogPostClient({
       label: t("Footer.social.facebook"),
       Icon: FaFacebookF,
     },
-    { key: "x", href: social.x, label: t("Footer.social.twitter"), Icon: FaXTwitter },
+    {
+      key: "x",
+      href: social.x,
+      label: t("Footer.social.twitter"),
+      Icon: FaXTwitter,
+    },
   ];
 
   const displayLocale = currentLocale === "ar" ? "ar" : "en";
@@ -159,10 +164,10 @@ export default function BlogPostClient({
             <a
               href={arHref}
               className={`locale-link${currentLocale === "ar" ? " active" : ""}`}
-              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
+              aria-label="Ø§Ù„عØ±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              Ø¹
+              ع
             </a>
           </div>
 
@@ -542,5 +547,3 @@ function GalleryImage({
     </figure>
   );
 }
-
-

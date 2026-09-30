@@ -1,4 +1,10 @@
-﻿"use client";
+import {
+  getProjectCtaUrl,
+  getEngineersWhatsAppUrl,
+} from "@/src/lib/project-cta";
+import { FooterBrandLogo } from "@/components/FooterBrandLogo";
+import { Brand } from "@/components/Brand";
+("use client");
 
 import {
   FaFacebookF,
@@ -186,7 +192,12 @@ export default function PortfolioPageClient({
       label: t("Footer.social.facebook"),
       Icon: FaFacebookF,
     },
-    { key: "x", href: social.x, label: t("Footer.social.twitter"), Icon: FaXTwitter },
+    {
+      key: "x",
+      href: social.x,
+      label: t("Footer.social.twitter"),
+      Icon: FaXTwitter,
+    },
   ];
 
   return (
@@ -218,10 +229,10 @@ export default function PortfolioPageClient({
             <a
               href={arHref}
               className={`locale-link${locale === "ar" ? " active" : ""}`}
-              aria-label="Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©"
+              aria-label="Ø§Ù„عØ±Ø¨ÙŠØ©"
               data-locale="ar"
             >
-              Ø¹
+              ع
             </a>
           </div>
 
@@ -354,7 +365,10 @@ export default function PortfolioPageClient({
             <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>
               {t("ContactCta.primaryCta")} <ArrowUpRight size={16} />
             </a>
-            <a className="button-secondary" href={getEngineersWhatsAppUrl(siteSettings, locale)}>
+            <a
+              className="button-secondary"
+              href={getEngineersWhatsAppUrl(siteSettings)}
+            >
               {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
             </a>
           </div>
@@ -371,7 +385,13 @@ export default function PortfolioPageClient({
           <div className="footer-brand">
             <div className="footer-brand-name">
               <FooterBrandLogo siteSettings={siteSettings} />
-            <span>{siteSettings?.brandName?.[locale === "ar" ? "ar" : "en"]?.trim() || siteSettings?.companyName || t("Navbar.brand")}</span>
+              <span>
+                {siteSettings?.brandName?.[
+                  locale === "ar" ? "ar" : "en"
+                ]?.trim() ||
+                  siteSettings?.companyName ||
+                  t("Navbar.brand")}
+              </span>
             </div>
             <p className="footer-tagline" id="portfolio-footer-tagline">
               {t("Footer.tagline")}
@@ -493,7 +513,7 @@ export default function PortfolioPageClient({
                 </a>
               </li>
               <li>
-                <a href={getEngineersWhatsAppUrl(siteSettings, locale)}>
+                <a href={getEngineersWhatsAppUrl(siteSettings)}>
                   {t("Footer.columns.resources.links.contact")}
                 </a>
               </li>
@@ -510,7 +530,10 @@ export default function PortfolioPageClient({
             <p className="footer-contact-prompt">
               {t("Footer.columns.contact.prompt")}
             </p>
-            <a className="footer-contact-cta" href={getProjectCtaUrl(siteSettings)}>
+            <a
+              className="footer-contact-cta"
+              href={getProjectCtaUrl(siteSettings)}
+            >
               {t("Footer.columns.contact.cta")}
               <ArrowUpRight size={16} />
             </a>
@@ -535,26 +558,3 @@ export default function PortfolioPageClient({
     </main>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
