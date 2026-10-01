@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 
 import { getPublicFirestore } from "@/src/lib/firebase/admin";
 import type {
@@ -353,3 +353,4 @@ export async function getProjectIndustries(): Promise<string[]> {
 
   return Array.from(industries).sort();
 }
+

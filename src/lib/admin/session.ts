@@ -1,10 +1,11 @@
-import 'server-only'
+﻿import 'server-only'
 
 import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
-import { getAdminAuth, getAdminFirestore } from '@/src/lib/firebase/admin'
+import { getAdminFirestore } from '@/src/lib/firebase/admin'
+import { getAdminAuth } from '@/src/lib/firebase/auth'
 import type { AdminRole } from '@/src/lib/admin/roles'
 
 // Server-only session boundary (per docs/architecture/07_NEXTJS_FIREBASE_INTEGRATION.md).
@@ -12,7 +13,7 @@ import type { AdminRole } from '@/src/lib/admin/roles'
 // role read. Nothing here is ever shipped to the browser bundle.
 
 export const SESSION_COOKIE = 'projex_session'
-// 7 days — matches the 12-hour minimum but 7d gives a durable admin session.
+// 7 days â€” matches the 12-hour minimum but 7d gives a durable admin session.
 const SESSION_DURATION_MS = 60 * 60 * 24 * 7 * 1000
 
 export interface AdminSession {
@@ -39,7 +40,7 @@ export const verifySession = cache(async (): Promise<AdminSession | null> => {
   }
 
   // A valid token alone is insufficient: the Firebase user must ALSO have an
-  // active admins/{uid} doc. Authenticated ⊅ authorized.
+  // active admins/{uid} doc. Authenticated âŠ… authorized.
   try {
     const doc = await getAdminFirestore().collection('admins').doc(decoded.uid).get()
     const data = doc.data()
@@ -74,3 +75,4 @@ export async function createSession(idToken: string): Promise<{ ok: true } | { o
   }
   return { ok: true }
 }
+

@@ -1,6 +1,6 @@
 "use server";
 
-import { getPublicFirestore } from "@/src/lib/firebase/admin";
+import { getPublicFirestore } from "@/src/lib/firebase/auth";
 import type {
   ProjectRecord,
   ProjectMedia,

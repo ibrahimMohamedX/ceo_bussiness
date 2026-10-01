@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server'
+﻿import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 
-import { getAdminAuth, getAdminFirestore } from '@/src/lib/firebase/admin'
+import { getAdminFirestore } from '@/src/lib/firebase/admin'
+import { getAdminAuth } from '@/src/lib/firebase/auth'
 import { SESSION_COOKIE } from '@/src/lib/admin/session'
 
 // Server-only route handler that mints/clears the HttpOnly admin session cookie.
@@ -48,7 +49,7 @@ export async function POST(request: Request) {
   }
 
   if (!(await verifyIsActiveAdmin(uid))) {
-    // Valid Firebase user, but no active admins/{uid} doc → not authorized.
+    // Valid Firebase user, but no active admins/{uid} doc â†’ not authorized.
     return NextResponse.json({ error: 'unauthorized' }, { status: 403 })
   }
 
@@ -81,3 +82,4 @@ export async function DELETE() {
 export async function GET() {
   return NextResponse.json({ error: 'method not allowed' }, { status: 405 })
 }
+

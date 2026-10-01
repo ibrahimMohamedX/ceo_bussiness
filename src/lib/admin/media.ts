@@ -1,4 +1,4 @@
-import "server-only";
+﻿import "server-only";
 
 import { getAdminFirestore } from "@/src/lib/firebase/admin";
 import { can, type AdminFeature } from "@/src/lib/admin/roles";
@@ -73,7 +73,7 @@ export interface MediaLibraryInput {
   ownerType: MediaOwnerType;
   ownerId?: string;
   // Asset identity: Cloudinary (publicId + resourceType) or legacy Firebase
-  // storagePath. At least one is required — see resolveMediaIdentity().
+  // storagePath. At least one is required â€” see resolveMediaIdentity().
   storagePath?: string;
   publicId?: string;
   resourceType?: CloudinaryResourceType;
@@ -206,7 +206,7 @@ export async function createProjectMedia(
     updatedAt: now,
   });
 
-  // Global media/ library index (docs/architecture/06_MEDIA_LIBRARY.md §4).
+  // Global media/ library index (docs/architecture/06_MEDIA_LIBRARY.md Â§4).
   // Use a deterministic doc id derived from the asset identity so re-registering
   // the same asset upserts instead of duplicating the index entry.
   await firestore()
@@ -322,8 +322,8 @@ export async function reorderProjectMedia(
 
 /**
  * Delete a project media item after reference checks (per
- * docs/architecture/06_MEDIA_LIBRARY.md §8). This removes Firestore metadata but
- * NOT the underlying binary — callers should also delete the Cloudinary asset
+ * docs/architecture/06_MEDIA_LIBRARY.md Â§8). This removes Firestore metadata but
+ * NOT the underlying binary â€” callers should also delete the Cloudinary asset
  * (and any legacy Firebase object) and, if
  * it was the cover, clear the project's coverMediaId.
  */
@@ -455,7 +455,7 @@ export async function deleteProjectMedia(
  * Register a blog post media subcollection doc (blogPosts/{id}/media/{mediaId})
  * and mirror it in the global media/ library index with ownerType 'blog'.
  * Enforces the storage path convention media/blog/{postId}/... for every blog
- * binary — a blog post is its own owner type, NOT a project.
+ * binary â€” a blog post is its own owner type, NOT a project.
  */
 export async function createBlogMedia(
   session: AdminSession | null,
@@ -491,7 +491,7 @@ export async function createBlogMedia(
     updatedAt: now,
   });
 
-  // Global media/ library index (docs/architecture/06_MEDIA_LIBRARY.md §4).
+  // Global media/ library index (docs/architecture/06_MEDIA_LIBRARY.md Â§4).
   // Use a deterministic doc id derived from the asset identity so re-registering
   // the same asset upserts instead of duplicating the index entry.
   await firestore()
@@ -607,8 +607,8 @@ export async function reorderBlogMedia(
 
 /**
  * Delete a blog post media item after reference checks (per
- * docs/architecture/06_MEDIA_LIBRARY.md §8). This removes Firestore metadata but
- * NOT the underlying binary — callers should also delete the Cloudinary asset
+ * docs/architecture/06_MEDIA_LIBRARY.md Â§8). This removes Firestore metadata but
+ * NOT the underlying binary â€” callers should also delete the Cloudinary asset
  * (and any legacy Firebase object) and, if
  * it was the cover, clear the post's coverMediaId.
  */
@@ -732,7 +732,7 @@ export async function listMediaLibrary(
  * Delete a media item from the global library index (media/{mediaId}) plus the
  * source subcollection doc (e.g. projects/{id}/media/{mediaId}) that mirrors it,
  * and return the asset identity so the caller can remove the binary. Reference
- * checks per docs/architecture/06_MEDIA_LIBRARY.md §8: refuse if another entity
+ * checks per docs/architecture/06_MEDIA_LIBRARY.md Â§8: refuse if another entity
  * still references the asset (a cover reference). Matching is done on publicId
  * (Cloudinary era) or storagePath (legacy), so both kinds of record are handled.
  */
@@ -794,7 +794,7 @@ export async function deleteMediaLibrary(
   const mirrorDocs = await findMirrorDocs();
 
   // Reference check: refuse deletion while this asset is still the cover of its
-  // owning project or blog post (docs/architecture/06_MEDIA_LIBRARY.md §8).
+  // owning project or blog post (docs/architecture/06_MEDIA_LIBRARY.md Â§8).
   if (ownerCollection && ownerId) {
     const ownerSnap = await firestore()
       .collection(ownerCollection)
@@ -829,3 +829,4 @@ function cleanPartial(
   if (typeof v.ar === "string") out.ar = v.ar.trim();
   return out.en || out.ar ? out : null;
 }
+

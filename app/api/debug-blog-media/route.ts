@@ -8,7 +8,7 @@ export async function GET() {
     if (!db) {
       return NextResponse.json(
         { error: "Database unavailable" },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -50,7 +50,7 @@ export async function GET() {
       {
         error: error instanceof Error ? error.message : String(error),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

@@ -1,4 +1,4 @@
-"use server";
+﻿"use server";
 
 import { getPublicFirestore } from "@/src/lib/firebase/admin";
 import type {
@@ -251,3 +251,4 @@ export async function getBlogPostTags(): Promise<string[]> {
 
   return Array.from(tags).sort();
 }
+

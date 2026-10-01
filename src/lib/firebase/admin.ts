@@ -1,4 +1,4 @@
-import "server-only";
+﻿import "server-only";
 export const runtime = "nodejs";
 
 // SERVER-ONLY module. Do not import from any 'use client' component or any
@@ -12,7 +12,6 @@ import {
   type App,
   type ServiceAccount,
 } from "firebase-admin/app";
-import { getAuth, type Auth } from "firebase-admin/auth";
 import { getFirestore, type Firestore } from "firebase-admin/firestore";
 import { getStorage, type Storage } from "firebase-admin/storage";
 
@@ -45,7 +44,7 @@ function serviceAccount(): ServiceAccount {
  * True when all server-only Admin SDK credentials are present. The public data
  * layer uses this to degrade gracefully (render empty) instead of throwing a
  * 500 when the Admin SDK is not yet configured locally. Admin/auth paths must
- * NOT use this — they require real credentials and should surface the error.
+ * NOT use this â€” they require real credentials and should surface the error.
  */
 export function hasAdminCredentials(): boolean {
   return Boolean(
@@ -68,11 +67,6 @@ export function getFirebaseAdmin(): App {
     "server",
   );
 }
-
-export function getAdminAuth(): Auth {
-  return getAuth(getFirebaseAdmin());
-}
-
 export function getAdminFirestore(): Firestore {
   return getFirestore(getFirebaseAdmin());
 }
@@ -80,7 +74,7 @@ export function getAdminFirestore(): Firestore {
 /**
  * Firestore for the PUBLIC data layer only. Returns null when the Admin SDK is
  * unconfigured so public pages degrade to empty content instead of crashing.
- * Never use for admin/authenticated data access — those need real credentials.
+ * Never use for admin/authenticated data access â€” those need real credentials.
  */
 export function getPublicFirestore(): Firestore | null {
   if (!hasAdminCredentials()) return null;
@@ -90,3 +84,4 @@ export function getPublicFirestore(): Firestore | null {
 export function getAdminStorage(): Storage {
   return getStorage(getFirebaseAdmin());
 }
+

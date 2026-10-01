@@ -1,8 +1,9 @@
-import { firebaseAuth } from './client'
+﻿import "server-only";
 
-export type AuthRole = 'super_admin' | 'admin' | 'editor' | 'support'
+import { getAuth, type Auth } from "firebase-admin/auth";
+import { getFirebaseAdmin } from "./admin";
 
-// Client-side re-export of the browser Firebase Auth instance.
-// Route/role protection on the server uses the Admin SDK (see admin.ts).
-// Biome: reads cleanly, no client leaks.
-export { firebaseAuth as auth }
+export function getAdminAuth(): Auth {
+  return getAuth(getFirebaseAdmin());
+}
+
