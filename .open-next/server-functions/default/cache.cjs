@@ -17,7 +17,7 @@ var __copyProps = (to, from, except, desc) => {
 };
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/adapters/cache.js
+// node_modules/@opennextjs/aws/dist/adapters/cache.js
 var cache_exports = {};
 __export(cache_exports, {
   SOFT_TAG_PREFIX: () => SOFT_TAG_PREFIX,
@@ -25,7 +25,7 @@ __export(cache_exports, {
 });
 module.exports = __toCommonJS(cache_exports);
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/utils/error.js
+// node_modules/@opennextjs/aws/dist/utils/error.js
 function isOpenNextError(e) {
   try {
     return "__openNextInternal" in e;
@@ -34,7 +34,7 @@ function isOpenNextError(e) {
   }
 }
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/adapters/logger.js
+// node_modules/@opennextjs/aws/dist/adapters/logger.js
 function debug(...args) {
   if (globalThis.openNextDebug) {
     console.log(...args);
@@ -84,10 +84,10 @@ function getOpenNextErrorLogLevel() {
   }
 }
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/utils/cacheHeaders.js
+// node_modules/@opennextjs/aws/dist/utils/cacheHeaders.js
 var CACHE_TAGS_HEADER = "x-next-cache-tags";
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/utils/semver.js
+// node_modules/@opennextjs/aws/dist/utils/semver.js
 function compareSemver(v1, operator, v2) {
   let versionDiff = 0;
   if (v1 === "latest") {
@@ -128,7 +128,7 @@ function compareSemver(v1, operator, v2) {
   }
 }
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/utils/cache.js
+// node_modules/@opennextjs/aws/dist/utils/cache.js
 async function isStale(key, tags, lastModified) {
   if (!compareSemver(globalThis.nextVersion, ">=", "16.0.0")) {
     return false;
@@ -212,7 +212,7 @@ async function writeTags(tags) {
   await globalThis.tagCache.writeTags(tagsToWrite);
 }
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/utils/binary.js
+// node_modules/@opennextjs/aws/dist/utils/binary.js
 var commonBinaryMimeTypes = /* @__PURE__ */ new Set([
   "application/octet-stream",
   // Docs
@@ -280,7 +280,7 @@ function isBinaryContentType(contentType) {
   return commonBinaryMimeTypes.has(value);
 }
 
-// node_modules/.pnpm/@opennextjs+aws@4.1.6_next@_b4f60e9ac0d3e28f77f29fe834ed87b9/node_modules/@opennextjs/aws/dist/adapters/cache.js
+// node_modules/@opennextjs/aws/dist/adapters/cache.js
 var SOFT_TAG_PREFIX = "_N_T_/";
 function isFetchCache(options) {
   if (typeof options === "boolean") {
