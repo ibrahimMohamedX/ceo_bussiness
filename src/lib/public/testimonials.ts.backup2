@@ -1,7 +1,6 @@
-'use server'
+﻿'use server'
 
-import { getPublicFirestore } from '@/src/lib/firebase/admin'
-import { Timestamp } from 'firebase-admin/firestore'
+import { publicDb } from "@/src/lib/firebase/public";
 import type { TestimonialRecord, BilingualText, BilingualTextOptional } from '@/src/lib/admin/testimonials'
 
 /**
@@ -44,7 +43,7 @@ function toPublicTestimonial(record: TestimonialRecord): PublicTestimonial {
  * Server-side only - uses Admin SDK via firebase-admin
  */
 export async function getPublishedTestimonials(): Promise<PublicTestimonial[]> {
-  const db = getPublicFirestore()
+  const db = publicDb
   if (!db) return []
   const snapshot = await db
     .collection('testimonials')
@@ -65,7 +64,7 @@ export async function getPublishedTestimonials(): Promise<PublicTestimonial[]> {
  * Limited to featured posts, ordered by sortOrder
  */
 export async function getFeaturedTestimonials(limitCount = 3): Promise<PublicTestimonial[]> {
-  const db = getPublicFirestore()
+  const db = publicDb
   if (!db) return []
   const snapshot = await db
     .collection('testimonials')

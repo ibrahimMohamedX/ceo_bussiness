@@ -7,6 +7,9 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+
+  serverExternalPackages: ["firebase-admin", "jose", "jwks-rsa"],
+
   images: {
     remotePatterns: [
       {
@@ -16,7 +19,6 @@ const nextConfig = {
     ],
     qualities: [75, 78, 80, 85],
   },
-  serverExternalPackages: ["firebase-admin", "jwks-rsa", "jose"],
 };
 
 export default withNextIntl(nextConfig);
