@@ -40,3 +40,4 @@ export const firebaseApp: FirebaseApp = app;
 export const firebaseAuth: Auth = getAuth(app);
 export const firebaseFirestore: Firestore = getFirestore(app);
 export const firebaseStorage: FirebaseStorage = getStorage(app);
+export const db = firebaseFirestore;
