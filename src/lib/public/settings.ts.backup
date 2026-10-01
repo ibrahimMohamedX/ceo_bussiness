@@ -1,7 +1,6 @@
 ﻿'use server'
 
-import { publicDb } from "@/src/lib/firebase/public";
-import { doc, getDoc } from "firebase/firestore";
+import { getPublicFirestore } from '@/src/lib/firebase/admin'
 
 export interface PublicSiteSettings {
   companyName: string
@@ -18,6 +17,7 @@ export interface PublicSiteSettings {
   brandName?: { en?: string; ar?: string }
   brandLogoPublicId?: string
   brandLogoResourceType?: 'image' | 'video'
+
   projectCtaUrl: string
   whatsappNumber: string
   whatsappMessageAr: string
@@ -32,12 +32,14 @@ const DEFAULT_WHATSAPP_MESSAGE_EN =
   "Hello, I'd like to get in touch with the Archai Solutions team."
 
 export async function getSiteSettings(): Promise<PublicSiteSettings | null> {
-  const ref = doc(publicDb, "siteSettings", "global")
-  const snapshot = await getDoc(ref)
+  const db = getPublicFirestore()
+  if (!db) return null
 
-  if (!snapshot.exists()) return null
+  const doc = await db.collection('siteSettings').doc('global').get()
+  if (!doc.exists) return null
 
-  const data = snapshot.data()
+  const data = doc.data()
+  if (!data) return null
 
   return {
     companyName: data.companyName ?? '',

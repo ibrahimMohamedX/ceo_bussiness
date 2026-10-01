@@ -1,6 +1,6 @@
-﻿"use server";
+"use server";
 
-import { publicDb } from "@/src/lib/firebase/public";
+import { getPublicFirestore } from "@/src/lib/firebase/admin";
 import type {
   BlogPostRecord,
   BlogPostMediaKind,
@@ -174,7 +174,7 @@ async function toPublicBlogPost(
 }
 
 export async function getPublishedBlogPosts(): Promise<PublicBlogPost[]> {
-  const db = publicDb;
+  const db = getPublicFirestore();
   if (!db) return [];
 
   const snapshot = await db
@@ -190,7 +190,7 @@ export async function getPublishedBlogPosts(): Promise<PublicBlogPost[]> {
 export async function getFeaturedBlogPosts(
   limitCount = 3,
 ): Promise<PublicBlogPost[]> {
-  const db = publicDb;
+  const db = getPublicFirestore();
   if (!db) return [];
 
   const snapshot = await db
@@ -207,7 +207,7 @@ export async function getFeaturedBlogPosts(
 export async function getPublishedBlogPostBySlug(
   slug: string,
 ): Promise<PublicBlogPost | null> {
-  const db = publicDb;
+  const db = getPublicFirestore();
   if (!db) return null;
 
   const snapshot = await db
@@ -251,4 +251,3 @@ export async function getBlogPostTags(): Promise<string[]> {
 
   return Array.from(tags).sort();
 }
-

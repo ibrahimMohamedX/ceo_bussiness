@@ -1,10 +1,10 @@
-﻿'use server'
+'use server'
 
-import { publicDb } from "@/src/lib/firebase/public";
+import { getPublicFirestore } from '@/src/lib/firebase/admin'
 import type { FaqRecord } from '@/src/lib/admin/faq'
 
 /**
- * Public-facing FAQ entry â€” published only
+ * Public-facing FAQ entry — published only
  */
 export interface PublicFaq {
   id: string
@@ -31,7 +31,7 @@ function toPublicFaq(faq: FaqRecord): PublicFaq {
  * Used by the public homepage FAQ section
  */
 export async function getPublishedFaqs(): Promise<PublicFaq[]> {
-  const db = publicDb
+  const db = getPublicFirestore()
   if (!db) return []
   const snapshot = await db
     .collection('faqs')

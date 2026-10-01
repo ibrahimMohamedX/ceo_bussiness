@@ -1,6 +1,6 @@
-﻿'use server'
+'use server'
 
-import { publicDb } from "@/src/lib/firebase/public";
+import { getPublicFirestore } from '@/src/lib/firebase/admin'
 import type { ServiceRecord, BilingualText } from '@/src/lib/admin/services'
 
 /**
@@ -20,6 +20,8 @@ export interface PublicService {
   sortOrder: number
   updatedAt: string
 }
+
+import { Timestamp } from 'firebase-admin/firestore'
 
 /**
  * Converts admin ServiceRecord to public PublicService
@@ -52,7 +54,7 @@ function toPublicService(record: ServiceRecord): PublicService {
  * Server-side only - uses Admin SDK via firebase-admin
  */
 export async function getPublishedServices(): Promise<PublicService[]> {
-  const db = publicDb
+  const db = getPublicFirestore()
   if (!db) return []
   const snapshot = await db
     .collection('services')
@@ -73,7 +75,7 @@ export async function getPublishedServices(): Promise<PublicService[]> {
  * Limited to featured posts, ordered by sortOrder
  */
 export async function getFeaturedServices(limitCount = 3): Promise<PublicService[]> {
-  const db = publicDb
+  const db = getPublicFirestore()
   if (!db) return []
   const snapshot = await db
     .collection('services')
@@ -96,7 +98,7 @@ export async function getFeaturedServices(limitCount = 3): Promise<PublicService
  * Returns null if not found or not published
  */
 export async function getPublishedServiceBySlug(slug: string): Promise<PublicService | null> {
-  const db = publicDb
+  const db = getPublicFirestore()
   if (!db) return null
   const snapshot = await db
     .collection('services')

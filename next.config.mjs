@@ -17,9 +17,6 @@ const nextConfig = {
     qualities: [75, 78, 80, 85],
   },
   serverExternalPackages: ["firebase-admin", "jwks-rsa", "jose"],
-  experimental: {
-    serverComponentsExternalPackages: ["firebase-admin"],
-  },
 };
 
 export default withNextIntl(nextConfig);

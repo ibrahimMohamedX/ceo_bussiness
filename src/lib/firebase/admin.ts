@@ -1,4 +1,5 @@
 import "server-only";
+export const runtime = "nodejs";
 
 // SERVER-ONLY module. Do not import from any 'use client' component or any
 // module that is reachable from the client bundle. See client.ts for the

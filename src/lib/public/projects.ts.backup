@@ -1,6 +1,6 @@
-﻿"use server";
+"use server";
 
-import { publicDb } from "@/src/lib/firebase/public";
+import { getPublicFirestore } from "@/src/lib/firebase/admin";
 import type {
   ProjectRecord,
   ProjectMedia,
@@ -227,7 +227,7 @@ function toPublicProject(record: ProjectRecord): PublicProject {
  * Fetches all published projects for public pages.
  */
 export async function getPublishedProjects(): Promise<PublicProject[]> {
-  const db = publicDb;
+  const db = getPublicFirestore();
 
   if (!db) return [];
 
@@ -254,7 +254,7 @@ export async function getPublishedProjects(): Promise<PublicProject[]> {
 export async function getFeaturedProjects(
   limitCount = 3,
 ): Promise<PublicProject[]> {
-  const db = publicDb;
+  const db = getPublicFirestore();
 
   if (!db) return [];
 
@@ -283,7 +283,7 @@ export async function getFeaturedProjects(
 export async function getPublishedProjectBySlug(
   slug: string,
 ): Promise<PublicProject | null> {
-  const db = publicDb;
+  const db = getPublicFirestore();
 
   if (!db) return null;
 
@@ -353,4 +353,3 @@ export async function getProjectIndustries(): Promise<string[]> {
 
   return Array.from(industries).sort();
 }
-
