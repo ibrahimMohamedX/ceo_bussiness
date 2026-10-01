@@ -4,6 +4,14 @@ import { getPublicFirestore } from "@/src/lib/firebase/admin";
 export async function GET() {
   try {
     const db = getPublicFirestore();
+
+    if (!db) {
+      return NextResponse.json(
+        { error: "Database unavailable" },
+        { status: 500 }
+      );
+    }
+
     const posts = await db.collection("blogPosts").get();
 
     const result = [];
@@ -46,3 +54,4 @@ export async function GET() {
     );
   }
 }
+
