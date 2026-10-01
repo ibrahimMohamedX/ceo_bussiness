@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/src/lib/admin/session'
+﻿import { requireAdmin } from '@/src/lib/admin/session'
 import { listProjects } from '@/src/lib/admin/projects'
 import ProjectsTableClient from './ProjectsTableClient'
 
@@ -10,3 +10,7 @@ export default async function ProjectsPage() {
 
   return <ProjectsTableClient projects={projects} />
 }
+
+
+
+

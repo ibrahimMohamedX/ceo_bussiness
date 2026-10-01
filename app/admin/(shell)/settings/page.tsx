@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/src/lib/admin/session'
+﻿import { requireAdmin } from '@/src/lib/admin/session'
 import { getSiteSettings } from '@/src/lib/admin/settings'
 import SettingsEditorClient from '@/components/admin/SettingsEditorClient'
 
@@ -10,3 +10,7 @@ export default async function SettingsPage() {
 
   return <SettingsEditorClient initial={settings} />
 }
+
+
+
+

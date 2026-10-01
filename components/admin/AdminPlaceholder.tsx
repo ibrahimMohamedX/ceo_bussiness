@@ -1,5 +1,5 @@
-// Structural placeholder presentational card. Phase 2 ships the dashboard shell
-// only — every section renders an empty state, never fake data or fake numbers.
+﻿// Structural placeholder presentational card. Phase 2 ships the dashboard shell
+// only â€” every section renders an empty state, never fake data or fake numbers.
 
 export function AdminEmptyState({
   title,
@@ -17,3 +17,7 @@ export function AdminEmptyState({
     </div>
   )
 }
+
+
+
+

@@ -1,11 +1,11 @@
-'use client'
+﻿'use client'
 
 // Admin-scoped theme toggle. The public theme lives in app/[locale]/Providers.tsx
 // and mutates document.documentElement via the 'theme' localStorage key. To keep
 // zero cross-talk between the two trees, the admin uses its OWN storage key and
 // toggles the `light` class directly on the admin <html> element (the design
 // tokens in app/globals.css scope light mode through `html.light`). This is not
-// a second global provider — it never wraps the public tree.
+// a second global provider â€” it never wraps the public tree.
 //
 // The admin <html> participates in global font/background styles, but its class
 // is managed here and restored on mount to avoid a hydration flash.
@@ -59,3 +59,7 @@ export function AdminThemeProvider({ children }: { children: ReactNode }) {
     </AdminThemeContext.Provider>
   )
 }
+
+
+
+

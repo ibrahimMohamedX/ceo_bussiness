@@ -1,6 +1,6 @@
-"use client";
+﻿"use client";
 
-// Admin sidebar — structural navigation only. Every link points at a real
+// Admin sidebar â€” structural navigation only. Every link points at a real
 // placeholder page under app/admin/(shell)/. There is deliberately no CRUD and
 // no fake page behind any entry. Layout is responsive and the drawer is driven
 // by the parent shell so the topbar can open/close it.
@@ -99,7 +99,7 @@ export function AdminSidebar({
 }) {
   return (
     <>
-      {/* Overlay — closes the mobile drawer when tapping outside */}
+      {/* Overlay â€” closes the mobile drawer when tapping outside */}
       <div
         aria-hidden
         onClick={onClose}
@@ -122,3 +122,8 @@ export function AdminSidebar({
     </>
   );
 }
+
+
+
+
+

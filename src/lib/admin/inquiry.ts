@@ -1,11 +1,11 @@
-import 'server-only'
+﻿import 'server-only'
 import { getAdminFirestore } from '@/src/lib/firebase/admin'
 import { can, type AdminFeature } from '@/src/lib/admin/roles'
 import type { AdminSession } from '@/src/lib/admin/session'
 import { FieldValue, Timestamp } from 'firebase-admin/firestore'
 
 /**
- * Firestore inquiries/{inquiryId} — matches 01_FIREBASE_DATA_MODEL.md §11 and
+ * Firestore inquiries/{inquiryId} â€” matches 01_FIREBASE_DATA_MODEL.md Â§11 and
  * 05_CONTACT_INQUIRIES.md. Inbound contact-form submissions, created via the
  * public server endpoint (src/lib/public/inquiry.ts) and managed here in the
  * admin dashboard. Unlike FAQ (bilingual), an inquiry carries a single `locale`.
@@ -286,3 +286,7 @@ export async function deleteInquiry(session: AdminSession | null, id: string): P
   if (!existing.exists) throw createApiError(404, 'Inquiry not found.')
   await docRef.delete()
 }
+
+
+
+

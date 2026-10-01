@@ -61,3 +61,8 @@ export function Brand({ locale, home, siteSettings }: BrandProps) {
     </a>
   )
 }
+
+
+
+
+

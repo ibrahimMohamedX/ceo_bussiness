@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -24,7 +24,7 @@ const OWNER_FILTERS: { value: MediaOwnerType | 'all'; label: string }[] = [
 ]
 
 function formatBytes(bytes?: number | null): string {
-  if (typeof bytes !== 'number' || Number.isNaN(bytes)) return '—'
+  if (typeof bytes !== 'number' || Number.isNaN(bytes)) return 'â€”'
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
@@ -34,7 +34,7 @@ function formatBytes(bytes?: number | null): string {
 //
 // Cloudinary records resolve synchronously from publicId (delivery URLs are
 // public and need no credentials). Legacy records that only carry a Firebase
-// storagePath still need getDownloadURL — retained solely for pre-migration
+// storagePath still need getDownloadURL â€” retained solely for pre-migration
 // documents, never used for anything newly uploaded.
 const getStoragePath = (m: MediaLibraryItem): string => m.storagePath ?? ''
 const getPublicId = (m: MediaLibraryItem): string => m.publicId ?? ''
@@ -180,7 +180,7 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center gap-2 bg-black/20 text-[12px] text-[var(--muted-foreground)]">
-                    <span className="text-base">🖼</span>
+                    <span className="text-base">ðŸ–¼</span>
                     <span className="min-w-0 truncate font-mono text-[10px]" title={m.fileName}>
                       {m.fileName}
                     </span>
@@ -197,7 +197,7 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
                 </div>
                 <div className="flex items-center gap-2 text-[11px] text-[var(--muted-foreground)]">
                   <span>{formatBytes(m.sizeBytes)}</span>
-                  {m.width && m.height ? <span>· {m.width}×{m.height}</span> : null}
+                  {m.width && m.height ? <span>Â· {m.width}Ã—{m.height}</span> : null}
                 </div>
 
                 <div className="flex items-center gap-1.5 pt-1">
@@ -238,3 +238,7 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
     </div>
   )
 }
+
+
+
+

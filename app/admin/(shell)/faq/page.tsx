@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/src/lib/admin/session'
+﻿import { requireAdmin } from '@/src/lib/admin/session'
 import { getAllFaqs } from '@/src/lib/admin/faq'
 import FaqTableClient from './FaqTableClient'
 
@@ -10,3 +10,8 @@ export default async function FaqPage() {
 
   return <FaqTableClient faqs={faqs} />
 }
+
+
+
+
+

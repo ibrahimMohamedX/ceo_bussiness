@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 // Reusable admin table component for listing CRUD resources.
 // Keeps column/row rendering consistent across Projects, Blog, Services, etc.
@@ -66,3 +66,7 @@ export function AdminTable<T>({
     </div>
   )
 }
+
+
+
+

@@ -1,4 +1,4 @@
-// Client-safe Cloudinary delivery URL builder.
+﻿// Client-safe Cloudinary delivery URL builder.
 //
 // Cloudinary delivery URLs are public and require NO credentials, so this module
 // is safe to import from client components. Only the cloud NAME is needed, and it
@@ -34,3 +34,8 @@ export function cloudinaryUrl(
     .join('/')
   return `https://res.cloudinary.com/${CLOUD_NAME}/${resourceType}/upload/${path}`
 }
+
+
+
+
+

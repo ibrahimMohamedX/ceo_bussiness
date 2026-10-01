@@ -1,11 +1,11 @@
-import 'server-only'
+﻿import 'server-only'
 import { getAdminFirestore } from '@/src/lib/firebase/admin'
 import { can, type AdminFeature } from '@/src/lib/admin/roles'
 import type { AdminSession } from '@/src/lib/admin/session'
 import { FieldValue, Timestamp } from 'firebase-admin/firestore'
 
 /**
- * Firestore Services collection record — matches 01_FIREBASE_DATA_MODEL.md §7
+ * Firestore Services collection record â€” matches 01_FIREBASE_DATA_MODEL.md Â§7
  * Admin-facing, includes all statuses (draft/published/archived) and internal fields
  */
 export interface ServiceRecord {
@@ -24,7 +24,7 @@ export interface ServiceRecord {
 }
 
 /**
- * Bilingual text with required en/ar — used for title, summary
+ * Bilingual text with required en/ar â€” used for title, summary
  */
 export interface BilingualText {
   en: string
@@ -32,7 +32,7 @@ export interface BilingualText {
 }
 
 /**
- * Bilingual text with optional en/ar — used for description
+ * Bilingual text with optional en/ar â€” used for description
  */
 export interface BilingualTextOptional {
   en?: string
@@ -291,3 +291,7 @@ function validateInput(input: CreateServiceInput): void {
   if (input.status && !['draft', 'published', 'archived'].includes(input.status))
     throw createApiError(400, 'Invalid status.')
 }
+
+
+
+

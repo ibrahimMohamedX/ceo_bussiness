@@ -1,9 +1,9 @@
-'use client'
+﻿'use client'
 
 // Reusable project create/edit form. Shared by /admin/projects/new (create mode,
 // no existing record is loaded) and /admin/projects/[id] (edit mode, requires a
 // valid id). The id is passed explicitly rather than read from useParams(), so the
-// component is not bound to a specific route — the Finding 1.6 root cause was the
+// component is not bound to a specific route â€” the Finding 1.6 root cause was the
 // old dynamic-import of the [id] page, whose useParams().id resolved to undefined
 // on /new.
 
@@ -228,7 +228,7 @@ export function ProjectForm({ projectId }: { projectId: string }) {
             href="/admin/projects"
             className="rounded border border-[var(--border)] px-3 py-1.5 text-[12px] text-[var(--muted-foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)]"
           >
-            ← Back
+            â† Back
           </a>
         )}
       </div>
@@ -423,7 +423,7 @@ export function ProjectForm({ projectId }: { projectId: string }) {
             Cancel
           </a>
           <button type="submit" className={cls.btnPrimary} disabled={busy}>
-            {busy ? 'Saving…' : isNew ? 'Create project' : 'Save changes'}
+            {busy ? 'Savingâ€¦' : isNew ? 'Create project' : 'Save changes'}
           </button>
         </div>
       </form>
@@ -440,3 +440,7 @@ export function ProjectForm({ projectId }: { projectId: string }) {
     </div>
   )
 }
+
+
+
+

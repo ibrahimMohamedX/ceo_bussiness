@@ -1,11 +1,11 @@
-import 'server-only'
+﻿import 'server-only'
 import { getAdminFirestore } from '@/src/lib/firebase/admin'
 import { can, type AdminFeature } from '@/src/lib/admin/roles'
 import type { AdminSession } from '@/src/lib/admin/session'
 import { FieldValue, Timestamp } from 'firebase-admin/firestore'
 
 /**
- * Firestore FAQs collection record — matches 01_FIREBASE_DATA_MODEL.md §10
+ * Firestore FAQs collection record â€” matches 01_FIREBASE_DATA_MODEL.md Â§10
  * Admin-facing, includes all statuses (draft/published/archived) and internal fields
  */
 export interface FaqRecord {
@@ -20,7 +20,7 @@ export interface FaqRecord {
 }
 
 /**
- * Bilingual text with required en/ar — used for question, answer
+ * Bilingual text with required en/ar â€” used for question, answer
  */
 export interface BilingualText {
   en: string
@@ -217,3 +217,7 @@ function validateInput(input: CreateFaqInput): void {
   if (input.status && !['draft', 'published', 'archived'].includes(input.status))
     throw createApiError(400, 'Invalid status.')
 }
+
+
+
+

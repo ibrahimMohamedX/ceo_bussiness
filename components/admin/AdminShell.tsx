@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 // Client shell frame for the admin. Holds the mobile-drawer state and lays out
 // the sidebar rail + topbar + main outlet. Kept client-side so the drawer works
@@ -21,3 +21,7 @@ export function AdminShell({ identity, children }: { identity: AdminIdentity; ch
     </div>
   )
 }
+
+
+
+

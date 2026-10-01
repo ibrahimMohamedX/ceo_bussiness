@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -93,7 +93,7 @@ export default function BlogPostsTableClient({ posts }: BlogPostsTableClientProp
                     month: 'short',
                     day: 'numeric',
                   })
-                : <span className="text-[var(--muted-foreground)]/50">—</span>,
+                : <span className="text-[var(--muted-foreground)]/50">â€”</span>,
             },
             {
               key: 'actions',
@@ -131,3 +131,7 @@ export default function BlogPostsTableClient({ posts }: BlogPostsTableClientProp
     </div>
   )
 }
+
+
+
+

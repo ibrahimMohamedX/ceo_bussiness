@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+﻿import { NextResponse } from 'next/server'
 
 import { verifySession } from '@/src/lib/admin/session'
 import { can } from '@/src/lib/admin/roles'
@@ -137,7 +137,7 @@ export async function POST(request: Request) {
       : 'image'
 
     // Config sanity check before the SDK round-trip. Presence alone is not
-    // enough — a secret that does not match the key fails only at the API, so
+    // enough â€” a secret that does not match the key fails only at the API, so
     // log the shapes (never the values) to make a copy-paste slip obvious.
     const cfgName = process.env.CLOUDINARY_CLOUD_NAME
     const cfgKey = process.env.CLOUDINARY_API_KEY
@@ -204,3 +204,8 @@ export async function DELETE(request: Request) {
     return toError(e)
   }
 }
+
+
+
+
+

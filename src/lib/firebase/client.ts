@@ -1,4 +1,4 @@
-import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
+﻿import { initializeApp, getApps, type FirebaseApp } from "firebase/app";
 import { getAuth, type Auth } from "firebase/auth";
 import { getFirestore, type Firestore } from "firebase/firestore";
 import { getStorage, type FirebaseStorage } from "firebase/storage";
@@ -6,8 +6,8 @@ import { getStorage, type FirebaseStorage } from "firebase/storage";
 import type { FirebaseOptions } from "firebase/app";
 
 // Public, browser-safe Firebase web configuration, read from NEXT_PUBLIC_*
-// environment variables (defined in .env.local — see .env.example for the
-// template). These are the Firebase web-app public config keys only — no
+// environment variables (defined in .env.local â€” see .env.example for the
+// template). These are the Firebase web-app public config keys only â€” no
 // service-account or admin credentials are referenced here. Never import this
 // module from server/admin code; use ./admin for the Admin SDK.
 //
@@ -41,3 +41,8 @@ export const firebaseAuth: Auth = getAuth(app);
 export const firebaseFirestore: Firestore = getFirestore(app);
 export const firebaseStorage: FirebaseStorage = getStorage(app);
 export const db = firebaseFirestore;
+
+
+
+
+

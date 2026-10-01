@@ -1,13 +1,13 @@
-'use server'
+﻿'use server'
 
 import { getAdminFirestore } from '@/src/lib/firebase/admin'
 import { FieldValue } from 'firebase-admin/firestore'
 
 /**
- * Public-facing inquiry submission — the controlled server path for inbound
+ * Public-facing inquiry submission â€” the controlled server path for inbound
  * contact forms (05_CONTACT_INQUIRIES.md). Validation + anti-spam honeypot live
  * here, NOT in the client; the browser never writes Firestore directly and
- * `inquiries` is never publicly queryable (03_FIREBASE_SECURITY.md §5).
+ * `inquiries` is never publicly queryable (03_FIREBASE_SECURITY.md Â§5).
  */
 
 export type InquiryStatus =
@@ -37,7 +37,7 @@ export interface SubmitInquiryInput {
   attachmentMediaIds?: string[]
   sourcePath?: string
   locale: InquiryLocale
-  /** Honeypot — must be empty for a human submission. */
+  /** Honeypot â€” must be empty for a human submission. */
   website?: string
 }
 
@@ -113,3 +113,7 @@ function validatePublicInput(input: SubmitInquiryInput): void {
   if (input.attachmentMediaIds && input.attachmentMediaIds.length > MAX_ATTACHMENTS)
     throw new Error('Too many attachments.')
 }
+
+
+
+

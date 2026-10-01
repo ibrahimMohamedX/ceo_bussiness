@@ -1,4 +1,4 @@
-import { AdminEmptyState } from '@/components/admin/AdminPlaceholder'
+﻿import { AdminEmptyState } from '@/components/admin/AdminPlaceholder'
 
 const SECTIONS = [
   {
@@ -29,7 +29,7 @@ export default function OverviewPage() {
       <div>
         <h2 className="text-lg font-semibold tracking-tight text-[var(--foreground)]">Workspace overview</h2>
         <p className="mt-1 text-[13px] text-[var(--muted-foreground)]">
-          PROJEX Console is set up and ready. Sections below list what each area will hold — no data
+          PROJEX Console is set up and ready. Sections below list what each area will hold â€” no data
           has been migrated yet.
         </p>
       </div>
@@ -52,8 +52,12 @@ export default function OverviewPage() {
 
       <AdminEmptyState
         title="Nothing here yet"
-        description="This is an empty state — real figures will appear once content and inquiry data have been wired up in a later phase."
+        description="This is an empty state â€” real figures will appear once content and inquiry data have been wired up in a later phase."
       />
     </div>
   )
 }
+
+
+
+

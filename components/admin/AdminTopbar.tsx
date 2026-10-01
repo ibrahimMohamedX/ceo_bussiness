@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 // Admin topbar: current section title (derived from the URL segment), sidebar
 // toggle for mobile, admin identity, theme toggle, and logout.
@@ -57,14 +57,14 @@ export function AdminTopbar({
       <h1 className="text-sm font-semibold tracking-tight">{titleFor(pathname)}</h1>
 
       <div className="ml-auto flex items-center gap-2">
-        {/* Theme toggle — admin-scoped, separate storage key from the public site */}
+        {/* Theme toggle â€” admin-scoped, separate storage key from the public site */}
         <button
           type="button"
           onClick={toggle}
           aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
           className="flex size-9 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
         >
-          {theme === 'dark' ? '☀' : '☾'}
+          {theme === 'dark' ? 'â˜€' : 'â˜¾'}
         </button>
 
         {/* Admin identity */}
@@ -92,3 +92,7 @@ export function AdminTopbar({
     </header>
   )
 }
+
+
+
+

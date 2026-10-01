@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -66,13 +66,13 @@ export default function FaqTableClient({ faqs }: FaqTableClientProps) {
         rows={faqs.map((f) => ({
           id: f.id,
           cells: [
-            { key: 'question', content: <span className="font-medium line-clamp-1">{f.question?.en ?? '—'}</span> },
+            { key: 'question', content: <span className="font-medium line-clamp-1">{f.question?.en ?? 'â€”'}</span> },
             {
               key: 'category',
               content: f.category ? (
                 <span className="text-[var(--muted-foreground)]">{f.category}</span>
               ) : (
-                <span className="text-[var(--muted-foreground)]/50">—</span>
+                <span className="text-[var(--muted-foreground)]/50">â€”</span>
               ),
             },
             {
@@ -124,3 +124,8 @@ export default function FaqTableClient({ faqs }: FaqTableClientProps) {
     </div>
   )
 }
+
+
+
+
+

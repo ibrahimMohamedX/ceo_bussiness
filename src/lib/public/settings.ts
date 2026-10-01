@@ -64,3 +64,8 @@ export async function getSiteSettings(): Promise<PublicSiteSettings | null> {
       data.whatsappMessageEn ?? DEFAULT_WHATSAPP_MESSAGE_EN,
   }
 }
+
+
+
+
+

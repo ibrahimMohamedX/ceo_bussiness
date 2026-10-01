@@ -6,9 +6,7 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 const nextConfig = {
   serverExternalPackages: ["firebase-admin", "jose", "jwks-rsa"],
 
-  experimental: {
-    turbo: false,
-  },
+  experimental: {},
 };
 
 export default withNextIntl(nextConfig);

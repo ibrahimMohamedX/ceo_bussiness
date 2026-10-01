@@ -1,4 +1,4 @@
-import { getRequestConfig } from 'next-intl/server'
+﻿import { getRequestConfig } from 'next-intl/server'
 import { routing, type Locale } from './routing'
 
 export default getRequestConfig(async ({ requestLocale }) => {
@@ -15,3 +15,7 @@ export default getRequestConfig(async ({ requestLocale }) => {
     timeZone: 'UTC',
   }
 })
+
+
+
+

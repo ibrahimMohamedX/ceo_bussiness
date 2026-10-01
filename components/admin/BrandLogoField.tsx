@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 // Single-image logo field for the siteSettings/global brand block.
 //
@@ -109,7 +109,7 @@ export function BrandLogoField({
             disabled={busy}
             onClick={() => fileRef.current?.click()}
           >
-            {busy ? 'Uploading…' : value ? 'Replace logo' : 'Upload logo'}
+            {busy ? 'Uploadingâ€¦' : value ? 'Replace logo' : 'Upload logo'}
           </button>
           {value ? (
             <button
@@ -131,3 +131,8 @@ export function BrandLogoField({
     </div>
   )
 }
+
+
+
+
+

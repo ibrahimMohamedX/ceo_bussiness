@@ -354,3 +354,8 @@ export async function getProjectIndustries(): Promise<string[]> {
   return Array.from(industries).sort();
 }
 
+
+
+
+
+

@@ -1,10 +1,10 @@
-'use server'
+﻿'use server'
 
 import { getPublicFirestore } from '@/src/lib/firebase/admin'
 import type { FaqRecord } from '@/src/lib/admin/faq'
 
 /**
- * Public-facing FAQ entry — published only
+ * Public-facing FAQ entry â€” published only
  */
 export interface PublicFaq {
   id: string
@@ -43,3 +43,7 @@ export async function getPublishedFaqs(): Promise<PublicFaq[]> {
     toPublicFaq({ ...(doc.data() as FaqRecord), id: doc.id }),
   )
 }
+
+
+
+

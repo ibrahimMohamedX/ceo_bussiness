@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -67,8 +67,8 @@ export default function TestimonialsTableClient({ testimonials }: TestimonialsTa
         rows={testimonials.map((t) => ({
           id: t.id,
           cells: [
-            { key: 'personName', content: <span className="font-medium">{t.personName || '—'}</span> },
-            { key: 'quote', content: <span className="text-[var(--muted-foreground)] line-clamp-1">{t.quote?.en ?? '—'}</span> },
+            { key: 'personName', content: <span className="font-medium">{t.personName || 'â€”'}</span> },
+            { key: 'quote', content: <span className="text-[var(--muted-foreground)] line-clamp-1">{t.quote?.en ?? 'â€”'}</span> },
             {
               key: 'status',
               content: (
@@ -84,9 +84,9 @@ export default function TestimonialsTableClient({ testimonials }: TestimonialsTa
             {
               key: 'featured',
               content: t.featured ? (
-                <span className="text-green-400">✓</span>
+                <span className="text-green-400">âœ“</span>
               ) : (
-                <span className="text-[var(--muted-foreground)]/50">—</span>
+                <span className="text-[var(--muted-foreground)]/50">â€”</span>
               ),
             },
             { key: 'sortOrder', content: <span className="font-mono text-[12px] text-[var(--muted-foreground)]">{t.sortOrder}</span> },
@@ -126,3 +126,7 @@ export default function TestimonialsTableClient({ testimonials }: TestimonialsTa
     </div>
   )
 }
+
+
+
+

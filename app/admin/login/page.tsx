@@ -1,6 +1,6 @@
-'use client'
+﻿'use client'
 
-// Admin login — standalone, not a copy of the public homepage and not a generic
+// Admin login â€” standalone, not a copy of the public homepage and not a generic
 // SaaS template. PROJEX branded, restrained/engineering-oriented, cyan accent,
 // dark/light compatible through the admin theme tokens from app/globals.css.
 //
@@ -164,7 +164,7 @@ export default function LoginPage() {
                 disabled={resetBusy}
                 className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)] transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
               >
-                {resetBusy ? 'Sending…' : 'Reset link'}
+                {resetBusy ? 'Sendingâ€¦' : 'Reset link'}
               </button>
             </div>
             <input
@@ -176,7 +176,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={inputClass}
-              placeholder="••••••••"
+              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
             />
           </div>
 
@@ -211,7 +211,7 @@ export default function LoginPage() {
             {loading ? (
               <>
                 <span className="size-3.5 animate-spin rounded-full border-2 border-[var(--card)]/40 border-t-[var(--card)]" />
-                Signing in…
+                Signing inâ€¦
               </>
             ) : (
               'Sign in'
@@ -226,3 +226,7 @@ export default function LoginPage() {
     </main>
   )
 }
+
+
+
+

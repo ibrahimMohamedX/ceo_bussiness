@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/src/lib/admin/session'
+﻿import { requireAdmin } from '@/src/lib/admin/session'
 import { getAllTestimonials } from '@/src/lib/admin/testimonials'
 import TestimonialsTableClient from './TestimonialsTableClient'
 
@@ -10,3 +10,7 @@ export default async function TestimonialsPage() {
 
   return <TestimonialsTableClient testimonials={testimonials} />
 }
+
+
+
+

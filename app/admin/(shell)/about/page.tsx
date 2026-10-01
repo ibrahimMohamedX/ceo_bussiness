@@ -1,4 +1,4 @@
-import { AdminEmptyState } from '@/components/admin/AdminPlaceholder'
+﻿import { AdminEmptyState } from '@/components/admin/AdminPlaceholder'
 
 export default function AboutPage() {
   return (
@@ -8,3 +8,7 @@ export default function AboutPage() {
     />
   )
 }
+
+
+
+

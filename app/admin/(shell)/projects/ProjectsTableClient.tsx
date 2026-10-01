@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -88,9 +88,9 @@ export default function ProjectsTableClient({ projects }: ProjectsTableClientPro
             {
               key: 'featured',
               content: p.featured ? (
-                <span className="text-green-400">✓</span>
+                <span className="text-green-400">âœ“</span>
               ) : (
-                <span className="text-[var(--muted-foreground)]/50">—</span>
+                <span className="text-[var(--muted-foreground)]/50">â€”</span>
               ),
             },
             {
@@ -129,3 +129,7 @@ export default function ProjectsTableClient({ projects }: ProjectsTableClientPro
     </div>
   )
 }
+
+
+
+

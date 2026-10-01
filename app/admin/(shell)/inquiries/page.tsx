@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/src/lib/admin/session'
+﻿import { requireAdmin } from '@/src/lib/admin/session'
 import { getAllInquiries } from '@/src/lib/admin/inquiry'
 import InquiryTableClient from './InquiryTableClient'
 
@@ -10,3 +10,8 @@ export default async function InquiriesPage() {
 
   return <InquiryTableClient inquiries={inquiries} />
 }
+
+
+
+
+

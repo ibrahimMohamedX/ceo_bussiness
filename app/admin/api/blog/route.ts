@@ -1,11 +1,11 @@
-import { NextResponse } from 'next/server'
+﻿import { NextResponse } from 'next/server'
 
 import { verifySession } from '@/src/lib/admin/session'
 import { ApiError, createBlogPost, listBlogPosts } from '@/src/lib/admin/blog'
 
 // Admin Blog Posts collection route: GET (list) and POST (create).
 // Authorization is enforced inside the DAL via requireAdminForBlog()
-// (editor+). Read-only GET is also behind admin auth — drafts/archived must not
+// (editor+). Read-only GET is also behind admin auth â€” drafts/archived must not
 // leak to an unauthenticated client even in list responses.
 
 function toError(e: unknown) {
@@ -37,3 +37,7 @@ export async function POST(request: Request) {
     return toError(e)
   }
 }
+
+
+
+

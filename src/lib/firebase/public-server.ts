@@ -1,5 +1,10 @@
-import { firebaseFirestore } from "./client";
+﻿import { firebaseFirestore } from "./client";
 
 export function getPublicFirestore() {
   return firebaseFirestore;
 }
+
+
+
+
+

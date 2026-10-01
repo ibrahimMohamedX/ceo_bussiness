@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/src/lib/admin/session'
+﻿import { requireAdmin } from '@/src/lib/admin/session'
 import { getAllServices } from '@/src/lib/admin/services'
 import ServicesTableClient from './ServicesTableClient'
 
@@ -10,3 +10,7 @@ export default async function ServicesPage() {
 
   return <ServicesTableClient services={services} />
 }
+
+
+
+

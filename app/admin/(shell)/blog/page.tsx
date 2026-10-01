@@ -1,4 +1,4 @@
-import { requireAdmin } from '@/src/lib/admin/session'
+﻿import { requireAdmin } from '@/src/lib/admin/session'
 import { listBlogPosts } from '@/src/lib/admin/blog'
 import BlogPostsTableClient from './BlogPostsTableClient'
 
@@ -10,3 +10,7 @@ export default async function BlogPostsPage() {
 
   return <BlogPostsTableClient posts={posts} />
 }
+
+
+
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
@@ -154,7 +154,7 @@ export default function ServiceForm({ serviceId }: ServiceFormProps) {
           </p>
         </div>
         <Link href="/admin/services" className={cls.btnGhost}>
-          ← Back to Services
+          â† Back to Services
         </Link>
       </div>
 
@@ -310,3 +310,8 @@ export default function ServiceForm({ serviceId }: ServiceFormProps) {
     </div>
   );
 }
+
+
+
+
+

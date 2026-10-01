@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -72,7 +72,7 @@ export default function FaqFormPage() {
           href="/admin/faq"
           className="rounded border border-[var(--border)] px-3 py-1.5 text-[12px] text-[var(--muted-foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)]"
         >
-          ← Back
+          â† Back
         </a>
       </div>
 
@@ -151,10 +151,15 @@ export default function FaqFormPage() {
             Cancel
           </a>
           <button type="submit" className={cls.btnPrimary} disabled={busy}>
-            {busy ? 'Saving…' : 'Create FAQ'}
+            {busy ? 'Savingâ€¦' : 'Create FAQ'}
           </button>
         </div>
       </form>
     </div>
   )
 }
+
+
+
+
+

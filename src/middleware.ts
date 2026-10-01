@@ -1,15 +1,15 @@
-import createMiddleware from 'next-intl/middleware'
+﻿import createMiddleware from 'next-intl/middleware'
 import { NextResponse, type NextRequest } from 'next/server'
 import { routing } from './i18n/routing'
 
-// Next.js 16 renamed middleware.ts → proxy.ts. This runs before the request
+// Next.js 16 renamed middleware.ts â†’ proxy.ts. This runs before the request
 // handler and ONLY handles public-tree localization. It deliberately excludes
 // /admin (and everything else) so the admin routes are never rewritten through
 // the next-intl localePrefix 'always' logic (which would turn /admin into
 // /en/admin and break the non-localized admin).
 //
-// A locale-prefixed admin URL (/en/admin, /ar/admin/overview, …) is NOT a real
-// page — admin is non-localized at app/admin/. Without this guard next-intl
+// A locale-prefixed admin URL (/en/admin, /ar/admin/overview, â€¦) is NOT a real
+// page â€” admin is non-localized at app/admin/. Without this guard next-intl
 // would accept `en` as the locale and the router would 404 on the nonexistent
 // app/[locale]/admin page. Instead, redirect to the canonical /admin path so
 // old links, bookmarks, and locale-carried navigations still land on the
@@ -49,3 +49,8 @@ export const config = {
   // - Static files (images, fonts, etc.)
   matcher: ['/((?!api|_next|_vercel|admin|.*\..*).*)'],
 }
+
+
+
+
+

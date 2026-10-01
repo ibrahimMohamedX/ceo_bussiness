@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -84,9 +84,9 @@ export default function ServicesTableClient({ services }: ServicesTableClientPro
             {
               key: 'featured',
               content: s.featured ? (
-                <span className="text-green-400">✓</span>
+                <span className="text-green-400">âœ“</span>
               ) : (
-                <span className="text-[var(--muted-foreground)]/50">—</span>
+                <span className="text-[var(--muted-foreground)]/50">â€”</span>
               ),
             },
             { key: 'sortOrder', content: <span className="font-mono text-[12px] text-[var(--muted-foreground)]">{s.sortOrder}</span> },
@@ -126,3 +126,7 @@ export default function ServicesTableClient({ services }: ServicesTableClientPro
     </div>
   )
 }
+
+
+
+
