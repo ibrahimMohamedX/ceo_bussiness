@@ -24,6 +24,9 @@ export async function generateMetadata(): Promise<Metadata> {
     description:
       "A precise visual language for software engineering, embedded systems, and artificial intelligence.",
     generator: "Nodal",
+    verification: {
+      google: "sGewejYP9poKmGMD-XSbmhveGhP2MeeYX2m6Qc1jlEw",
+    },
     icons: {
       icon: logoUrl
         ? [{ url: logoUrl }]
