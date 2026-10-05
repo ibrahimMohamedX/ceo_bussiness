@@ -12,8 +12,8 @@ export const dynamic = 'force-dynamic'
 
 export default async function Page({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
-  const featuredProjects = await getFeaturedProjects(3)
-  const featuredTestimonials = await getFeaturedTestimonials(3)
+  const featuredProjects = await getFeaturedProjects(6)
+  const featuredTestimonials = await getFeaturedTestimonials(6)
   const faqs = await getPublishedFaqs()
   const siteSettings = await getSiteSettings()
 
