@@ -1,9 +1,10 @@
-﻿'use client'
+'use client'
 
 // Admin topbar: current section title (derived from the URL segment), sidebar
 // toggle for mobile, admin identity, theme toggle, and logout.
 
 import { usePathname, useRouter } from 'next/navigation'
+import { Moon, Sun } from 'lucide-react'
 
 import { ADMIN_NAV } from './AdminSidebar'
 import { useAdminTheme } from './AdminThemeProvider'
@@ -39,7 +40,7 @@ export function AdminTopbar({
   }
 
   return (
-    <header className="sticky top-0 z-20 flex h-14 items-center gap-3 border-b border-[var(--border)] bg-[var(--background)]/80 px-4 backdrop-blur-md sm:px-6">
+    <header className="admin-topbar sticky top-0 z-20 flex h-16 items-center gap-3 border-b border-[var(--border)] px-4 sm:px-6">
       {/* Mobile sidebar toggle */}
       <button
         type="button"
@@ -54,17 +55,17 @@ export function AdminTopbar({
         </span>
       </button>
 
-      <h1 className="text-sm font-semibold tracking-tight">{titleFor(pathname)}</h1>
+      <h1 className="text-base font-semibold tracking-tight">{titleFor(pathname)}</h1>
 
       <div className="ml-auto flex items-center gap-2">
-        {/* Theme toggle â€” admin-scoped, separate storage key from the public site */}
+        {/* Theme toggle — admin-scoped, separate storage key from the public site */}
         <button
           type="button"
           onClick={toggle}
           aria-label={theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
           className="flex size-9 items-center justify-center rounded-lg border border-[var(--border)] text-[var(--muted-foreground)] transition-colors hover:text-[var(--foreground)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
         >
-          {theme === 'dark' ? 'â˜€' : 'â˜¾'}
+          {theme === 'dark' ? <Sun size={16} strokeWidth={1.5} /> : <Moon size={16} strokeWidth={1.5} />}
         </button>
 
         {/* Admin identity */}

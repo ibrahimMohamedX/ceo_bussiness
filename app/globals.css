@@ -44,6 +44,11 @@
   --shadow-glow: 0 0 32px rgba(110, 231, 242, 0.1);
   --radius-lg: 24px;
   --radius-xl: 32px;
+  /* Subtle tinted surface used by the admin console (Tag chips,
+     ghost-button hovers). Defined here so the admin tree — which
+     shares this stylesheet — never hits an undefined variable. */
+  --accent: rgba(110, 231, 242, 0.09);
+  --accent-foreground: #c9f2f8;
 }
 * {
   box-sizing: border-box;
@@ -720,6 +725,8 @@ html.light {
   --shadow-sm: 0 2px 8px rgba(11, 24, 28, 0.08);
   --shadow-lg: 0 14px 40px rgba(11, 24, 28, 0.12);
   --shadow-glow: 0 0 32px rgba(8, 145, 178, 0.08);
+  --accent: rgba(8, 145, 178, 0.08);
+  --accent-foreground: #0b4a5a;
 }
 html.light .foundation-shell {
   /* Additive glow only — base color comes from html behind the
@@ -4121,6 +4128,78 @@ html.light .core-disciplines li:hover {
   .hud-pulse-dot {
     animation: none;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ADMIN CONSOLE — shared control styles
+   Theme-aware companions for the Tailwind presets in
+   components/admin/ui.tsx. The admin tree loads this stylesheet
+   through app/admin/layout.tsx, so these keep the console on the
+   same visual system v2 as the public site (luminous primary
+   button, elevated glass cards).
+   ══════════════════════════════════════════════════════════════════ */
+
+.admin-btn-primary {
+  background: linear-gradient(180deg, #9df3fb, #56d8e8);
+  color: #05262b;
+  font-weight: 600;
+  border: 1px solid rgba(110, 231, 242, 0.45);
+  box-shadow:
+    0 2px 14px rgba(110, 231, 242, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition:
+    box-shadow 0.25s cubic-bezier(0.2, 0, 0, 1),
+    transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+.admin-btn-primary:hover:not(:disabled) {
+  box-shadow:
+    0 10px 30px rgba(110, 231, 242, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+html.light .admin-btn-primary {
+  background: linear-gradient(180deg, #2fb3d2, #0891b2);
+  color: #ffffff;
+  border-color: rgba(8, 145, 178, 0.45);
+  box-shadow:
+    0 2px 14px rgba(8, 145, 178, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+html.light .admin-btn-primary:hover:not(:disabled) {
+  box-shadow:
+    0 10px 30px rgba(8, 145, 178, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.admin-card {
+  box-shadow:
+    inset 0 1px 0 rgba(190, 235, 240, 0.06),
+    0 10px 30px rgba(0, 0, 0, 0.25);
+}
+html.light .admin-card {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 10px 30px rgba(11, 24, 28, 0.08);
+}
+
+/* ── Admin shell: glass rail + glass topbar over the living bg ── */
+.admin-rail {
+  background: rgba(7, 10, 13, 0.66);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: inset -1px 0 0 rgba(190, 235, 240, 0.04);
+}
+html.light .admin-rail {
+  background: rgba(244, 247, 249, 0.72);
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.6);
+}
+.admin-topbar {
+  background: rgba(7, 10, 13, 0.62);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+}
+html.light .admin-topbar {
+  background: rgba(244, 247, 249, 0.68);
 }
 
 /* ══════════════════════════════════════════════════════════════════

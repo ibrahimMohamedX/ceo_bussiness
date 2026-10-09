@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 // Client-side media uploader for a project's or blog post's gallery.
 //
@@ -71,7 +71,7 @@ export const getResourceType = (m: MediaItem): 'image' | 'video' => m.resourceTy
 //
 // Cloudinary records resolve synchronously from publicId (delivery URLs are
 // public and need no credentials). Legacy records that only carry a Firebase
-// storagePath still need getDownloadURL â€” that path is retained solely for
+// storagePath still need getDownloadURL — that path is retained solely for
 // pre-migration documents and is never used for anything newly uploaded.
 function useMediaUrls(items: MediaItem[]): Record<string, string> {
   const [urls, setUrls] = useState<Record<string, string>>({})
@@ -411,7 +411,7 @@ export function MediaUploader({
             />
           </div>
           <p className="text-[11px] text-[var(--muted-foreground)]">
-            Uploading {uploadingCount > 0 ? `${uploadingCount} file(s)â€¦` : 'â€¦'}
+            Uploading {uploadingCount > 0 ? `${uploadingCount} file(s)…` : '…'}
           </p>
         </div>
       ) : null}
@@ -445,7 +445,7 @@ export function MediaUploader({
           onClick={() => fileRef.current?.click()}
           className="rounded-lg border border-[var(--primary)]/40 px-4 py-2 text-[13px] font-medium text-[var(--primary)] hover:bg-[var(--primary)]/10 disabled:opacity-50"
         >
-          {busy ? 'Uploadingâ€¦' : 'Upload image'}
+          {busy ? 'Uploading…' : 'Upload image'}
         </button>
       </div>
     </div>

@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -28,9 +28,9 @@ const PRIORITY_COLORS: Record<string, string> = {
 }
 
 function formatDate(iso: string): string {
-  if (!iso) return 'â€”'
+  if (!iso) return '—'
   const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return 'â€”'
+  if (Number.isNaN(d.getTime())) return '—'
   return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
@@ -58,7 +58,12 @@ export default function InquiryTableClient({ inquiries }: InquiryTableClientProp
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-[20px] font-bold text-[var(--foreground)]">Inquiries</h1>
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
+            PROJEX Console
+          </p>
+          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">Inquiries</h1>
+        </div>
       </div>
 
       {deleteError && (
@@ -107,19 +112,19 @@ export default function InquiryTableClient({ inquiries }: InquiryTableClientProp
             },
             {
               key: 'name',
-              content: <span className="font-medium line-clamp-1">{q.name || 'â€”'}</span>,
+              content: <span className="font-medium line-clamp-1">{q.name || '—'}</span>,
             },
             {
               key: 'company',
               content: q.company ? (
                 <span className="text-[var(--muted-foreground)] line-clamp-1">{q.company}</span>
               ) : (
-                <span className="text-[var(--muted-foreground)]/50">â€”</span>
+                <span className="text-[var(--muted-foreground)]/50">—</span>
               ),
             },
             {
               key: 'service',
-              content: <span className="text-[var(--muted-foreground)]">{q.service || 'â€”'}</span>,
+              content: <span className="text-[var(--muted-foreground)]">{q.service || '—'}</span>,
             },
             {
               key: 'createdAt',

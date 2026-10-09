@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -34,10 +34,15 @@ export default function BlogPostsTableClient({ posts }: BlogPostsTableClientProp
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-[20px] font-bold text-[var(--foreground)]">Blog Posts</h1>
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
+            PROJEX Console
+          </p>
+          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">Blog Posts</h1>
+        </div>
         <a
           href="/admin/blog/new"
-          className="rounded-lg bg-[var(--primary)] px-4 py-2 text-[13px] font-semibold text-[var(--card)] hover:opacity-90 transition-opacity"
+          className="admin-btn-primary inline-flex min-h-[40px] items-center justify-center rounded-lg px-4 text-[13px]"
         >
           New post
         </a>
@@ -93,7 +98,7 @@ export default function BlogPostsTableClient({ posts }: BlogPostsTableClientProp
                     month: 'short',
                     day: 'numeric',
                   })
-                : <span className="text-[var(--muted-foreground)]/50">â€”</span>,
+                : <span className="text-[var(--muted-foreground)]/50">—</span>,
             },
             {
               key: 'actions',

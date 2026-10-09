@@ -1,29 +1,33 @@
-﻿"use client";
+"use client";
 
 import React from "react";
+import { X } from "lucide-react";
 
-// Standard Dashboard Input & Button Styles using Tailwind Typography Scale
+// Standard Dashboard Input & Button Styles using Tailwind Typography Scale.
+// Shared visual-system classes (.admin-btn-primary, .admin-card) live in
+// app/globals.css so the console matches the public site in both themes.
 const inputBase =
   "w-full rounded-lg border border-[var(--border)] bg-[var(--card)] px-3.5 py-2.5 text-sm text-[var(--foreground)] " +
-  "placeholder:text-[var(--muted-foreground)]/60 focus:border-[var(--primary)] focus:outline-none " +
+  "placeholder:text-[var(--muted-foreground)]/60 hover:border-[var(--border-strong)] " +
+  "focus:border-[var(--primary)] focus:outline-none " +
   "focus:ring-2 focus:ring-[var(--primary)]/20 transition-all duration-150 shadow-sm";
 
 export const cls = {
   input: inputBase,
   label: "mb-1.5 block text-sm font-medium text-[var(--foreground)]",
-  card: "rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 shadow-sm space-y-5",
+  card: "admin-card rounded-xl border border-[var(--border)] bg-[var(--card)] p-6 space-y-5",
   cardTitle: "text-base font-semibold text-[var(--foreground)] tracking-tight",
   cardDescription: "text-xs text-[var(--muted-foreground)] mt-0.5",
   fieldset: "space-y-4 border border-[var(--border)] rounded-xl p-5",
   legend: "text-sm font-semibold text-[var(--foreground)] px-2",
   btnPrimary:
-    "inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--primary)] px-4 py-2.5 text-sm font-medium text-white " +
-    "hover:opacity-90 active:scale-[0.98] disabled:opacity-50 transition-all cursor-pointer shadow-sm",
+    "admin-btn-primary inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg px-4 text-sm " +
+    "active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
   btnGhost:
-    "inline-flex items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 py-2.5 text-sm font-medium " +
-    "text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-[var(--accent-foreground)] transition-all cursor-pointer shadow-sm",
+    "inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 text-sm font-medium " +
+    "text-[var(--foreground)] hover:bg-[var(--accent)] hover:border-[var(--border-strong)] transition-all cursor-pointer shadow-sm",
   btnDanger:
-    "inline-flex items-center justify-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-4 py-2.5 text-sm font-medium " +
+    "inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-4 text-sm font-medium " +
     "text-red-500 hover:bg-red-500/20 transition-all cursor-pointer",
 };
 
@@ -129,7 +133,7 @@ export function LocalizedTextField({
               htmlFor={idAr}
               className="text-xs font-semibold text-[var(--muted-foreground)]"
             >
-              Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©
+              العربية
             </label>
             <Tag label="AR" />
           </div>
@@ -183,9 +187,9 @@ export function TagEditor({
               type="button"
               aria-label={`Remove ${v}`}
               onClick={() => onChange(values.filter((_, i) => i !== idx))}
-              className="text-[var(--muted-foreground)] hover:text-red-500 transition-colors cursor-pointer"
+              className="text-[var(--muted-foreground)] transition-colors hover:text-red-500 cursor-pointer"
             >
-              Ã—
+              <X size={13} strokeWidth={2} />
             </button>
           </span>
         ))}

@@ -126,9 +126,14 @@ export default function InquiryEditPage() {
   return (
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
-        <h1 className="text-[20px] font-bold text-[var(--foreground)]">
-          Inquiry from {inquiry?.name || '…'}
-        </h1>
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
+            PROJEX Console
+          </p>
+          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">
+            Inquiry from {inquiry?.name || '…'}
+          </h1>
+        </div>
         <a
           href="/admin/inquiries"
           className="rounded border border-[var(--border)] px-3 py-1.5 text-[12px] text-[var(--muted-foreground)] hover:border-[var(--primary)] hover:text-[var(--primary)]"

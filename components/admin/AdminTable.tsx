@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 // Reusable admin table component for listing CRUD resources.
 // Keeps column/row rendering consistent across Projects, Blog, Services, etc.
@@ -27,11 +27,11 @@ export function AdminTable<T>({
   rows: Row<T>[]
 }) {
   return (
-    <div className="rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
+    <div className="admin-card rounded-xl border border-[var(--border)] bg-[var(--card)] overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full border-collapse" role="table">
           <thead>
-            <tr className="border-b border-[var(--border)] bg-[var(--card)]/40">
+            <tr className="border-b border-[var(--border)] bg-[var(--accent)]/60">
               {columns.map((col) => (
                 <th
                   key={col.key}
@@ -45,7 +45,7 @@ export function AdminTable<T>({
           </thead>
           <tbody>
             {rows.map((row) => (
-              <tr key={row.id} className="border-b border-[var(--border)]/50 last:border-b-0 hover:bg-[var(--card)]/40">
+              <tr key={row.id} className="border-b border-[var(--border)]/50 last:border-b-0 hover:bg-[var(--accent)] transition-colors">
                 {row.cells.map((cell) => (
                   <td key={cell.key} className="px-4 py-3 text-[13px] text-[var(--foreground)]">
                     {cell.content}

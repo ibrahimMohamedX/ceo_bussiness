@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -24,7 +24,7 @@ const OWNER_FILTERS: { value: MediaOwnerType | 'all'; label: string }[] = [
 ]
 
 function formatBytes(bytes?: number | null): string {
-  if (typeof bytes !== 'number' || Number.isNaN(bytes)) return 'â€”'
+  if (typeof bytes !== 'number' || Number.isNaN(bytes)) return '—'
   if (bytes < 1024) return `${bytes} B`
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
@@ -34,7 +34,7 @@ function formatBytes(bytes?: number | null): string {
 //
 // Cloudinary records resolve synchronously from publicId (delivery URLs are
 // public and need no credentials). Legacy records that only carry a Firebase
-// storagePath still need getDownloadURL â€” retained solely for pre-migration
+// storagePath still need getDownloadURL — retained solely for pre-migration
 // documents, never used for anything newly uploaded.
 const getStoragePath = (m: MediaLibraryItem): string => m.storagePath ?? ''
 const getPublicId = (m: MediaLibraryItem): string => m.publicId ?? ''
@@ -137,7 +137,12 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-[20px] font-bold text-[var(--foreground)]">Media library</h1>
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
+            PROJEX Console
+          </p>
+          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">Media library</h1>
+        </div>
         <div className="w-44">
           <Select
             id="media-filter"
@@ -197,7 +202,7 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
                 </div>
                 <div className="flex items-center gap-2 text-[11px] text-[var(--muted-foreground)]">
                   <span>{formatBytes(m.sizeBytes)}</span>
-                  {m.width && m.height ? <span>Â· {m.width}Ã—{m.height}</span> : null}
+                  {m.width && m.height ? <span>· {m.width}×{m.height}</span> : null}
                 </div>
 
                 <div className="flex items-center gap-1.5 pt-1">

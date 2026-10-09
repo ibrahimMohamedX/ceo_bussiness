@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 // Small confirmation modal used for destructive admin actions (delete project,
 // delete media, etc.). Renders an overlay + dialog, never unmounting while the
@@ -60,7 +60,7 @@ export function ConfirmDialog({
             onClick={onConfirm}
             disabled={busy}
           >
-            {busy ? 'Workingâ€¦' : confirmLabel}
+            {busy ? 'Working…' : confirmLabel}
           </button>
         </div>
       </div>

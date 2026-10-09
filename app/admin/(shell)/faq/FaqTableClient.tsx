@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
@@ -40,10 +40,15 @@ export default function FaqTableClient({ faqs }: FaqTableClientProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-[20px] font-bold text-[var(--foreground)]">FAQ</h1>
+        <div>
+          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
+            PROJEX Console
+          </p>
+          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">FAQ</h1>
+        </div>
         <a
           href="/admin/faq/new"
-          className="rounded-lg bg-[var(--primary)] px-4 py-2 text-[13px] font-semibold text-[var(--card)] hover:opacity-90 transition-opacity"
+          className="admin-btn-primary inline-flex min-h-[40px] items-center justify-center rounded-lg px-4 text-[13px]"
         >
           New FAQ
         </a>
@@ -66,13 +71,13 @@ export default function FaqTableClient({ faqs }: FaqTableClientProps) {
         rows={faqs.map((f) => ({
           id: f.id,
           cells: [
-            { key: 'question', content: <span className="font-medium line-clamp-1">{f.question?.en ?? 'â€”'}</span> },
+            { key: 'question', content: <span className="font-medium line-clamp-1">{f.question?.en ?? '—'}</span> },
             {
               key: 'category',
               content: f.category ? (
                 <span className="text-[var(--muted-foreground)]">{f.category}</span>
               ) : (
-                <span className="text-[var(--muted-foreground)]/50">â€”</span>
+                <span className="text-[var(--muted-foreground)]/50">—</span>
               ),
             },
             {

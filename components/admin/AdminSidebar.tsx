@@ -1,25 +1,42 @@
-﻿"use client";
+"use client";
 
-// Admin sidebar â€” structural navigation only. Every link points at a real
+// Admin sidebar — structural navigation only. Every link points at a real
 // placeholder page under app/admin/(shell)/. There is deliberately no CRUD and
 // no fake page behind any entry. Layout is responsive and the drawer is driven
 // by the parent shell so the topbar can open/close it.
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  Briefcase,
+  FileText,
+  HelpCircle,
+  Image as ImageIcon,
+  Inbox,
+  Info,
+  LayoutDashboard,
+  Quote,
+  Settings,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
 
 export const ADMIN_NAV = [
-  { href: "/admin/overview", label: "Overview" },
-  { href: "/admin/inquiries", label: "Inquiries" },
-  { href: "/admin/projects", label: "Projects" },
-  { href: "/admin/blog", label: "Blog" },
-  { href: "/admin/services", label: "Services" },
-  { href: "/admin/media", label: "Media" },
-  { href: "/admin/testimonials", label: "Testimonials" },
-  { href: "/admin/faq", label: "FAQ" },
-  { href: "/admin/about", label: "About" },
-  { href: "/admin/settings", label: "Settings" },
-] as const;
+  { href: "/admin/overview", label: "Overview", icon: LayoutDashboard },
+  { href: "/admin/inquiries", label: "Inquiries", icon: Inbox },
+  { href: "/admin/projects", label: "Projects", icon: Briefcase },
+  { href: "/admin/blog", label: "Blog", icon: FileText },
+  { href: "/admin/services", label: "Services", icon: Wrench },
+  { href: "/admin/media", label: "Media", icon: ImageIcon },
+  { href: "/admin/testimonials", label: "Testimonials", icon: Quote },
+  { href: "/admin/faq", label: "FAQ", icon: HelpCircle },
+  { href: "/admin/about", label: "About", icon: Info },
+  { href: "/admin/settings", label: "Settings", icon: Settings },
+] as const satisfies ReadonlyArray<{
+  href: string;
+  label: string;
+  icon: LucideIcon;
+}>;
 
 function BrandMark() {
   return (
@@ -47,14 +64,15 @@ function NavList() {
             href={item.href}
             aria-current={active ? "page" : undefined}
             className={[
-              "rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
+              "flex items-center gap-2.5 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors",
               "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]",
               active
                 ? "bg-[var(--primary)]/10 text-[var(--primary)]"
-                : "text-[var(--muted-foreground)] hover:bg-[var(--border)]/40 hover:text-[var(--foreground)]",
+                : "text-[var(--muted-foreground)] hover:bg-[var(--accent)] hover:text-[var(--foreground)]",
             ].join(" ")}
           >
-            {item.label}
+            <item.icon size={18} strokeWidth={1.5} className="shrink-0" />
+            <span>{item.label}</span>
           </Link>
         );
       })}
@@ -72,7 +90,7 @@ function SidebarBody({ onNavigate }: { onNavigate?: () => void }) {
       >
         <BrandMark />
         <span className="text-[13px] font-bold tracking-[0.18em]">
-          Archai Solutions
+          PROJEX
         </span>
         <span className="ml-auto rounded-full border border-[var(--primary)]/30 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
           Admin
@@ -99,7 +117,7 @@ export function AdminSidebar({
 }) {
   return (
     <>
-      {/* Overlay â€” closes the mobile drawer when tapping outside */}
+      {/* Overlay — closes the mobile drawer when tapping outside */}
       <div
         aria-hidden
         onClick={onClose}
@@ -109,11 +127,11 @@ export function AdminSidebar({
         ].join(" ")}
       />
 
-      {/* Mobile drawer (slides in) + desktop persistent rail */}
+      {/* Mobile drawer (slides in) + desktop persistent glass rail */}
       <aside
         className={[
-          "fixed z-40 flex w-[260px] flex-col border-r border-[var(--border)] bg-[var(--card)]",
-          "transition-transform duration-200 lg:translate-x-0 lg:bg-transparent",
+          "admin-rail fixed z-40 flex w-[260px] flex-col border-r border-[var(--border)]",
+          "transition-transform duration-200 lg:translate-x-0",
           open ? "translate-x-0" : "-translate-x-full",
         ].join(" ")}
       >

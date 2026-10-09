@@ -151,7 +151,12 @@ function readTheme(): "dark" | "light" {
     : "dark";
 }
 
-export function LivingBackground() {
+/**
+ * @param density px² of canvas per particle — lower = more particles.
+ * The public site uses the default (22k). Dashboards pass a calmer
+ * value (e.g. 45k) so content stays the focal point.
+ */
+export function LivingBackground({ density = 22000 }: { density?: number }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -179,7 +184,7 @@ export function LivingBackground() {
     let resizeTimer: ReturnType<typeof setTimeout> | undefined;
 
     const seedParticles = () => {
-      const target = Math.max(24, Math.min(110, Math.round((width * height) / 22000)));
+      const target = Math.max(16, Math.min(110, Math.round((width * height) / density)));
       particles = Array.from({ length: target }, () => makeParticle(width, height));
     };
 
@@ -339,7 +344,7 @@ export function LivingBackground() {
       clearTimeout(resizeTimer);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [density]);
 
   return <canvas ref={canvasRef} className="living-bg" aria-hidden="true" />;
 }

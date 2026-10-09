@@ -1,6 +1,6 @@
-﻿'use client'
+'use client'
 
-// Admin login â€” standalone, not a copy of the public homepage and not a generic
+// Admin login — standalone, not a copy of the public homepage and not a generic
 // SaaS template. PROJEX branded, restrained/engineering-oriented, cyan accent,
 // dark/light compatible through the admin theme tokens from app/globals.css.
 //
@@ -123,9 +123,9 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm">
-        <div className="mb-10 flex items-center gap-3">
+    <main className="relative flex min-h-screen flex-col items-center justify-center px-4 py-12">
+      <div className="admin-card w-full max-w-sm rounded-2xl border border-[var(--border)] bg-[var(--card)]/85 p-8 backdrop-blur-xl">
+        <div className="mb-10 flex flex-col items-center gap-3 text-center">
           <BrandMark />
           <div>
             <p className="text-[15px] font-bold tracking-[0.18em] text-[var(--foreground)]">PROJEX</p>
@@ -164,7 +164,7 @@ export default function LoginPage() {
                 disabled={resetBusy}
                 className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)] transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]"
               >
-                {resetBusy ? 'Sendingâ€¦' : 'Reset link'}
+                {resetBusy ? 'Sending…' : 'Reset link'}
               </button>
             </div>
             <input
@@ -176,7 +176,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className={inputClass}
-              placeholder="â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢"
+              placeholder="••••••••"
             />
           </div>
 
@@ -202,16 +202,15 @@ export default function LoginPage() {
             type="submit"
             disabled={loading}
             className={[
-              'mt-1 flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold',
-              'bg-[var(--primary)] text-[var(--card)] transition-opacity',
+              'admin-btn-primary mt-1 flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-4 text-sm',
               'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--primary)]',
-              loading ? 'cursor-not-allowed opacity-60' : 'hover:opacity-90',
+              loading ? 'pointer-events-none opacity-60' : '',
             ].join(' ')}
           >
             {loading ? (
               <>
                 <span className="size-3.5 animate-spin rounded-full border-2 border-[var(--card)]/40 border-t-[var(--card)]" />
-                Signing inâ€¦
+                Signing in…
               </>
             ) : (
               'Sign in'
