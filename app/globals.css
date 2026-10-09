@@ -179,22 +179,16 @@ button {
   padding: 88px 0;
   z-index: 1;
 }
-.eyebrow,
-.core-label,
-.core-status {
+.eyebrow {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.13em;
-  color: var(--muted-foreground);
-}
-.eyebrow {
   display: flex;
   gap: 9px;
   align-items: center;
   color: var(--primary);
 }
-.eyebrow-dot,
-.core-status span {
+.eyebrow-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
@@ -254,135 +248,6 @@ h2 span {
   border-color: rgba(110, 231, 242, 0.55);
   background: rgba(110, 231, 242, 0.06);
 }
-.digital-core::after {
-  content: "";
-  position: absolute;
-  inset: -18px;
-  border: 1px solid rgba(110, 231, 242, 0.08);
-  border-radius: 10px;
-  pointer-events: none;
-}
-.digital-core::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 8%;
-  height: 32%;
-  border-radius: 50%;
-  background: rgba(0, 149, 196, 0.15);
-  filter: blur(55px);
-  opacity: 0.8;
-}
-.digital-core::after {
-  inset: 4%;
-  border-color: rgba(110, 231, 242, 0.06);
-  border-radius: 12px;
-}
-.asset-stack {
-  position: absolute;
-  inset: 0;
-  isolation: isolate;
-}
-.asset-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  pointer-events: none;
-  user-select: none;
-}
-.asset-layer-1 {
-  z-index: 1;
-  mix-blend-mode: screen;
-  opacity: 0.8;
-}
-.asset-layer-2 {
-  z-index: 2;
-  mix-blend-mode: screen;
-}
-.asset-layer-3 {
-  z-index: 3;
-  mix-blend-mode: screen;
-}
-.asset-layer-4 {
-  z-index: 4;
-  mix-blend-mode: screen;
-  opacity: 0.9;
-}
-.asset-layer-5 {
-  z-index: 5;
-}
-.asset-layer-6 {
-  z-index: 6;
-  mix-blend-mode: screen;
-  opacity: 0.8;
-  animation: asset-particles 8s ease-in-out infinite;
-}
-.core-label {
-  position: absolute;
-  top: 28px;
-  left: 29px;
-  color: var(--primary);
-  z-index: 8;
-}
-.core-readout {
-  position: absolute;
-  top: 28px;
-  right: 29px;
-  text-align: right;
-  font: 10px/1.6 var(--font-mono);
-  color: var(--primary);
-  z-index: 8;
-}
-.core-readout span,
-.core-coordinates {
-  color: var(--muted-foreground);
-}
-.core-status {
-  position: absolute;
-  left: 29px;
-  bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--primary);
-  z-index: 8;
-}
-.core-coordinates {
-  position: absolute;
-  right: 29px;
-  bottom: 28px;
-  text-align: right;
-  font: 10px/1.6 var(--font-mono);
-  z-index: 8;
-}
-.core-side-labels {
-  position: absolute;
-  right: -3%;
-  top: 18%;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  width: 135px;
-  font: 10px/1.7 var(--font-mono);
-  z-index: 8;
-}
-.core-side-labels div {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.core-side-labels b {
-  color: var(--primary);
-  font: 500 13px/1.3 var(--font-sans);
-  letter-spacing: 0.04em;
-}
-.core-side-labels span {
-  color: var(--muted-foreground);
-}
 .hero-highlights {
   display: flex;
   gap: 0;
@@ -422,91 +287,6 @@ h2 span {
 .hero-note b {
   color: var(--primary);
   font-weight: 400;
-}
-@keyframes asset-particles {
-  50% {
-    opacity: 0.58;
-    transform: scale(1.015);
-  }
-}
-/* Motion-only enhancement: transform and opacity stay compositor-friendly. */
-.digital-core {
-  --parallax-x: 0px;
-  --parallax-y: 0px;
-}
-.asset-stack {
-  will-change: transform;
-  transform: translate3d(var(--parallax-x), var(--parallax-y), 0);
-  transition: transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.asset-layer {
-  will-change: transform, opacity;
-  transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-}
-.asset-layer-1 {
-  animation: hero-glow-pulse 11s ease-in-out infinite;
-}
-.asset-layer-2 {
-  transform-origin: 50% 50%;
-  animation: hero-rings-rotate 92s linear infinite;
-}
-.asset-layer-4 {
-  animation: hero-stream-rise 18s linear infinite;
-}
-.asset-layer-5 {
-  animation: hero-core-float 8s ease-in-out infinite;
-}
-.asset-layer-6 {
-  animation: hero-particles-drift 14s ease-in-out infinite;
-}
-@keyframes hero-core-float {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  50% {
-    transform: translate3d(0, -6px, 0);
-  }
-}
-@keyframes hero-rings-rotate {
-  from {
-    transform: rotate(0deg) translateZ(0);
-  }
-  to {
-    transform: rotate(360deg) translateZ(0);
-  }
-}
-@keyframes hero-glow-pulse {
-  0%,
-  100% {
-    opacity: 0.72;
-  }
-  50% {
-    opacity: 0.9;
-  }
-}
-@keyframes hero-stream-rise {
-  0%,
-  100% {
-    transform: translate3d(0, 8px, 0);
-    opacity: 0.72;
-  }
-  50% {
-    transform: translate3d(0, -8px, 0);
-    opacity: 0.92;
-  }
-}
-@keyframes hero-particles-drift {
-  0%,
-  100% {
-    transform: translate3d(-2px, 2px, 0);
-    opacity: 0.7;
-  }
-  50% {
-    transform: translate3d(3px, -5px, 0);
-    opacity: 0.92;
-  }
 }
 
 /* ── Services ── */
@@ -739,46 +519,6 @@ h2 span {
   }
 }
 
-/* Cinematic depth pass: pure visual grading — no assets move, no new objects. */
-/* Deepen the ambient halo behind the core so the focal plane sits in real space. */
-.digital-core::before {
-  bottom: 6%;
-  height: 38%;
-  background: radial-gradient(
-    ellipse at 50% 60%,
-    rgba(0, 164, 214, 0.22),
-    rgba(0, 120, 160, 0.06) 55%,
-    transparent 72%
-  );
-  filter: blur(64px);
-  opacity: 0.9;
-}
-/* Depth-of-field: push background layers back with soft blur + lower opacity. */
-.asset-layer-1 {
-  opacity: 0.62;
-  filter: blur(3px) saturate(1.05);
-}
-.asset-layer-2 {
-  opacity: 0.9;
-  filter: blur(1.2px);
-}
-.asset-layer-3 {
-  opacity: 0.92;
-  filter: blur(0.4px);
-}
-.asset-layer-4 {
-  opacity: 0.85;
-}
-/* Focal plane: the glass core stays crisp with a refined luminous edge. */
-.asset-layer-5 {
-  filter: drop-shadow(0 26px 60px rgba(0, 0, 0, 0.55))
-    drop-shadow(0 0 34px rgba(110, 231, 242, 0.16)) contrast(1.03);
-}
-/* Foreground sparkle sits slightly forward and soft. */
-.asset-layer-6 {
-  opacity: 0.72;
-  filter: blur(0.3px);
-}
 /* Soft cinematic vignette frames the hero without adding an element. */
 .hero::after {
   content: "";
@@ -792,52 +532,9 @@ h2 span {
     rgba(3, 6, 9, 0.55) 100%
   );
 }
-.hero-copy,
-.digital-core {
+.hero-copy {
   position: relative;
   z-index: 1;
-}
-/* A touch more breathing room deepens the sense of the core floating in space. */
-@media (min-width: 1101px) {
-  .digital-core {
-    min-height: 690px;
-  }
-}
-
-/* Production layout safeguards: preserve the composition while stabilizing the responsive canvas. */
-.digital-core {
-  min-width: 0;
-  margin: 0;
-  contain: layout;
-  isolation: isolate;
-}
-.digital-core::after {
-  z-index: 7;
-}
-.asset-stack {
-  z-index: 1;
-  overflow: visible;
-  pointer-events: none;
-}
-.asset-layer {
-  display: block;
-}
-.core-label,
-.core-readout,
-.core-status,
-.core-coordinates,
-.core-side-labels {
-  pointer-events: none;
-}
-.core-side-labels {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-.core-side-labels li {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
 }
 :where(a, button):focus-visible {
   outline: 2px solid var(--primary);
@@ -876,9 +573,6 @@ h2 span {
   }
   .hero-lede {
     font-size: 15px;
-  }
-  .core-side-labels {
-    font-size: 9px;
   }
   .hero-highlights {
     max-width: 100%;
@@ -949,9 +643,6 @@ h2 span {
   .hero-lede {
     max-width: 34rem;
     font-size: 16px;
-  }
-  .digital-core {
-    margin-inline: -8px;
   }
   .hero-actions {
     gap: 9px;
@@ -1043,23 +734,6 @@ html.light .foundation-shell::before {
   background-image:
     linear-gradient(rgba(0, 60, 80, 0.04) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0, 60, 80, 0.04) 1px, transparent 1px);
-}
-html.light .digital-core {
-  background:
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(0, 145, 178, 0.08),
-      transparent 36%
-    ),
-    linear-gradient(145deg, rgba(210, 230, 240, 0.5), rgba(247, 249, 251, 0.1));
-}
-html.light .digital-core::before {
-  background: radial-gradient(
-    ellipse at 50% 60%,
-    rgba(0, 145, 178, 0.15),
-    rgba(0, 100, 140, 0.04) 55%,
-    transparent 72%
-  );
 }
 html.light .service-card,
 html.light .industry-card {
@@ -1976,12 +1650,6 @@ html[dir="rtl"] :is(
   h4,
   .brand,
   .eyebrow,
-  .core-label,
-  .core-readout,
-  .core-status,
-  .core-coordinates,
-  .core-side-labels b,
-  .core-side-labels span,
   .service-tags span,
   .locale-switcher,
   .process-number,
@@ -2023,29 +1691,6 @@ html[dir="rtl"] .hero-highlights span:first-child {
 }
 html[dir="rtl"] .hero-highlights span:last-child {
   border-left: 0;
-}
-html[dir="rtl"] .core-side-labels {
-  right: auto;
-  left: -3%;
-  text-align: right;
-}
-html[dir="rtl"] .core-label {
-  left: auto;
-  right: 29px;
-}
-html[dir="rtl"] .core-readout {
-  right: auto;
-  left: 29px;
-  text-align: left;
-}
-html[dir="rtl"] .core-status {
-  left: auto;
-  right: 29px;
-}
-html[dir="rtl"] .core-coordinates {
-  right: auto;
-  left: 29px;
-  text-align: left;
 }
 html[dir="rtl"] .services,
 html[dir="rtl"] .industries,
@@ -3851,102 +3496,6 @@ html.light .software-section-intro > p {
     max-width: 320px;
   }
 }
-/* =========================================
-   HERO HUD v1 — retired declarations.
-   The active hero HUD is the "DIGITAL CORE - SCI-FI HUD" block further
-   below. This block used to redefine the whole hero (container, asset
-   stack, glass panels, side labels); every declaration fully superseded
-   by the newer block has been removed. Only the few declarations that
-   still win their cascade position are preserved here, verbatim and in
-   their original source order — they must stay BEFORE the ≤1100px HUD
-   responsive block below (e.g. .asset-stack { left: 50% } is overridden
-   by that block's left: 0 on small screens).
-   ========================================= */
-.digital-core {
-  height: 100%;
-}
-
-.asset-stack {
-  left: 50%;
-}
-
-[dir="rtl"] .asset-stack,
-:lang(ar) .asset-stack {
-  --dir-factor: -1;
-  right: 50%;
-}
-
-.core-label {
-  border-left: 3px solid #00f0ff;
-}
-
-.core-readout {
-  border-right: 3px solid #00f0ff;
-}
-
-.core-side-labels li {
-  border-right: 3px solid #00f0ff;
-}
-
-.core-side-labels li:hover {
-  transform: translateX(-5px);
-}
-
-.core-side-labels span {
-  letter-spacing: 0.05em;
-}
-
-/* =========================================
-   5. التجاوب مع الشاشات (Responsive)
-   ========================================= */
-@media (max-width: 1100px) {
-  /* في الشاشات الأصغر، نلغي الإزاحة ونرتبهم عمودياً لمنع التداخل */
-  .digital-core {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 3rem;
-    height: auto;
-    padding-top: 4rem;
-  }
-
-  .asset-stack {
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: none;
-    max-width: 500px;
-  }
-
-  .core-side-labels {
-    position: relative;
-    top: 0;
-    right: 0;
-    transform: none;
-    width: 100%;
-    max-width: 400px;
-  }
-  .core-status {
-    right: 100px;
-    left: 100px;
-    align-self: center;
-  }
-
-  .core-coordinates {
-    right: -20px;
-    display: none;
-  }
-
-  .core-side-labels li {
-    border-right: none;
-    border-left: 3px solid #00f0ff;
-  }
-  [dir="rtl"] .asset-stack,
-  :lang(ar) .asset-stack {
-    --dir-factor: -1;
-    right: 0;
-  }
-}
 .faq-empty {
   text-align: center;
 }
@@ -3974,251 +3523,6 @@ html.light .software-section-intro > p {
 
 .blog-post-card .project-cover-image {
   object-fit: cover;
-}
-/* =========================================================
-   DIGITAL CORE - SCI-FI HUD COMPONENT (RTL & LIGHT/DARK READY)
-   ========================================================= */
-
-.digital-core {
-  /* ألوان الـ HUD ثابتة لضمان التباين العالي حتى لو الموقع Light Mode */
-  --hud-bg-canvas: #060a12;
-  --hud-cyan: #00f0ff;
-  --hud-cyan-glow: rgba(0, 240, 255, 0.4);
-  --hud-panel-bg: rgba(10, 20, 32, 0.8);
-  --hud-border: rgba(0, 240, 255, 0.25);
-  --hud-text-muted: #94a3b8;
-
-  position: relative;
-  width: 100%;
-  min-height: 580px;
-  background-color: var(--hud-bg-canvas);
-  border: 1px solid var(--hud-border);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.6),
-    inset 0 0 30px rgba(0, 240, 255, 0.05);
-  /* Site mono stack: Geist Mono for Latin HUD labels, IBM Plex Sans
-     Arabic falls through for Arabic label text. */
-  font-family: var(--font-mono);
-  color: var(--hud-cyan);
-
-  /* دعم حركة الماوس القادمة من الـ TSX Hook */
-  transform: translate(var(--parallax-x, 0), var(--parallax-y, 0));
-  transition: transform 0.1s ease-out;
-  box-sizing: border-box;
-}
-
-/* ---------------------------------------------------------
-   المجسم المركزي (Core Asset Stack)
-   --------------------------------------------------------- */
-.asset-stack {
-  position: absolute;
-  top: 50%;
-  /* إزاحة منطقية: تبتعد عن القوائم سواء في العربي أو الإنكليزي */
-  transform: translate(calc(-50% * var(--dir-factor, 1)), -50%);
-  width: 100%;
-  max-width: 500px;
-  aspect-ratio: 1 / 1;
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* ضبط الاتجاه لتأثير العكس في العربية (RTL) */
-[dir="rtl"] .asset-stack,
-:lang(ar) .asset-stack {
-  --dir-factor: -1;
-}
-
-/* ---------------------------------------------------------
-   اللوحات الزجاجية العلوية والسفلية (الزوايا الأربعة)
-   --------------------------------------------------------- */
-.core-label,
-.core-readout,
-.core-status,
-.core-coordinates {
-  position: absolute;
-  z-index: 10;
-  background: var(--hud-panel-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--hud-border);
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-}
-
-/* أعلى البداية (Top-Start) */
-.core-label {
-  top: 20px;
-  inset-inline-start: 20px;
-  font-weight: bold;
-  border-inline-start: 3px solid var(--hud-cyan);
-}
-
-/* أعلى النهاية (Top-End) */
-.core-readout {
-  top: 20px;
-  inset-inline-end: 20px;
-  text-align: end;
-  border-inline-end: 3px solid var(--hud-cyan);
-}
-
-.core-readout span {
-  font-size: 0.68rem;
-  color: var(--hud-text-muted);
-}
-
-/* أسفل البداية (Bottom-Start) */
-.core-status {
-  bottom: 20px;
-  inset-inline-start: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 2px solid var(--hud-cyan);
-}
-
-.core-status span[aria-hidden="true"] {
-  width: 8px;
-  height: 8px;
-  background-color: var(--hud-cyan);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--hud-cyan);
-  animation: hud-pulse 1.8s infinite ease-in-out;
-}
-
-/* أسفل النهاية (Bottom-End) */
-.core-coordinates {
-  bottom: 20px;
-  inset-inline-end: 20px;
-  color: var(--hud-text-muted);
-  font-size: 0.7rem;
-}
-
-/* ---------------------------------------------------------
-   القائمة الجانبية (Side Labels) - تنعكس تلقائياً مع العربي
-   --------------------------------------------------------- */
-.core-side-labels {
-  position: absolute;
-  top: 50%;
-  inset-inline-end: 20px; /* تلتصق بالطرف الخارجي للغة دائماً */
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  width: 240px;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  z-index: 10;
-}
-
-.core-side-labels li {
-  background: var(--hud-panel-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--hud-border);
-  border-inline-end: 3px solid var(--hud-cyan);
-  padding: 10px 14px;
-  border-radius: 6px;
-  transition: all 0.25s ease-out;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-.core-side-labels li:hover {
-  background: rgba(0, 240, 255, 0.12);
-  border-color: var(--hud-cyan);
-}
-
-.core-side-labels b {
-  display: block;
-  font-size: 0.82rem;
-  color: #ffffff;
-  letter-spacing: 0.08em;
-  margin-bottom: 3px;
-  text-shadow: 0 0 6px var(--hud-cyan-glow);
-}
-
-.core-side-labels span {
-  display: block;
-  font-size: 0.68rem;
-  color: var(--hud-text-muted);
-  line-height: 1.35;
-}
-
-@keyframes hud-pulse {
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.3;
-    transform: scale(0.75);
-  }
-}
-
-/* ---------------------------------------------------------
-   التجاوب مع الشاشات والموبايل (Responsive Mobile/Tablet)
-   ========================================================= */
-@media (max-width: 1024px) {
-  .digital-core {
-    min-height: auto;
-    padding: 70px 16px 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-  }
-
-  /* إلغاء الـ Absolute positioning للمجسم في الموبايل */
-  .asset-stack {
-    position: relative;
-    top: 0;
-    inset-inline-start: 0;
-    transform: none !important;
-    max-width: 380px;
-    margin: 1rem auto;
-  }
-
-  /* جعل القوائم تترتب أسفل المجسم بشكل عمودي نظيف */
-  .core-side-labels {
-    position: relative;
-    top: 0;
-    inset-inline-end: 0;
-    transform: none;
-    width: 100%;
-    max-width: 420px;
-  }
-
-  .core-side-labels li {
-    border-inline-end: none;
-    border-inline-start: 3px solid var(--hud-cyan);
-  }
-}
-
-@media (max-width: 640px) {
-  .core-label,
-  .core-readout {
-    top: 12px;
-    font-size: 0.65rem;
-    padding: 6px 10px;
-  }
-
-  .core-status,
-  .core-coordinates {
-    bottom: 12px;
-    font-size: 0.65rem;
-    padding: 6px 10px;
-  }
-
-  .asset-stack {
-    max-width: 280px;
-  }
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -4495,4 +3799,505 @@ html.light ::-webkit-scrollbar-thumb {
 }
 html.light ::-webkit-scrollbar-thumb:hover {
   background: rgba(8, 145, 178, 0.4);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   HERO CORE v3 — animated SVG reactor (HomepageClient DigitalCore)
+   Fully replaces the old layered-image .digital-core composition;
+   all legacy .digital-core / asset-layer / core-* rules were pruned.
+   Pure transform/opacity animations (GPU-friendly), logical
+   properties for RTL, both themes, scales via aspect-ratio at every
+   breakpoint.
+   ══════════════════════════════════════════════════════════════════ */
+
+.core-v3 {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18px, 2.6vw, 28px);
+  margin: 0;
+  width: 100%;
+  transform: translate(var(--parallax-x, 0px), var(--parallax-y, 0px));
+  transition: transform 0.15s ease-out;
+}
+
+.core-stage {
+  position: relative;
+  width: min(100%, 540px);
+  aspect-ratio: 1;
+}
+
+.core-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* ── Rings & instruments ── */
+.ring-outer {
+  fill: none;
+  stroke: rgba(110, 231, 242, 0.08);
+  stroke-width: 1;
+}
+.ring-inner {
+  fill: none;
+  stroke: rgba(110, 231, 242, 0.14);
+  stroke-width: 1;
+}
+.tick {
+  stroke: rgba(181, 219, 224, 0.22);
+  stroke-width: 1;
+}
+.tick--long {
+  stroke: rgba(110, 231, 242, 0.4);
+  stroke-width: 1.4;
+}
+.crosshair {
+  stroke: rgba(181, 219, 224, 0.08);
+  stroke-width: 1;
+}
+.ring-dash {
+  fill: none;
+  stroke: rgba(110, 231, 242, 0.4);
+  stroke-width: 1;
+  stroke-dasharray: 3 12;
+}
+.ring-arc {
+  fill: none;
+  stroke: rgba(110, 231, 242, 0.75);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.ring-arc--soft {
+  stroke: rgba(110, 231, 242, 0.3);
+  stroke-width: 1;
+}
+.orbit-node {
+  fill: #6ee7f2;
+}
+.orbit-halo {
+  fill: rgba(110, 231, 242, 0.16);
+}
+
+/* Spin groups — transform-origin at the 400×400 viewBox center. */
+.ring-spin-slow,
+.ring-spin-rev,
+.ring-spin-fast {
+  transform-origin: 200px 200px;
+}
+.ring-spin-slow {
+  animation: core3-spin 46s linear infinite;
+}
+.ring-spin-rev {
+  animation: core3-spin-rev 22s linear infinite;
+}
+.ring-spin-fast {
+  animation: core3-spin 12s linear infinite;
+}
+@keyframes core3-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes core3-spin-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+/* ── Breathing core orb ── */
+.core-orb {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.core-orb-core {
+  width: 30%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 36% 30%,
+    rgba(224, 250, 253, 0.98),
+    rgba(110, 231, 242, 0.75) 38%,
+    rgba(8, 145, 178, 0.28) 68%,
+    rgba(8, 145, 178, 0) 100%
+  );
+  box-shadow:
+    0 0 40px rgba(110, 231, 242, 0.4),
+    0 0 110px rgba(110, 231, 242, 0.18),
+    inset 0 0 22px rgba(255, 255, 255, 0.35);
+  animation: core3-breathe 5.5s ease-in-out infinite;
+}
+@keyframes core3-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.06);
+    opacity: 0.92;
+  }
+}
+
+/* ── HUD chips ── */
+.hud-chip {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(110, 231, 242, 0.22);
+  background: rgba(7, 10, 13, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--primary);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+  z-index: 2;
+}
+.hud-chip--tl {
+  top: 0;
+  inset-inline-start: 0;
+}
+.hud-chip--tr {
+  top: 0;
+  inset-inline-end: 0;
+}
+.hud-chip--status {
+  position: static;
+  color: var(--muted-foreground);
+  border-color: var(--border);
+}
+
+.hud-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+  animation: core3-pulse 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes core3-pulse {
+  50% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+}
+
+/* ── Discipline chips row ── */
+.core-disciplines {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+  max-width: 560px;
+}
+.core-disciplines li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(181, 219, 224, 0.14);
+  background: rgba(13, 19, 23, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    border-color 0.25s cubic-bezier(0.2, 0, 0, 1),
+    transform 0.25s cubic-bezier(0.2, 0, 0, 1);
+}
+.core-disciplines li:hover {
+  border-color: rgba(110, 231, 242, 0.4);
+  transform: translateY(-2px);
+}
+.core-disciplines b {
+  color: var(--foreground);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.core-disciplines span {
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+
+/* ── Core v3 — light theme ── */
+html.light .ring-outer {
+  stroke: rgba(8, 145, 178, 0.12);
+}
+html.light .ring-inner {
+  stroke: rgba(8, 145, 178, 0.2);
+}
+html.light .tick {
+  stroke: rgba(11, 24, 28, 0.18);
+}
+html.light .tick--long {
+  stroke: rgba(8, 145, 178, 0.45);
+}
+html.light .crosshair {
+  stroke: rgba(11, 24, 28, 0.08);
+}
+html.light .ring-dash {
+  stroke: rgba(8, 145, 178, 0.45);
+}
+html.light .ring-arc {
+  stroke: rgba(8, 145, 178, 0.8);
+}
+html.light .ring-arc--soft {
+  stroke: rgba(8, 145, 178, 0.35);
+}
+html.light .orbit-node {
+  fill: #0891b2;
+}
+html.light .orbit-halo {
+  fill: rgba(8, 145, 178, 0.15);
+}
+html.light .core-orb-core {
+  background: radial-gradient(
+    circle at 36% 30%,
+    rgba(255, 255, 255, 0.98),
+    rgba(47, 179, 210, 0.8) 38%,
+    rgba(8, 145, 178, 0.3) 68%,
+    rgba(8, 145, 178, 0) 100%
+  );
+  box-shadow:
+    0 0 36px rgba(8, 145, 178, 0.28),
+    0 0 90px rgba(8, 145, 178, 0.12),
+    inset 0 0 18px rgba(255, 255, 255, 0.5);
+}
+html.light .hud-chip {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(8, 145, 178, 0.25);
+}
+html.light .core-disciplines li {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+html.light .core-disciplines li:hover {
+  border-color: rgba(8, 145, 178, 0.45);
+}
+
+/* ── Core v3 — responsive ── */
+@media (max-width: 1100px) {
+  .core-stage {
+    width: min(100%, 460px);
+  }
+}
+@media (max-width: 760px) {
+  .core-stage {
+    width: min(100%, 420px);
+  }
+  .hud-chip {
+    font-size: 9px;
+    padding: 6px 11px;
+  }
+  .core-disciplines li {
+    padding: 7px 12px;
+  }
+  .core-disciplines span {
+    font-size: 10px;
+  }
+}
+
+/* ── Core v3 — reduced motion: calm static composition ── */
+@media (prefers-reduced-motion: reduce) {
+  .ring-spin-slow,
+  .ring-spin-rev,
+  .ring-spin-fast,
+  .core-orb-core,
+  .hud-pulse-dot {
+    animation: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SCROLL REVEAL SYSTEM (components/Reveal.tsx)
+   The JS toggles .reveal--shown via IntersectionObserver; this is the
+   motion itself. Reduced-motion users see content immediately.
+   ══════════════════════════════════════════════════════════════════ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 26px));
+  transition:
+    opacity 0.7s cubic-bezier(0.2, 0, 0, 1),
+    transform 0.7s cubic-bezier(0.2, 0, 0, 1);
+  will-change: opacity, transform;
+}
+.reveal--shown {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MICRO-INTERACTIONS
+   ── Nav link underline: grows from the reading-start side.
+   ── Primary button: light sweep on hover (transform-only).
+   ══════════════════════════════════════════════════════════════════ */
+
+.nav-links a {
+  position: relative;
+}
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: -6px;
+  height: 1px;
+  background: var(--primary);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+html[dir="rtl"] .nav-links a::after {
+  transform-origin: right;
+}
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+
+.button-primary {
+  position: relative;
+  overflow: hidden;
+}
+.button-primary::before {
+  content: "";
+  position: absolute;
+  top: -12%;
+  bottom: -12%;
+  left: -30%;
+  width: 24%;
+  background: linear-gradient(
+    105deg,
+    transparent,
+    rgba(255, 255, 255, 0.55),
+    transparent
+  );
+  transform: translateX(0) skewX(-18deg);
+  transition: transform 0.65s cubic-bezier(0.2, 0, 0, 1);
+  pointer-events: none;
+}
+.button-primary:hover::before {
+  transform: translateX(520%) skewX(-18deg);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   MOBILE MENU (components/MobileMenu.tsx)
+   The hamburger button lives in .nav-controls and is only rendered
+   below 760px. The drawer sits under the sticky topbar (68px on
+   mobile) and locks body scroll while open.
+   ══════════════════════════════════════════════════════════════════ */
+
+.nav-menu-btn {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(110, 231, 242, 0.05);
+  color: var(--foreground);
+  cursor: pointer;
+  transition:
+    border-color 0.2s cubic-bezier(0.2, 0, 0, 1),
+    background 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.nav-menu-btn:hover {
+  border-color: rgba(110, 231, 242, 0.45);
+  background: rgba(110, 231, 242, 0.1);
+}
+
+@media (max-width: 760px) {
+  .nav-menu-btn {
+    display: inline-flex;
+  }
+}
+
+/* On phones the navbar CTA moves into the drawer to free space. */
+@media (max-width: 600px) {
+  .nav-action {
+    display: none;
+  }
+}
+
+.mobile-drawer {
+  position: fixed;
+  top: 68px;
+  inset-inline: 0;
+  z-index: 49;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px 24px;
+  background: rgba(7, 10, 13, 0.94);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.45);
+  animation: drawer-in 0.28s cubic-bezier(0.2, 0, 0, 1);
+}
+@keyframes drawer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.mobile-drawer-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mobile-drawer-nav a {
+  padding: 13px 10px;
+  border-radius: 12px;
+  color: var(--foreground);
+  font-size: 15px;
+  font-weight: 500;
+  transition:
+    background 0.2s cubic-bezier(0.2, 0, 0, 1),
+    color 0.2s cubic-bezier(0.2, 0, 0, 1);
+}
+.mobile-drawer-nav a:hover {
+  background: rgba(110, 231, 242, 0.08);
+  color: var(--primary);
+}
+.mobile-drawer-cta {
+  justify-content: center;
+}
+html.light .mobile-drawer {
+  background: rgba(244, 247, 249, 0.96);
+  box-shadow: 0 24px 48px rgba(11, 24, 28, 0.14);
+}
+html.light .mobile-drawer-nav a:hover {
+  background: rgba(8, 145, 178, 0.08);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mobile-drawer {
+    animation: none;
+  }
 }

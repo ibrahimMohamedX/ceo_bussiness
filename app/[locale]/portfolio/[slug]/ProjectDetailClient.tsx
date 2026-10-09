@@ -2,6 +2,7 @@
 import { getProjectCtaUrl } from "@/src/lib/project-cta";
 import { FooterBrandLogo } from "@/components/FooterBrandLogo";
 import { Brand } from "@/components/Brand";
+import { MobileMenu } from "@/components/MobileMenu";
 
 import {
   FaFacebookF,
@@ -244,6 +245,8 @@ export default function ProjectDetailClient({
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </button>
+
+          <MobileMenu siteSettings={siteSettings} />
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>

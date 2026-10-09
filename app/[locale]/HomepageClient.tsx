@@ -79,6 +79,8 @@ import {
 import { Brand } from "@/components/Brand";
 import { FooterBrandLogo } from "@/components/FooterBrandLogo";
 import { AppIcon } from "@/components/AppIcon";
+import { MobileMenu } from "@/components/MobileMenu";
+import { Reveal } from "@/components/Reveal";
 
 /* ------------------------------------------------------------------ */
 /*  EYEBROW â€” reused section label (site-consistent)                   */
@@ -145,26 +147,18 @@ interface HomepageClientProps {
 }
 
 /* ------------------------------------------------------------------ */
-/*  DigitalCore â€” parallax hero visual (unchanged)                    */
+/*  DigitalCore — animated SVG "reactor" hero visual.                  */
+/*  Pure CSS/SVG (no image stack): rotating rings, orbiting nodes, a   */
+/*  breathing core orb and minimal HUD chips. Sharp at any scale,     */
+/*  responsive, RTL-safe (logical properties), both themes.           */
 /* ------------------------------------------------------------------ */
+
+const CORE_TICKS = Array.from({ length: 48 }, (_, i) => i);
+
 function DigitalCore({ t }: { t: ReturnType<typeof useTranslations> }) {
   const coreRef = useRef<HTMLDivElement>(null);
-  // Index position maps to `.asset-layer-N` classes in globals.css (index â†’ N+1).
-  // Do NOT reindex or reorder: each layer must keep its assigned layer class so
-  // the per-layer blend/opacity/animation stays correct.
-  // All six layers resolve to verified local copies in /public/hero/ (sourced from
-  // docs/assets/), replacing the dead Vercel Blob URLs. Background_Effects.png,
-  // Glow_Auras.png and Holographic_Grid.png are present in docs/assets but are NOT
-  // part of this 6-layer composition (no original slot) â€” not added to avoid redesign.
-  const layers = [
-    "/hero/hero-glow.webp",
-    "/hero/hero-rings.png",
-    "/hero/Network_Layer.png",
-    "/hero/Data_Streams.png",
-    "/hero/hero-core.png",
-    "/hero/Light_Particles.png",
-  ];
 
+  /* Subtle pointer parallax — desktop, fine pointers only. */
   useEffect(() => {
     const core = coreRef.current;
     if (
@@ -205,34 +199,81 @@ function DigitalCore({ t }: { t: ReturnType<typeof useTranslations> }) {
   return (
     <figure
       ref={coreRef}
-      className="digital-core"
+      className="core-v3"
       aria-labelledby="core-caption"
     >
-      <div className="core-label">DIGITAL CORE / 001</div>
-      <div className="core-readout">
-        SYS ONLINE
-        <br />
-        <span>LATENCY 0.04MS</span>
-      </div>
-      <div className="asset-stack" aria-hidden="true">
-        {layers.map((src, index) =>
-          src ? (
-            <Image
-              key={src}
-              className={`asset-layer asset-layer-${index + 1}`}
-              src={src}
-              alt=""
-              fill
-              sizes="(max-width: 760px) 110vw, (max-width: 1100px) 62vw, 660px"
-              quality={78}
-              priority={index < 2 || index === 4}
-              loading={index < 2 || index === 4 ? undefined : "lazy"}
-              aria-hidden="true"
+      <div className="core-stage">
+        <div className="hud-chip hud-chip--tl">DIGITAL CORE / 001</div>
+        <div className="hud-chip hud-chip--tr">
+          <span className="hud-pulse-dot" aria-hidden="true" />
+          SYS ONLINE
+        </div>
+
+        <svg
+          className="core-svg"
+          viewBox="0 0 400 400"
+          aria-hidden="true"
+          focusable="false"
+        >
+          {/* Faint outer boundary */}
+          <circle cx="200" cy="200" r="196" className="ring-outer" />
+          {/* Instrument ticks */}
+          {CORE_TICKS.map((i) => {
+            const angle = (i * 360) / CORE_TICKS.length;
+            const long = i % 4 === 0;
+            return (
+              <line
+                key={i}
+                className={long ? "tick tick--long" : "tick"}
+                x1="200"
+                y1={200 - (long ? 186 : 190)}
+                x2="200"
+                y2="194"
+                transform={`rotate(${angle} 200 200)`}
+              />
+            );
+          })}
+          {/* Slow dashed orbit */}
+          <g className="ring-spin-slow">
+            <circle cx="200" cy="200" r="170" className="ring-dash" />
+            <circle cx="200" cy="30" r="4" className="orbit-node" />
+            <circle cx="200" cy="30" r="8" className="orbit-halo" />
+          </g>
+          {/* Counter-rotating energy arcs */}
+          <g className="ring-spin-rev">
+            <circle
+              cx="200"
+              cy="200"
+              r="146"
+              className="ring-arc"
+              strokeDasharray="150 300"
             />
-          ) : null,
-        )}
+            <circle
+              cx="200"
+              cy="200"
+              r="134"
+              className="ring-arc ring-arc--soft"
+              strokeDasharray="70 330"
+              transform="rotate(140 200 200)"
+            />
+          </g>
+          {/* Inner faint shell */}
+          <circle cx="200" cy="200" r="118" className="ring-inner" />
+          {/* Crosshair hairlines */}
+          <line x1="14" y1="200" x2="386" y2="200" className="crosshair" />
+          <line x1="200" y1="14" x2="200" y2="386" className="crosshair" />
+          {/* Inner fast node */}
+          <g className="ring-spin-fast">
+            <circle cx="200" cy="82" r="3" className="orbit-node" />
+          </g>
+        </svg>
+
+        <div className="core-orb" aria-hidden="true">
+          <span className="core-orb-core" />
+        </div>
       </div>
-      <ul className="core-side-labels" aria-label="Engineering disciplines">
+
+      <ul className="core-disciplines" aria-label="Engineering disciplines">
         <li>
           <b>{t("Hero.coreLabels.ai")}</b>
           <span>{t("Hero.coreLabels.aiVerbs")}</span>
@@ -250,13 +291,12 @@ function DigitalCore({ t }: { t: ReturnType<typeof useTranslations> }) {
           <span>{t("Hero.coreLabels.impactVerbs")}</span>
         </li>
       </ul>
-      <div className="core-status" role="status" aria-live="polite">
-        <span aria-hidden="true" />{" "}
-        <span className="sr-only">System status:</span> {t("Hero.coreStatus")}
+
+      <div className="hud-chip hud-chip--status" role="status" aria-live="polite">
+        <span className="hud-pulse-dot" aria-hidden="true" />
+        {t("Hero.coreStatus")}
       </div>
-      <div className="core-coordinates" aria-label="Core coordinates">
-        {t("Hero.coreCoordinates")}
-      </div>
+
       <figcaption id="core-caption" className="sr-only">
         A layered visualization of a digital engineering core connecting
         artificial intelligence, software engineering, embedded systems, and
@@ -680,6 +720,8 @@ export default function HomepageClient({
               <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
             </svg>
           </button>
+
+          <MobileMenu siteSettings={siteSettings} />
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
@@ -690,56 +732,71 @@ export default function HomepageClient({
       {/* â”€â”€ Hero â”€â”€ */}
       <section className="hero section-grid" id="hero">
         <div className="hero-copy">
-          <div className="eyebrow">
-            <span className="eyebrow-dot" /> {t("Hero.eyebrow.software")}{" "}
-            <span>â€¢</span> {t("Hero.eyebrow.embedded")} <span>â€¢</span>{" "}
-            {t("Hero.eyebrow.ai")}
-          </div>
-          <h1>
-            {t("Hero.title.line1")}
-            <br />
-            <em>{t("Hero.title.line2")}</em>
-            <br />
-            {t("Hero.title.line3")}
-          </h1>
-          <p className="hero-lede">{t("Hero.description")}</p>
-          <div className="hero-actions">
-            <a className="button-primary" href={getProjectCtaUrl(siteSettings)}>
-              {t("Hero.primaryCta")} <ArrowUpRight size={16} />
-            </a>
-            <a className="button-secondary" href={servicesHref}>
-              {t("Hero.secondaryCta")} <ArrowUpRight size={16} />
-            </a>
-          </div>
-          <div className="hero-highlights">
-            <span>
-              <AppIcon icon={Cpu} size="md" />{" "}
-              {t("Hero.highlights.engineering")}
-            </span>
-            <span>
-              <AppIcon icon={ShieldCheck} size="md" />{" "}
-              {t("Hero.highlights.reliable")}
-            </span>
-            <span>
-              <AppIcon icon={CircuitBoard} size="md" />{" "}
-              {t("Hero.highlights.hardware")}
-            </span>
-            <span>
-              <AppIcon icon={BrainCircuit} size="md" />{" "}
-              {t("Hero.highlights.ai")}
-            </span>
-          </div>
-          <div className="hero-note">
-            <span>{t("Hero.coreCaption")}</span>
-            <b>{t("Hero.corePurpose")}</b>
-          </div>
+          <Reveal delay={0}>
+            <div className="eyebrow">
+              <span className="eyebrow-dot" /> {t("Hero.eyebrow.software")}{" "}
+              <span>â€¢</span> {t("Hero.eyebrow.embedded")} <span>â€¢</span>{" "}
+              {t("Hero.eyebrow.ai")}
+            </div>
+          </Reveal>
+          <Reveal delay={90}>
+            <h1>
+              {t("Hero.title.line1")}
+              <br />
+              <em>{t("Hero.title.line2")}</em>
+              <br />
+              {t("Hero.title.line3")}
+            </h1>
+          </Reveal>
+          <Reveal delay={180}>
+            <p className="hero-lede">{t("Hero.description")}</p>
+          </Reveal>
+          <Reveal delay={270}>
+            <div className="hero-actions">
+              <a
+                className="button-primary"
+                href={getProjectCtaUrl(siteSettings)}
+              >
+                {t("Hero.primaryCta")} <ArrowUpRight size={16} />
+              </a>
+              <a className="button-secondary" href={servicesHref}>
+                {t("Hero.secondaryCta")} <ArrowUpRight size={16} />
+              </a>
+            </div>
+          </Reveal>
+          <Reveal delay={360}>
+            <div className="hero-highlights">
+              <span>
+                <AppIcon icon={Cpu} size="md" />{" "}
+                {t("Hero.highlights.engineering")}
+              </span>
+              <span>
+                <AppIcon icon={ShieldCheck} size="md" />{" "}
+                {t("Hero.highlights.reliable")}
+              </span>
+              <span>
+                <AppIcon icon={CircuitBoard} size="md" />{" "}
+                {t("Hero.highlights.hardware")}
+              </span>
+              <span>
+                <AppIcon icon={BrainCircuit} size="md" />{" "}
+                {t("Hero.highlights.ai")}
+              </span>
+            </div>
+          </Reveal>
+          <Reveal delay={450}>
+            <div className="hero-note">
+              <span>{t("Hero.coreCaption")}</span>
+              <b>{t("Hero.corePurpose")}</b>
+            </div>
+          </Reveal>
         </div>
         <DigitalCore t={t} />
       </section>
 
       {/* â”€â”€ Services â”€â”€ */}
       <section className="services" id="services">
-        <div className="services-intro">
+        <Reveal className="services-intro">
           <Eyebrow label={t("Services.eyebrow")} />
           <h2>
             {t("Services.title.line1")}
@@ -747,59 +804,65 @@ export default function HomepageClient({
             {t("Services.title.line2")}
           </h2>
           <p>{t("Services.description")}</p>
-        </div>
+        </Reveal>
         <div className="services-grid">
-          <article className="service-card">
-            <div className="service-icon">
-              <AppIcon icon={Code2} size="xl" />
-            </div>
-            <h3>{t("Services.cards.software.title")}</h3>
-            <p>{t("Services.cards.software.description")}</p>
-            <div className="service-tags">
-              <span>{t("Services.cards.software.tags.0")}</span>
-              <span>{t("Services.cards.software.tags.1")}</span>
-              <span>{t("Services.cards.software.tags.2")}</span>
-            </div>
-            <a className="service-link" href={servicesAnchor("software")}>
-              {t("Services.cards.software.link")} <ArrowUpRight size={14} />
-            </a>
-          </article>
-          <article className="service-card">
-            <div className="service-icon">
-              <AppIcon icon={Microchip} size="xl" />
-            </div>
-            <h3>{t("Services.cards.embedded.title")}</h3>
-            <p>{t("Services.cards.embedded.description")}</p>
-            <div className="service-tags">
-              <span>{t("Services.cards.embedded.tags.0")}</span>
-              <span>{t("Services.cards.embedded.tags.1")}</span>
-              <span>{t("Services.cards.embedded.tags.2")}</span>
-            </div>
-            <a className="service-link" href={servicesAnchor("embedded")}>
-              {t("Services.cards.embedded.link")} <ArrowUpRight size={14} />
-            </a>
-          </article>
-          <article className="service-card">
-            <div className="service-icon">
-              <AppIcon icon={Brain} size="xl" />
-            </div>
-            <h3>{t("Services.cards.ai.title")}</h3>
-            <p>{t("Services.cards.ai.description")}</p>
-            <div className="service-tags">
-              <span>{t("Services.cards.ai.tags.0")}</span>
-              <span>{t("Services.cards.ai.tags.1")}</span>
-              <span>{t("Services.cards.ai.tags.2")}</span>
-            </div>
-            <a className="service-link" href={servicesAnchor("ai")}>
-              {t("Services.cards.ai.link")} <ArrowUpRight size={14} />
-            </a>
-          </article>
+          <Reveal delay={0}>
+            <article className="service-card">
+              <div className="service-icon">
+                <AppIcon icon={Code2} size="xl" />
+              </div>
+              <h3>{t("Services.cards.software.title")}</h3>
+              <p>{t("Services.cards.software.description")}</p>
+              <div className="service-tags">
+                <span>{t("Services.cards.software.tags.0")}</span>
+                <span>{t("Services.cards.software.tags.1")}</span>
+                <span>{t("Services.cards.software.tags.2")}</span>
+              </div>
+              <a className="service-link" href={servicesAnchor("software")}>
+                {t("Services.cards.software.link")} <ArrowUpRight size={14} />
+              </a>
+            </article>
+          </Reveal>
+          <Reveal delay={90}>
+            <article className="service-card">
+              <div className="service-icon">
+                <AppIcon icon={Microchip} size="xl" />
+              </div>
+              <h3>{t("Services.cards.embedded.title")}</h3>
+              <p>{t("Services.cards.embedded.description")}</p>
+              <div className="service-tags">
+                <span>{t("Services.cards.embedded.tags.0")}</span>
+                <span>{t("Services.cards.embedded.tags.1")}</span>
+                <span>{t("Services.cards.embedded.tags.2")}</span>
+              </div>
+              <a className="service-link" href={servicesAnchor("embedded")}>
+                {t("Services.cards.embedded.link")} <ArrowUpRight size={14} />
+              </a>
+            </article>
+          </Reveal>
+          <Reveal delay={180}>
+            <article className="service-card">
+              <div className="service-icon">
+                <AppIcon icon={Brain} size="xl" />
+              </div>
+              <h3>{t("Services.cards.ai.title")}</h3>
+              <p>{t("Services.cards.ai.description")}</p>
+              <div className="service-tags">
+                <span>{t("Services.cards.ai.tags.0")}</span>
+                <span>{t("Services.cards.ai.tags.1")}</span>
+                <span>{t("Services.cards.ai.tags.2")}</span>
+              </div>
+              <a className="service-link" href={servicesAnchor("ai")}>
+                {t("Services.cards.ai.link")} <ArrowUpRight size={14} />
+              </a>
+            </article>
+          </Reveal>
         </div>
       </section>
 
       {/* â”€â”€ Industries â”€â”€ */}
       <section className="industries" id="industries">
-        <div className="industries-intro">
+        <Reveal className="industries-intro">
           <Eyebrow label={t("Industries.eyebrow")} />
           <h2>
             {t("Industries.title.line1")}
@@ -807,42 +870,50 @@ export default function HomepageClient({
             {t("Industries.title.line2")}
           </h2>
           <p>{t("Industries.description")}</p>
-        </div>
+        </Reveal>
         <div className="industries-grid">
-          <article className="industry-card">
-            <div className="industry-icon">
-              <AppIcon icon={Orbit} size="xl" />
-            </div>
-            <h3>{t("Industries.cards.aerospace.title")}</h3>
-            <p>{t("Industries.cards.aerospace.description")}</p>
-          </article>
-          <article className="industry-card">
-            <div className="industry-icon">
-              <AppIcon icon={Factory} size="xl" />
-            </div>
-            <h3>{t("Industries.cards.manufacturing.title")}</h3>
-            <p>{t("Industries.cards.manufacturing.description")}</p>
-          </article>
-          <article className="industry-card">
-            <div className="industry-icon">
-              <AppIcon icon={HeartPulse} size="xl" />
-            </div>
-            <h3>{t("Industries.cards.healthcare.title")}</h3>
-            <p>{t("Industries.cards.healthcare.description")}</p>
-          </article>
-          <article className="industry-card">
-            <div className="industry-icon">
-              <AppIcon icon={Zap} size="xl" />
-            </div>
-            <h3>{t("Industries.cards.energy.title")}</h3>
-            <p>{t("Industries.cards.energy.description")}</p>
-          </article>
+          <Reveal delay={0}>
+            <article className="industry-card">
+              <div className="industry-icon">
+                <AppIcon icon={Orbit} size="xl" />
+              </div>
+              <h3>{t("Industries.cards.aerospace.title")}</h3>
+              <p>{t("Industries.cards.aerospace.description")}</p>
+            </article>
+          </Reveal>
+          <Reveal delay={90}>
+            <article className="industry-card">
+              <div className="industry-icon">
+                <AppIcon icon={Factory} size="xl" />
+              </div>
+              <h3>{t("Industries.cards.manufacturing.title")}</h3>
+              <p>{t("Industries.cards.manufacturing.description")}</p>
+            </article>
+          </Reveal>
+          <Reveal delay={180}>
+            <article className="industry-card">
+              <div className="industry-icon">
+                <AppIcon icon={HeartPulse} size="xl" />
+              </div>
+              <h3>{t("Industries.cards.healthcare.title")}</h3>
+              <p>{t("Industries.cards.healthcare.description")}</p>
+            </article>
+          </Reveal>
+          <Reveal delay={270}>
+            <article className="industry-card">
+              <div className="industry-icon">
+                <AppIcon icon={Zap} size="xl" />
+              </div>
+              <h3>{t("Industries.cards.energy.title")}</h3>
+              <p>{t("Industries.cards.energy.description")}</p>
+            </article>
+          </Reveal>
         </div>
       </section>
 
       {/* â”€â”€ Engineering Process â”€â”€ */}
       <section className="process-section" id="process">
-        <div className="process-intro">
+        <Reveal className="process-intro">
           <Eyebrow label={t("Process.eyebrow")} />
           <h2>
             {t("Process.title.line1")}
@@ -850,65 +921,75 @@ export default function HomepageClient({
             {t("Process.title.line2")}
           </h2>
           <p>{t("Process.description")}</p>
-        </div>
+        </Reveal>
         <div className="process-timeline">
           <div className="process-connector" aria-hidden="true" />
-          <article className="process-step">
-            <div className="process-number" aria-hidden="true">
-              01
-            </div>
-            <div className="process-icon">
-              <AppIcon icon={Telescope} size="xl" />
-            </div>
-            <h3>{t("Process.steps.discovery.title")}</h3>
-            <p>{t("Process.steps.discovery.description")}</p>
-          </article>
-          <article className="process-step">
-            <div className="process-number" aria-hidden="true">
-              02
-            </div>
-            <div className="process-icon">
-              <AppIcon icon={DraftingCompass} size="xl" />
-            </div>
-            <h3>{t("Process.steps.architecture.title")}</h3>
-            <p>{t("Process.steps.architecture.description")}</p>
-          </article>
-          <article className="process-step">
-            <div className="process-number" aria-hidden="true">
-              03
-            </div>
-            <div className="process-icon">
-              <AppIcon icon={Wrench} size="xl" />
-            </div>
-            <h3>{t("Process.steps.engineering.title")}</h3>
-            <p>{t("Process.steps.engineering.description")}</p>
-          </article>
-          <article className="process-step">
-            <div className="process-number" aria-hidden="true">
-              04
-            </div>
-            <div className="process-icon">
-              <AppIcon icon={CircleCheckBig} size="xl" />
-            </div>
-            <h3>{t("Process.steps.validation.title")}</h3>
-            <p>{t("Process.steps.validation.description")}</p>
-          </article>
-          <article className="process-step">
-            <div className="process-number" aria-hidden="true">
-              05
-            </div>
-            <div className="process-icon">
-              <AppIcon icon={Rocket} size="xl" />
-            </div>
-            <h3>{t("Process.steps.deployment.title")}</h3>
-            <p>{t("Process.steps.deployment.description")}</p>
-          </article>
+          <Reveal delay={0}>
+            <article className="process-step">
+              <div className="process-number" aria-hidden="true">
+                01
+              </div>
+              <div className="process-icon">
+                <AppIcon icon={Telescope} size="xl" />
+              </div>
+              <h3>{t("Process.steps.discovery.title")}</h3>
+              <p>{t("Process.steps.discovery.description")}</p>
+            </article>
+          </Reveal>
+          <Reveal delay={80}>
+            <article className="process-step">
+              <div className="process-number" aria-hidden="true">
+                02
+              </div>
+              <div className="process-icon">
+                <AppIcon icon={DraftingCompass} size="xl" />
+              </div>
+              <h3>{t("Process.steps.architecture.title")}</h3>
+              <p>{t("Process.steps.architecture.description")}</p>
+            </article>
+          </Reveal>
+          <Reveal delay={160}>
+            <article className="process-step">
+              <div className="process-number" aria-hidden="true">
+                03
+              </div>
+              <div className="process-icon">
+                <AppIcon icon={Wrench} size="xl" />
+              </div>
+              <h3>{t("Process.steps.engineering.title")}</h3>
+              <p>{t("Process.steps.engineering.description")}</p>
+            </article>
+          </Reveal>
+          <Reveal delay={240}>
+            <article className="process-step">
+              <div className="process-number" aria-hidden="true">
+                04
+              </div>
+              <div className="process-icon">
+                <AppIcon icon={CircleCheckBig} size="xl" />
+              </div>
+              <h3>{t("Process.steps.validation.title")}</h3>
+              <p>{t("Process.steps.validation.description")}</p>
+            </article>
+          </Reveal>
+          <Reveal delay={320}>
+            <article className="process-step">
+              <div className="process-number" aria-hidden="true">
+                05
+              </div>
+              <div className="process-icon">
+                <AppIcon icon={Rocket} size="xl" />
+              </div>
+              <h3>{t("Process.steps.deployment.title")}</h3>
+              <p>{t("Process.steps.deployment.description")}</p>
+            </article>
+          </Reveal>
         </div>
       </section>
 
       {/* â”€â”€ Featured Projects â”€â”€ */}
       <section className="projects-section" id="projects">
-        <div className="projects-intro">
+        <Reveal className="projects-intro">
           <div className="projects-intro-head">
             <Eyebrow label={t("Projects.eyebrow")} />
             <h2>
@@ -918,17 +999,18 @@ export default function HomepageClient({
             </h2>
           </div>
           <p>{t("Projects.description")}</p>
-        </div>
+        </Reveal>
         <div className="projects-grid">
           {featuredProjects.length > 0 ? (
             featuredProjects.map((project, index) => (
-              <FeaturedProjectCard
-                key={project.id}
-                project={project}
-                locale={locale}
-                index={index}
-                ctaLabel={t("Projects.cta")}
-              />
+              <Reveal key={project.id} delay={index * 90}>
+                <FeaturedProjectCard
+                  project={project}
+                  locale={locale}
+                  index={index}
+                  ctaLabel={t("Projects.cta")}
+                />
+              </Reveal>
             ))
           ) : (
             <div className="col-span-full text-center py-12 text-[var(--muted-foreground)]">
@@ -940,7 +1022,7 @@ export default function HomepageClient({
 
       {/* â”€â”€ Technologies â”€â”€ */}
       <section className="technologies-section" id="technologies">
-        <div className="technologies-intro">
+        <Reveal className="technologies-intro">
           <Eyebrow label={t("Technologies.eyebrow")} />
           <h2>
             {t("Technologies.title.line1")}
@@ -948,17 +1030,19 @@ export default function HomepageClient({
             <em>{t("Technologies.title.line2")}</em>
           </h2>
           <p>{t("Technologies.description")}</p>
-        </div>
+        </Reveal>
         <div className="technologies-grid">
-          {techCategories.map((category) => (
-            <TechnologyCategory key={category.key} category={category} t={t} />
+          {techCategories.map((category, index) => (
+            <Reveal key={category.key} delay={index * 70}>
+              <TechnologyCategory category={category} t={t} />
+            </Reveal>
           ))}
         </div>
       </section>
 
       {/* â”€â”€ Why PROJEX â”€â”€ */}
       <section className="why-projex-section" id="why-projex">
-        <div className="why-projex-intro">
+        <Reveal className="why-projex-intro">
           <Eyebrow label={t("WhyProjex.eyebrow")} />
           <h2>
             {t("WhyProjex.title.line1")}
@@ -966,26 +1050,29 @@ export default function HomepageClient({
             <em>{t("WhyProjex.title.line2")}</em>
           </h2>
           <p>{t("WhyProjex.description")}</p>
-        </div>
+        </Reveal>
         <div className="why-projex-pillars">
           {whyProjexCards.slice(0, 2).map((card, index) => (
-            <WhyProjexCard
-              key={card.key}
-              card={card}
-              t={t}
-              index={index}
-              featured
-            />
+            <Reveal key={card.key} delay={index * 90}>
+              <WhyProjexCard
+                card={card}
+                t={t}
+                index={index}
+                featured
+              />
+            </Reveal>
           ))}
         </div>
         <div className="why-projex-support">
           {whyProjexCards.slice(2).map((card, index) => (
-            <WhyProjexCard key={card.key} card={card} t={t} index={index + 2} />
+            <Reveal key={card.key} delay={index * 90}>
+              <WhyProjexCard card={card} t={t} index={index + 2} />
+            </Reveal>
           ))}
         </div>
       </section>
       <section className="testimonials-section" id="testimonials">
-        <div className="testimonials-intro">
+        <Reveal className="testimonials-intro">
           <Eyebrow label={t("Testimonials.eyebrow")} />
           <h2>
             {t("Testimonials.title.line1")}
@@ -993,16 +1080,17 @@ export default function HomepageClient({
             <em>{t("Testimonials.title.line2")}</em>
           </h2>
           <p>{t("Testimonials.description")}</p>
-        </div>
+        </Reveal>
         <div className="testimonials-grid">
           {featuredTestimonials.length > 0 ? (
             featuredTestimonials.map((testimonial, index) => (
-              <TestimonialCard
-                key={testimonial.id}
-                testimonial={testimonial}
-                locale={locale}
-                index={index}
-              />
+              <Reveal key={testimonial.id} delay={index * 90}>
+                <TestimonialCard
+                  testimonial={testimonial}
+                  locale={locale}
+                  index={index}
+                />
+              </Reveal>
             ))
           ) : (
             <div className="col-span-full text-center py-12 text-[var(--muted-foreground)]">
@@ -1012,7 +1100,7 @@ export default function HomepageClient({
         </div>
       </section>
       <section className="faq-section" id="faq">
-        <div className="faq-intro">
+        <Reveal className="faq-intro">
           <Eyebrow label={t("Faq.eyebrow")} />
           <h2>
             {t("Faq.title.line1")}
@@ -1020,13 +1108,15 @@ export default function HomepageClient({
             <em>{t("Faq.title.line2")}</em>
           </h2>
           <p>{t("Faq.description")}</p>
-        </div>
+        </Reveal>
         {faqs.length === 0 ? (
           <p className="faq-empty">{t("Faq.empty")}</p>
         ) : (
           <div className="faq-list">
             {faqs.map((faq, index) => (
-              <FaqItem key={faq.id} faq={faq} locale={locale} index={index} />
+              <Reveal key={faq.id} delay={index * 70}>
+                <FaqItem faq={faq} locale={locale} index={index} />
+              </Reveal>
             ))}
           </div>
         )}
@@ -1041,7 +1131,7 @@ export default function HomepageClient({
         aria-labelledby="contact-cta-title"
       >
         <div className="contact-cta-glow" aria-hidden="true" />
-        <div className="contact-cta-intro">
+        <Reveal className="contact-cta-intro">
           <Eyebrow label={t("ContactCta.eyebrow")} />
           <h2 id="contact-cta-title">
             {t("ContactCta.title.line1")}
@@ -1060,7 +1150,7 @@ export default function HomepageClient({
               {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
-        </div>
+        </Reveal>
       </section>
 
       {/* ---------------------------------------------------------------- */}
