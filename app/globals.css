@@ -33,7 +33,6 @@ html {
 }
 body {
   margin: 0;
-  background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
 }
@@ -48,13 +47,14 @@ button {
 .foundation-shell {
   min-height: 100vh;
   overflow: hidden;
-  background:
-    radial-gradient(
-      circle at 82% 12%,
-      rgba(70, 190, 205, 0.08),
-      transparent 23rem
-    ),
-    var(--background);
+  /* Transparent base: the fixed .living-bg canvas behind the shell is
+     the site background (html keeps the solid --background under it).
+     The radial gradient remains as an additive glow over the canvas. */
+  background: radial-gradient(
+    circle at 82% 12%,
+    rgba(70, 190, 205, 0.08),
+    transparent 23rem
+  );
 }
 .foundation-shell::before {
   content: "";
@@ -71,8 +71,7 @@ button {
 .topbar,
 .section-grid,
 .services,
-.industries,
-.footer {
+.industries {
   width: min(1200px, calc(100% - 64px));
   margin: auto;
 }
@@ -155,12 +154,8 @@ button {
   z-index: 1;
 }
 .eyebrow,
-.section-kicker,
 .core-label,
-.core-status,
-.hero-meta,
-.board-header,
-.footer {
+.core-status {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.13em;
@@ -181,7 +176,6 @@ button {
   box-shadow: 0 0 10px var(--primary);
 }
 h1 {
-  /* font-size: clamp(34px, 8vw, 32px); */
   font-size: 90px;
   line-height: 0.91;
   letter-spacing: -0.075em;
@@ -234,33 +228,6 @@ h2 span {
   border-color: rgba(110, 231, 242, 0.55);
   background: rgba(110, 231, 242, 0.06);
 }
-.hero-meta {
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  margin-top: 42px;
-}
-.meta-line {
-  width: 40px;
-  height: 1px;
-  background: var(--border);
-}
-.digital-core {
-  min-height: 560px;
-  position: relative;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background:
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(40, 125, 136, 0.14),
-      transparent 36%
-    ),
-    linear-gradient(145deg, rgba(18, 37, 41, 0.55), rgba(7, 10, 13, 0.15));
-  box-shadow: inset 0 0 100px rgba(110, 231, 242, 0.045);
-  overflow: hidden;
-  animation: core-breathe 7s ease-in-out infinite;
-}
 .digital-core::after {
   content: "";
   position: absolute;
@@ -268,97 +235,6 @@ h2 span {
   border: 1px solid rgba(110, 231, 242, 0.08);
   border-radius: 10px;
   pointer-events: none;
-}
-.digital-core svg {
-  position: absolute;
-  inset: 8% 2%;
-  width: 96%;
-  height: 84%;
-}
-.core-label {
-  position: absolute;
-  top: 28px;
-  left: 29px;
-  color: var(--primary);
-}
-.core-readout {
-  position: absolute;
-  top: 28px;
-  right: 29px;
-  text-align: right;
-  font: 10px/1.6 var(--font-mono);
-  color: var(--primary);
-}
-.core-readout span,
-.core-coordinates {
-  color: var(--muted-foreground);
-}
-.core-status {
-  position: absolute;
-  left: 29px;
-  bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--primary);
-}
-.core-coordinates {
-  position: absolute;
-  right: 29px;
-  bottom: 28px;
-  text-align: right;
-  font: 10px/1.6 var(--font-mono);
-}
-.core-hex {
-  transform-origin: 310px 250px;
-  animation: core-float 6s ease-in-out infinite;
-}
-.core-ring {
-  transform-origin: 310px 250px;
-  animation: ring-spin 28s linear infinite;
-}
-.data-streams {
-  animation: data-flow 3s linear infinite;
-}
-.trace-lines {
-  stroke-width: 1;
-}
-.core-nodes circle {
-  animation: node-pulse 2.8s ease-in-out infinite;
-}
-@keyframes core-breathe {
-  50% {
-    box-shadow:
-      inset 0 0 120px rgba(110, 231, 242, 0.08),
-      0 0 50px rgba(110, 231, 242, 0.04);
-  }
-}
-@keyframes core-float {
-  50% {
-    transform: translateY(-7px);
-  }
-}
-@keyframes ring-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes data-flow {
-  to {
-    stroke-dashoffset: -28;
-  }
-}
-@keyframes node-pulse {
-  50% {
-    opacity: 0.35;
-  }
-}
-.digital-core {
-  min-height: 650px;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-  overflow: visible;
 }
 .digital-core::before {
   content: "";
@@ -527,37 +403,10 @@ h2 span {
     transform: scale(1.015);
   }
 }
-@keyframes halo-pulse {
-  50% {
-    transform: scale(1.04) rotate(-5deg);
-    opacity: 0.72;
-  }
-}
-@keyframes orbit-turn {
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes orbit-turn-reverse {
-  to {
-    transform: rotate(-360deg);
-  }
-}
-@keyframes stack-float {
-  50% {
-    transform: translateY(-5px);
-  }
-}
-@keyframes network-breathe {
-  50% {
-    stroke-opacity: 0.25;
-  }
-}
 /* Motion-only enhancement: transform and opacity stay compositor-friendly. */
 .digital-core {
   --parallax-x: 0px;
   --parallax-y: 0px;
-  animation: none;
 }
 .asset-stack {
   will-change: transform;
@@ -632,71 +481,6 @@ h2 span {
     transform: translate3d(3px, -5px, 0);
     opacity: 0.92;
   }
-}
-
-.capabilities,
-.system-section,
-.principles {
-  padding: 128px 0;
-  border-top: 1px solid var(--border);
-  display: grid;
-  grid-template-columns: 0.72fr 1.28fr;
-  gap: 8%;
-}
-.section-intro h2 {
-  font-size: clamp(38px, 4vw, 58px);
-  line-height: 0.98;
-  letter-spacing: -0.06em;
-  font-weight: 500;
-  margin: 22px 0;
-}
-.section-intro p {
-  max-width: 270px;
-  color: var(--muted-foreground);
-  line-height: 1.6;
-  font-size: 14px;
-}
-.capability-list {
-  border-top: 1px solid var(--border);
-}
-.capability {
-  position: relative;
-  padding: 25px 0 29px;
-  border-bottom: 1px solid var(--border);
-}
-.capability-top {
-  display: flex;
-  justify-content: space-between;
-  color: var(--muted-foreground);
-  font: 11px var(--font-mono);
-}
-.capability-icon {
-  color: var(--primary);
-}
-.capability h3 {
-  font-size: 22px;
-  font-weight: 500;
-  margin: 28px 0 8px;
-}
-.capability p {
-  color: var(--muted-foreground);
-  font-size: 14px;
-  max-width: 420px;
-  line-height: 1.55;
-}
-.capability-arrow {
-  position: absolute;
-  right: 0;
-  bottom: 32px;
-  color: var(--primary);
-  opacity: 0;
-  transition:
-    opacity 0.2s,
-    transform 0.2s;
-}
-.capability:hover .capability-arrow {
-  opacity: 1;
-  transform: translate(3px, -3px);
 }
 
 /* ── Services ── */
@@ -836,12 +620,6 @@ h2 span {
   flex-direction: column;
   gap: 48px;
 }
-.industries-intro {
-  /* display: grid; */
-  grid-template-columns: 0.72fr 1.28fr;
-  gap: 8%;
-  align-items: end;
-}
 .industries-intro h2 {
   font-size: clamp(38px, 4vw, 58px);
   line-height: 0.98;
@@ -923,219 +701,6 @@ h2 span {
   margin: 4px 0 0 0;
 }
 
-.system-board {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background: rgba(13, 19, 23, 0.7);
-  padding: 25px;
-}
-.board-header {
-  display: flex;
-  justify-content: space-between;
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-}
-.token-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  padding: 24px 0;
-}
-.token {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-align: left;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: transparent;
-  padding: 13px;
-  cursor: pointer;
-}
-.token:hover {
-  border-color: rgba(110, 231, 242, 0.5);
-}
-.token .swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-}
-.token span:nth-child(2) {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  flex: 1;
-}
-.token b {
-  font-size: 12px;
-  font-weight: 500;
-}
-.token small {
-  font: 10px var(--font-mono);
-  color: var(--muted-foreground);
-}
-.token svg {
-  color: var(--muted-foreground);
-}
-.board-divider {
-  border-top: 1px solid var(--border);
-}
-.type-sample {
-  padding-top: 24px;
-}
-.type-sample strong {
-  display: block;
-  font-size: 36px;
-  font-weight: 500;
-  letter-spacing: -0.05em;
-  margin-top: 20px;
-}
-.type-sample p {
-  color: var(--muted-foreground);
-  font-size: 14px;
-}
-.principle-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-.principle-grid > div {
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 22px;
-  min-height: 200px;
-  background: rgba(13, 19, 23, 0.48);
-}
-.principle-grid svg {
-  color: var(--primary);
-}
-.principle-grid h3 {
-  font-size: 16px;
-  margin: 45px 0 8px;
-  font-weight: 500;
-}
-.principle-grid p {
-  color: var(--muted-foreground);
-  font-size: 13px;
-  line-height: 1.5;
-}
-.footer {
-  min-height: 100px;
-  border-top: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-@media (max-width: 760px) {
-  .topbar,
-  .section-grid,
-  .footer {
-    width: min(100% - 36px, 600px);
-  }
-  .topbar {
-    height: 72px;
-  }
-  .nav-links {
-    display: none;
-  }
-  .nav-action {
-    padding: 9px 11px;
-  }
-  .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 12px;
-    padding: 70px 0 90px;
-    min-height: auto;
-  }
-  .hero-copy {
-    padding: 0;
-  }
-  .digital-core {
-    min-height: 470px;
-    margin: 0 -12px;
-  }
-  .asset-stack {
-    inset: -3% -12% 0;
-  }
-  .core-side-labels {
-    display: none;
-  }
-  .hero-highlights {
-    overflow: hidden;
-    margin-top: 32px;
-  }
-  .hero-highlights span {
-    min-width: 108px;
-    padding: 0 12px;
-  }
-  .hero-note {
-    gap: 14px;
-    margin-top: 30px;
-    width: 100%;
-    padding: 12px;
-  }
-  .hero-actions {
-    gap: 9px;
-  }
-  .button-primary,
-  .button-secondary {
-    padding: 12px 14px;
-  }
-  .capabilities,
-  .system-section,
-  .principles {
-    display: flex;
-    flex-direction: column;
-    gap: 42px;
-    padding: 80px 0;
-  }
-  .section-intro h2 {
-    margin-top: 16px;
-  }
-  .principle-grid {
-    grid-template-columns: 1fr;
-  }
-  .principle-grid > div {
-    min-height: 160px;
-  }
-  .principle-grid h3 {
-    margin-top: 28px;
-  }
-  .services {
-    display: flex;
-    flex-direction: column;
-    gap: 42px;
-    padding: 80px 0;
-  }
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-  .industries {
-    gap: 36px;
-    padding: 80px 0;
-  }
-  .industries-intro {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-  .industries-intro p {
-    max-width: 100%;
-  }
-  .industries-grid {
-    grid-template-columns: 1fr;
-  }
-  .footer {
-    flex-wrap: wrap;
-    gap: 18px;
-    padding: 28px 0;
-  }
-  .footer > span:last-child {
-    width: 100%;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1263,8 +828,7 @@ h2 span {
 
 @media (min-width: 761px) and (max-width: 1100px) {
   .topbar,
-  .section-grid,
-  .footer {
+  .section-grid {
     width: min(100% - 48px, 980px);
   }
   .topbar {
@@ -1287,17 +851,8 @@ h2 span {
   .hero-lede {
     font-size: 15px;
   }
-  .digital-core {
-    min-height: 590px;
-  }
   .core-side-labels {
-    right: -1%;
-    width: 116px;
-    gap: 22px;
     font-size: 9px;
-  }
-  .core-side-labels b {
-    font-size: 11px;
   }
   .hero-highlights {
     max-width: 100%;
@@ -1316,47 +871,24 @@ h2 span {
   .services-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .industries-intro {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
   .industries-intro p {
     max-width: 100%;
   }
   .industries-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .process-section {
-    width: min(100% - 48px, 980px);
-  }
-  .process-timeline {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .process-connector {
-    display: none;
-  }
-  .projects-section {
-    width: min(100% - 48px, 980px);
-  }
-  .projects-intro {
-    grid-template-columns: 1fr;
-    gap: 24px;
-  }
-  .projects-intro > p {
-    max-width: 100%;
-  }
-  .projects-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
 }
 
+/* ── Mobile (≤760px) — single consolidated block ──
+   Merged from two previously conflicting mobile blocks. Declarations that
+   were fully superseded by later base rules (HUD hero redefinitions) were
+   dropped; all surviving values are unchanged. */
 @media (max-width: 760px) {
   .foundation-shell {
     overflow-x: clip;
   }
   .topbar,
-  .section-grid,
-  .footer {
+  .section-grid {
     width: min(100% - 32px, 600px);
   }
   .topbar {
@@ -1365,14 +897,25 @@ h2 span {
   .brand {
     font-size: 12px;
   }
+  .nav-links {
+    display: none;
+  }
   .nav-action {
     min-height: 44px;
     padding: 9px 12px;
     white-space: nowrap;
   }
   .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    min-height: auto;
     overflow: visible;
     padding: 62px 0 76px;
+  }
+  .hero-copy {
+    padding: 0;
   }
   h1 {
     font-size: clamp(54px, 16vw, 76px);
@@ -1382,46 +925,21 @@ h2 span {
     font-size: 16px;
   }
   .digital-core {
-    min-height: clamp(430px, 112vw, 520px);
     margin-inline: -8px;
-    contain: layout;
-  }
-  .asset-stack {
-    inset: -2% -10% 0;
-  }
-  .core-label,
-  .core-readout {
-    top: 18px;
-    font-size: 9px;
-  }
-  .core-label {
-    left: 20px;
-  }
-  .core-readout {
-    right: 20px;
-  }
-  .core-status,
-  .core-coordinates {
-    bottom: 18px;
-    font-size: 9px;
-  }
-  .core-status {
-    left: 20px;
-    display: none;
-  }
-  .core-coordinates {
-    right: 20px;
-    /* display: none; */
   }
   .hero-actions {
+    gap: 9px;
     align-items: stretch;
   }
   .button-primary,
   .button-secondary {
+    padding: 12px 14px;
     justify-content: center;
     flex: 1 1 100%;
   }
   .hero-highlights {
+    overflow: hidden;
+    margin-top: 32px;
     width: calc(100vw - 32px);
     max-width: none;
     overflow-x: auto;
@@ -1432,40 +950,39 @@ h2 span {
     display: none;
   }
   .hero-highlights span {
-    flex: 0 0 112px;
     min-width: 112px;
+    padding: 0 12px;
+    flex: 0 0 112px;
   }
   .hero-note {
+    gap: 14px;
+    margin-top: 30px;
     width: 100%;
+    padding: 12px;
     max-width: 100%;
     overflow: hidden;
   }
-  .process-section {
-    width: min(100% - 36px, 600px);
+  html[dir="rtl"] .hero-highlights span:first-child {
+    padding-left: 12px;
+  }
+  .services {
+    display: flex;
+    flex-direction: column;
+    gap: 42px;
     padding: 80px 0;
   }
-  .projects-section {
-    width: min(100% - 36px, 600px);
-    padding: 80px 0;
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+  .industries {
     gap: 36px;
+    padding: 80px 0;
   }
-  .projects-intro {
-    gap: 20px;
+  .industries-intro p {
+    max-width: 100%;
   }
-  .projects-grid {
+  .industries-grid {
     grid-template-columns: 1fr;
-  }
-  .project-content {
-    padding: 24px;
-  }
-  .process-intro {
-    margin-bottom: 36px;
-  }
-  .process-timeline {
-    grid-template-columns: 1fr;
-  }
-  .process-connector {
-    display: none;
   }
 }
 
@@ -1480,13 +997,13 @@ html.light {
   --border: rgba(0, 0, 0, 0.1);
 }
 html.light .foundation-shell {
-  background:
-    radial-gradient(
-      circle at 82% 12%,
-      rgba(8, 145, 178, 0.06),
-      transparent 23rem
-    ),
-    var(--background);
+  /* Additive glow only — base color comes from html behind the
+     living background (see the dark-theme note above). */
+  background: radial-gradient(
+    circle at 82% 12%,
+    rgba(8, 145, 178, 0.06),
+    transparent 23rem
+  );
 }
 html.light .foundation-shell::before {
   background-image:
@@ -1536,18 +1053,6 @@ html.light .hero::after {
     rgba(247, 249, 251, 0.55) 100%
   );
 }
-html.light .system-board,
-html.light .token,
-html.light .principle-grid > div {
-  background: rgba(255, 255, 255, 0.55);
-}
-html.light .core-side-labels b,
-html.light .core-label,
-html.light .core-readout,
-html.light .core-status {
-  /* color: #0d7377; */
-}
-
 /* ── Navbar Controls (Locale Switcher + Theme Toggle) ── */
 .nav-controls {
   display: inline-flex;
@@ -2221,8 +1726,6 @@ html[dir="rtl"] .blog-detail-body {
 }
 
 .technologies-intro {
-  /* text-align: center;
-  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
@@ -2381,9 +1884,6 @@ html[dir="rtl"] .tech-item:hover {
 }
 
 /* Light theme — Technologies */
-html.light .technologies-section {
-}
-
 html.light .tech-category {
   background: rgba(255, 255, 255, 0.8);
   border-color: rgba(0, 0, 0, 0.06);
@@ -2430,9 +1930,6 @@ html[dir="rtl"] .technologies-intro {
 }
 
 /* ── RTL Support ── */
-html[dir="rtl"] .topbar {
-  /* flex-direction: row-reverse; */
-}
 html[dir="rtl"] .nav-links {
   flex-direction: row-reverse;
 }
@@ -2492,25 +1989,12 @@ html[dir="rtl"] .industries-intro {
 html[dir="rtl"] .service-link {
   flex-direction: row-reverse;
 }
-@media (max-width: 760px) {
-  html[dir="rtl"] .hero-highlights span:first-child {
-    padding-left: 12px;
-  }
-}
 
-/* ── Mobile cascade fix (≤760px) — Engineering Process & Featured Projects & Technologies ─────────────
-   Why this block exists: the desktop base rules for these three sections are
-   declared further up, AFTER the first ≤760px media block. A @media query adds
-   no specificity, so at small widths the later desktop rules won by source
-   order — e.g. .process-timeline kept its 5-column grid, .projects-grid its
-   3-column grid, .projects-intro never received a single-column reset, and
-   .technologies-grid kept its 7-column grid.
-   Re-stating the same mobile declarations here places them AFTER the
-   conflicting base rules, so source order finally favours mobile. Values are
-   identical to the existing mobile block; the only additions are the missing
-   .projects-intro { grid-template-columns: 1fr } reset and .technologies-grid
-   { grid-template-columns: 1fr } reset. No desktop/tablet values, spacing,
-   typography, card design, colours, or animations change. */
+/* ── Mobile (≤760px) — Engineering Process & Featured Projects & Technologies ─────────────
+   Why this block sits after the section base rules above: a @media query adds
+   no specificity, so mobile declarations placed before the desktop bases
+   would lose by source order. This is the single mobile block for these
+   three sections. */
 @media (max-width: 760px) {
   .process-section {
     width: min(100% - 36px, 600px);
@@ -2555,16 +2039,11 @@ html[dir="rtl"] .service-link {
   }
 }
 
-/* ── Tablet cascade fix (761–1100px) — Engineering Process & Featured Projects & Technologies ─────────
-   Same root cause as the mobile block above: these Process/Projects/Technologies tablet
-   declarations originally sat BEFORE the unguarded desktop base rules, so at
-   tablet width the desktop grids (5-col process, 3-col projects, 2-col
-   projects-intro, 7-col technologies) won by source order. Re-stating the identical Process/Projects/Technologies
-   tablet declarations here places them AFTER the desktop bases, so tablet
-   rules win at 761–1100px. Values are byte-for-byte identical to the existing
-   tablet block; no desktop rule changes (above 1100px the unguarded bases
-   still apply). Only Process/Projects/Technologies are re-stated — Hero/Services/Industries
-   tablet rules are untouched. */
+/* ── Tablet (761–1100px) — Engineering Process & Featured Projects & Technologies ─────────
+   Same source-order reasoning as the mobile block above: these tablet
+   declarations must sit after the desktop base rules so tablet wins at
+   761–1100px. Above 1100px the unguarded bases still apply.
+   Hero/Services/Industries tablet rules live in the tablet block further up. */
 @media (min-width: 761px) and (max-width: 1100px) {
   .process-section {
     width: min(100% - 48px, 980px);
@@ -2613,8 +2092,6 @@ html[dir="rtl"] .service-link {
 }
 
 .why-projex-intro {
-  /* text-align: center;
-  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
@@ -2896,8 +2373,6 @@ html[dir="rtl"] .why-projex-intro {
 }
 
 .testimonials-intro {
-  /* text-align: center;
-  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
@@ -3122,8 +2597,6 @@ html[dir="rtl"] .testimonials-intro {
 }
 
 .faq-intro {
-  /* text-align: center;
-  max-width: 720px; */
   margin: 0 auto 60px;
 }
 
@@ -3465,7 +2938,6 @@ html[dir="rtl"] .faq-question {
 .contact-cta-intro {
   position: relative;
   z-index: 1;
-  /* max-width: 720px; */
   margin: 0 auto;
 }
 
@@ -4308,173 +3780,49 @@ html.light .software-section-intro > p {
     max-width: 320px;
   }
 }
-/* !!!!! */
 /* =========================================
-   1. الحاوية الرئيسية (HUD Container)
+   HERO HUD v1 — retired declarations.
+   The active hero HUD is the "DIGITAL CORE - SCI-FI HUD" block further
+   below. This block used to redefine the whole hero (container, asset
+   stack, glass panels, side labels); every declaration fully superseded
+   by the newer block has been removed. Only the few declarations that
+   still win their cascade position are preserved here, verbatim and in
+   their original source order — they must stay BEFORE the ≤1100px HUD
+   responsive block below (e.g. .asset-stack { left: 50% } is overridden
+   by that block's left: 0 on small screens).
    ========================================= */
 .digital-core {
-  --neon-cyan: #00f0ff;
-  --dark-glass: rgba(4, 15, 30, 0.65);
-  --glass-border: rgba(0, 240, 255, 0.2);
-
-  position: relative;
-  width: 100%;
   height: 100%;
-  min-height: 600px;
-  font-family: "Courier New", Courier, monospace;
-  color: var(--neon-cyan);
-
-  /* تفعيل تأثير الماوس (Parallax) القادم من الـ Hook */
-  transform: translate(var(--parallax-x, 0), var(--parallax-y, 0));
-  transition: transform 0.1s ease-out;
 }
 
-/* =========================================
-   2. المجسم المركزي (السر في منع التداخل)
-   ========================================= */
 .asset-stack {
-  position: absolute;
-  top: 50%;
-  /* إزاحة المجسم لليسار قليلاً لترك مساحة للقائمة اليمنى */
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 600px; /* تحديد حجمه حتى لا يتمدد ويغطي الشاشة */
-  aspect-ratio: 1;
-  pointer-events: none;
-  z-index: 1;
 }
+
 [dir="rtl"] .asset-stack,
 :lang(ar) .asset-stack {
   --dir-factor: -1;
   right: 50%;
-  /* inset-inline-start: 65%; */
-}
-/* =========================================
-   3. اللوحات الزجاجية (الزوايا الأربعة)
-   ========================================= */
-.core-label,
-.core-readout,
-.core-status,
-.core-coordinates {
-  position: absolute;
-  z-index: 10;
-  background: var(--dark-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  padding: 8px 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-  text-transform: uppercase;
 }
 
 .core-label {
-  top: 0;
-  left: 0;
-  font-size: 0.8rem;
-  font-weight: bold;
-  letter-spacing: 0.15em;
-  border-left: 3px solid var(--neon-cyan);
+  border-left: 3px solid #00f0ff;
 }
 
 .core-readout {
-  top: 0;
-  right: 0;
-  text-align: right;
-  border-right: 3px solid var(--neon-cyan);
-}
-
-.core-readout span {
-  font-size: 0.7rem;
-  color: #8ab4f8;
-}
-
-.core-status {
-  bottom: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.8rem;
-  border-bottom: 2px solid var(--neon-cyan);
-}
-
-.core-status span[aria-hidden="true"] {
-  width: 8px;
-  height: 8px;
-  background: var(--neon-cyan);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--neon-cyan);
-  animation: pulse 1.5s infinite;
-}
-
-.core-coordinates {
-  bottom: 0;
-  right: 0;
-  font-size: 0.7rem;
-  color: #8ab4f8;
-  letter-spacing: 0.2em;
-}
-
-/* =========================================
-   4. القائمة الجانبية (بدون تداخل مع المجسم)
-   ========================================= */
-.core-side-labels {
-  position: absolute;
-  top: 50%;
-  right: 0; /* تثبيت في أقصى اليمين */
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  width: 260px; /* عرض ثابت يمنعها من التمدد فوق المجسم */
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  z-index: 20;
+  border-right: 3px solid #00f0ff;
 }
 
 .core-side-labels li {
-  background: var(--dark-glass);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
-  border-right: 3px solid var(--neon-cyan);
-  padding: 12px 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-  transition: all 0.3s ease;
+  border-right: 3px solid #00f0ff;
 }
 
 .core-side-labels li:hover {
-  background: rgba(0, 240, 255, 0.1);
-  border-color: var(--neon-cyan);
   transform: translateX(-5px);
 }
 
-.core-side-labels b {
-  display: block;
-  font-size: 0.85rem;
-  color: #fff;
-  letter-spacing: 0.1em;
-  margin-bottom: 4px;
-  text-shadow: 0 0 8px rgba(0, 240, 255, 0.5);
-}
-
 .core-side-labels span {
-  display: block;
-  font-size: 0.65rem;
-  color: #8ab4f8;
   letter-spacing: 0.05em;
-}
-
-@keyframes pulse {
-  0%,
-  100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
 }
 
 /* =========================================
@@ -4508,9 +3856,6 @@ html.light .software-section-intro > p {
     max-width: 400px;
   }
   .core-status {
-    /* left: 0px; */
-    /* display: none; */
-    bottom: -60;
     right: 100px;
     left: 100px;
     align-self: center;
@@ -4519,19 +3864,16 @@ html.light .software-section-intro > p {
   .core-coordinates {
     right: -20px;
     display: none;
-
-    /* bottom: -60; */
   }
 
   .core-side-labels li {
     border-right: none;
-    border-left: 3px solid var(--neon-cyan);
+    border-left: 3px solid #00f0ff;
   }
   [dir="rtl"] .asset-stack,
   :lang(ar) .asset-stack {
     --dir-factor: -1;
     right: 0;
-    /* inset-inline-start: 65%; */
   }
 }
 .faq-empty {
@@ -4601,7 +3943,6 @@ html.light .software-section-intro > p {
   position: absolute;
   top: 50%;
   /* إزاحة منطقية: تبتعد عن القوائم سواء في العربي أو الإنكليزي */
-  /* inset-inline-start: 35%; */
   transform: translate(calc(-50% * var(--dir-factor, 1)), -50%);
   width: 100%;
   max-width: 500px;
@@ -4614,7 +3955,6 @@ html.light .software-section-intro > p {
 [dir="rtl"] .asset-stack,
 :lang(ar) .asset-stack {
   --dir-factor: -1;
-  /* inset-inline-start: 65%; */
 }
 
 /* ---------------------------------------------------------
@@ -4806,4 +4146,24 @@ html.light .software-section-intro > p {
   .asset-stack {
     max-width: 280px;
   }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   LIVING BACKGROUND — site-wide animated ambience
+   (components/LivingBackground.tsx)
+   Mounted ONCE from app/[locale]/layout.tsx as a direct <body>
+   child. A fixed full-viewport canvas at z-index: -1, i.e. behind
+   every page's content but above html's solid --background base.
+   For it to stay visible, body carries no background and
+   .foundation-shell keeps only its additive radial glow.
+   Layer order: html background → .living-bg canvas → shell glow
+   + grid (::before) → page content.
+   ══════════════════════════════════════════════════════════════════ */
+.living-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
 }

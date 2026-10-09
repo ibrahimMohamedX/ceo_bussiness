@@ -1,10 +1,11 @@
-﻿import { Analytics } from "@vercel/analytics/next";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/src/i18n/routing";
 import { getSiteSettings } from "@/src/lib/public/settings";
 import { cloudinaryUrl } from "@/src/lib/cloudinary/url";
 import Providers from "./Providers";
+import { LivingBackground } from "@/components/LivingBackground";
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -68,6 +69,9 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body className="antialiased">
+        {/* Site-wide living background — fixed layer behind all public
+            pages (see .living-bg in globals.css). */}
+        <LivingBackground />
         <Providers locale={locale} messages={messages}>
           {children}
         </Providers>
