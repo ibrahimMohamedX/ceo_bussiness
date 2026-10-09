@@ -36,7 +36,7 @@ export function AdminTable<T>({
                 <th
                   key={col.key}
                   style={{ width: col.width }}
-                  className="px-4 py-2.5 text-left text-[11px] font-semibold uppercase tracking-[0.1em] text-[var(--muted-foreground)]"
+                  className="px-4 py-2 text-left text-[10px] font-semibold uppercase tracking-[0.1em] text-[var(--muted-foreground)]"
                 >
                   {col.header}
                 </th>
@@ -47,7 +47,7 @@ export function AdminTable<T>({
             {rows.map((row) => (
               <tr key={row.id} className="border-b border-[var(--border)]/50 last:border-b-0 hover:bg-[var(--accent)] transition-colors">
                 {row.cells.map((cell) => (
-                  <td key={cell.key} className="px-4 py-3 text-[13px] text-[var(--foreground)]">
+                  <td key={cell.key} className="px-4 py-2.5 text-[13px] text-[var(--foreground)]">
                     {cell.content}
                   </td>
                 ))}

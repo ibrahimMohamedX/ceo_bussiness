@@ -138,14 +138,9 @@ export default function ServiceFormClient({ isNew, serviceId }: ServiceFormClien
   return (
     <div className="space-y-6 max-w-4xl">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
-            PROJEX Console
-          </p>
-          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">
-            {isNewPage ? 'New service' : 'Edit service'}
-          </h1>
-        </div>
+        <h1 className="text-sm font-semibold tracking-tight text-[var(--foreground)]">
+          {isNewPage ? 'New service' : 'Edit service'}
+        </h1>
         {!isNewPage && (
           <a
             href="/admin/services"

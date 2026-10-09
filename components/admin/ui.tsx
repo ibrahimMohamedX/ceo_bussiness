@@ -21,13 +21,13 @@ export const cls = {
   fieldset: "space-y-4 border border-[var(--border)] rounded-xl p-5",
   legend: "text-sm font-semibold text-[var(--foreground)] px-2",
   btnPrimary:
-    "admin-btn-primary inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg px-4 text-sm " +
+    "admin-btn-primary inline-flex min-h-[36px] items-center justify-center gap-2 rounded-lg px-4 text-sm " +
     "active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
   btnGhost:
-    "inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 text-sm font-medium " +
+    "inline-flex min-h-[36px] items-center justify-center gap-2 rounded-lg border border-[var(--border)] bg-[var(--card)] px-4 text-sm font-medium " +
     "text-[var(--foreground)] hover:bg-[var(--accent)] hover:border-[var(--border-strong)] transition-all cursor-pointer shadow-sm",
   btnDanger:
-    "inline-flex min-h-[40px] items-center justify-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-4 text-sm font-medium " +
+    "inline-flex min-h-[36px] items-center justify-center gap-2 rounded-lg border border-red-500/20 bg-red-500/10 px-4 text-sm font-medium " +
     "text-red-500 hover:bg-red-500/20 transition-all cursor-pointer",
 };
 

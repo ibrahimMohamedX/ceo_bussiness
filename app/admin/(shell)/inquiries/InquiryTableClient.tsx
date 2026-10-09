@@ -58,12 +58,7 @@ export default function InquiryTableClient({ inquiries }: InquiryTableClientProp
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
-            PROJEX Console
-          </p>
-          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">Inquiries</h1>
-        </div>
+        <h1 className="text-sm font-semibold tracking-tight text-[var(--foreground)]">Inquiries</h1>
       </div>
 
       {deleteError && (

@@ -200,15 +200,18 @@ button {
   background: var(--primary);
   box-shadow: 0 0 10px var(--primary);
 }
-h1 {
+/* Scoped to the public shell: the admin tree loads this stylesheet
+   too, and the marketing h1 metrics (90px / margin 30px / tight
+   line-height) must never leak into console titles. */
+.foundation-shell h1 {
   font-size: 90px;
   line-height: 0.91;
   letter-spacing: -0.075em;
   font-weight: 500;
   margin: 30px 0;
 }
-h1 em,
-h2 span {
+.foundation-shell h1 em,
+.foundation-shell h2 span {
   color: var(--primary);
   font-style: normal;
 }
@@ -573,7 +576,7 @@ h2 span {
     gap: 2%;
     min-height: 650px;
   }
-  h1 {
+  .foundation-shell h1 {
     font-size: clamp(58px, 7.2vw, 82px);
   }
   .hero-lede {
@@ -642,7 +645,7 @@ h2 span {
   .hero-copy {
     padding: 0;
   }
-  h1 {
+  .foundation-shell h1 {
     font-size: clamp(54px, 16vw, 76px);
   }
   .hero-lede {

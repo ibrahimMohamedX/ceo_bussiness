@@ -137,12 +137,7 @@ export default function MediaLibraryClient({ media }: MediaLibraryClientProps) {
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
-            PROJEX Console
-          </p>
-          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">Media library</h1>
-        </div>
+        <h1 className="text-sm font-semibold tracking-tight text-[var(--foreground)]">Media library</h1>
         <div className="w-44">
           <Select
             id="media-filter"

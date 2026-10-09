@@ -40,15 +40,10 @@ export default function TestimonialsTableClient({ testimonials }: TestimonialsTa
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <div>
-          <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--primary)]">
-            PROJEX Console
-          </p>
-          <h1 className="text-[22px] font-bold tracking-tight text-[var(--foreground)]">Testimonials</h1>
-        </div>
+        <h1 className="text-sm font-semibold tracking-tight text-[var(--foreground)]">Testimonials</h1>
         <a
           href="/admin/testimonials/new"
-          className="admin-btn-primary inline-flex min-h-[40px] items-center justify-center rounded-lg px-4 text-[13px]"
+          className="admin-btn-primary inline-flex h-8 items-center justify-center rounded-lg px-3 text-[13px]"
         >
           New testimonial
         </a>

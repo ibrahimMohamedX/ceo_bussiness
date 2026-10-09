@@ -1,7 +1,7 @@
 'use client'
 
 // Admin login — standalone, not a copy of the public homepage and not a generic
-// SaaS template. PROJEX branded, restrained/engineering-oriented, cyan accent,
+// SaaS template. Archai branded, restrained/engineering-oriented, cyan accent,
 // dark/light compatible through the admin theme tokens from app/globals.css.
 //
 // Auth flow: client signs in with Firebase Email/Password, POSTs the resulting
@@ -103,7 +103,7 @@ export default function LoginPage() {
       if (res.status === 403) {
         // Valid Firebase sign-in, but this user has no active admins/{uid} doc.
         setError(
-          'These credentials are valid but this account is not authorized for the PROJEX Console.',
+          'These credentials are valid but this account is not authorized for the Archai Console.',
         )
         return
       }
@@ -128,7 +128,7 @@ export default function LoginPage() {
         <div className="mb-10 flex flex-col items-center gap-3 text-center">
           <BrandMark />
           <div>
-            <p className="text-[15px] font-bold tracking-[0.18em] text-[var(--foreground)]">PROJEX</p>
+            <p className="text-[15px] font-bold tracking-[0.18em] text-[var(--foreground)]">Archai</p>
             <p className="font-mono text-[10px] uppercase tracking-[0.13em] text-[var(--muted-foreground)]">
               Admin Console
             </p>
@@ -149,7 +149,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className={inputClass}
-              placeholder="you@projex.studio"
+              placeholder="you@company.com"
             />
           </div>
 
