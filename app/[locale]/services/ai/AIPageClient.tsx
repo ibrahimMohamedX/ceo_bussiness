@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   FaFacebookF,
@@ -291,7 +291,7 @@ export default function AIPageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -320,7 +320,7 @@ export default function AIPageClient({
             {t("AIPage.hero.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#process`}>
-            {t("AIPage.hero.secondaryCta")} <ArrowUpRight size={15} />
+            {t("AIPage.hero.secondaryCta")} <ArrowUpRight size={16} />
           </a>
         </div>
       </section>
@@ -349,7 +349,7 @@ export default function AIPageClient({
           <span>{t("AIPage.whatWeBuild.tags.2")}</span>
         </div>
         <a className="service-link" href={`#process`}>
-          {t("AIPage.whatWeBuild.link")} <ArrowUpRight size={13} />
+          {t("AIPage.whatWeBuild.link")} <ArrowUpRight size={14} />
         </a>
       </section>
 
@@ -513,7 +513,7 @@ export default function AIPageClient({
                 ))}
               </div>
               <span className="project-link">
-                {t("Projects.items.1.cta")} <ArrowUpRight size={13} />
+                {t("Projects.items.1.cta")} <ArrowUpRight size={14} />
               </span>
             </div>
           </a>
@@ -543,7 +543,7 @@ export default function AIPageClient({
               className="button-secondary"
               href={getEngineersWhatsAppUrl(siteSettings)}
             >
-              {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>

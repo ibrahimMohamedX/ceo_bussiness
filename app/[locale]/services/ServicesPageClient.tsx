@@ -23,14 +23,15 @@ import {
   Camera,
   CircleCheckBig,
   Code2,
-  Cog,
-  GitBranch,
+  DraftingCompass,
   Microchip,
   Rocket,
-  Search,
+  Telescope,
+  Wrench,
   Users,
   X,
 } from "lucide-react";
+import { AppIcon } from "@/components/AppIcon";
 import type { PublicService } from "@/src/lib/public/services";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
 
@@ -109,9 +110,9 @@ export default function ServicesPageClient({
 
   // Discipline icons mapping
   const disciplineIcons: Record<string, React.ReactNode> = {
-    software: <Code2 size={28} strokeWidth={1.5} />,
-    embedded: <Microchip size={28} strokeWidth={1.5} />,
-    ai: <Brain size={28} strokeWidth={1.5} />,
+    software: <AppIcon icon={Code2} size="xl" />,
+    embedded: <AppIcon icon={Microchip} size="xl" />,
+    ai: <AppIcon icon={Brain} size="xl" />,
   };
 
   // Discipline slug to route mapping
@@ -207,7 +208,7 @@ export default function ServicesPageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -227,7 +228,7 @@ export default function ServicesPageClient({
             {t("ServicesPage.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#process`}>
-            {t("ServicesPage.secondaryCta")} <ArrowUpRight size={15} />
+            {t("ServicesPage.secondaryCta")} <ArrowUpRight size={16} />
           </a>
         </div>
       </section>
@@ -264,7 +265,7 @@ export default function ServicesPageClient({
               className="service-link"
               href={`/${locale}${disciplineRoutes[d]}`}
             >
-              {t("ServicesPage.learnMore")} <ArrowUpRight size={13} />
+              {t("ServicesPage.learnMore")} <ArrowUpRight size={14} />
             </a>
           </section>
         );
@@ -288,7 +289,7 @@ export default function ServicesPageClient({
               01
             </div>
             <div className="process-icon">
-              <Search size={28} strokeWidth={1.5} />
+              <AppIcon icon={Telescope} size="xl" />
             </div>
             <h3>{t("Process.steps.discovery.title")}</h3>
             <p>{t("Process.steps.discovery.description")}</p>
@@ -298,7 +299,7 @@ export default function ServicesPageClient({
               02
             </div>
             <div className="process-icon">
-              <GitBranch size={28} strokeWidth={1.5} />
+              <AppIcon icon={DraftingCompass} size="xl" />
             </div>
             <h3>{t("Process.steps.architecture.title")}</h3>
             <p>{t("Process.steps.architecture.description")}</p>
@@ -308,7 +309,7 @@ export default function ServicesPageClient({
               03
             </div>
             <div className="process-icon">
-              <Cog size={28} strokeWidth={1.5} />
+              <AppIcon icon={Wrench} size="xl" />
             </div>
             <h3>{t("Process.steps.engineering.title")}</h3>
             <p>{t("Process.steps.engineering.description")}</p>
@@ -318,7 +319,7 @@ export default function ServicesPageClient({
               04
             </div>
             <div className="process-icon">
-              <CircleCheckBig size={28} strokeWidth={1.5} />
+              <AppIcon icon={CircleCheckBig} size="xl" />
             </div>
             <h3>{t("Process.steps.validation.title")}</h3>
             <p>{t("Process.steps.validation.description")}</p>
@@ -328,7 +329,7 @@ export default function ServicesPageClient({
               05
             </div>
             <div className="process-icon">
-              <Rocket size={28} strokeWidth={1.5} />
+              <AppIcon icon={Rocket} size="xl" />
             </div>
             <h3>{t("Process.steps.deployment.title")}</h3>
             <p>{t("Process.steps.deployment.description")}</p>
@@ -359,7 +360,7 @@ export default function ServicesPageClient({
               className="button-secondary"
               href={getEngineersWhatsAppUrl(siteSettings)}
             >
-              {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>

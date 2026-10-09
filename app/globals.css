@@ -9,8 +9,19 @@
   --color-border: var(--border);
   --color-primary: var(--primary);
   --color-muted-foreground: var(--muted-foreground);
-  --font-sans: "Geist", sans-serif;
-  --font-mono: "Geist Mono", monospace;
+  /* Loaded via next/font/google in app/[locale]/layout.tsx.
+     Latin runs render in Geist; Arabic glyphs fall through to IBM Plex
+     Sans Arabic — one stack serves both locales. The var() fallbacks
+     keep the admin tree (which loads this sheet without next/font)
+     on sane system fonts. */
+  --font-sans: var(--font-geist-sans, "Geist"), var(
+      --font-arabic-sans,
+      "IBM Plex Sans Arabic"
+    ), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono, "Geist Mono"), var(
+      --font-arabic-sans,
+      "IBM Plex Sans Arabic"
+    ), ui-monospace, "Cascadia Mono", "Segoe UI Mono", monospace;
 }
 
 :root {
@@ -1930,6 +1941,43 @@ html[dir="rtl"] .technologies-intro {
 }
 
 /* ── RTL Support ── */
+
+/* Arabic script must never be tracked — any letter-spacing (positive
+   or negative) breaks the cursive joining between Arabic letters.
+   Reset every tracked selector in this sheet when the document is
+   RTL. Latin-only fragments inside RTL pages accept the reset too. */
+html[dir="rtl"] :is(
+  h1,
+  h2,
+  h3,
+  h4,
+  .brand,
+  .eyebrow,
+  .core-label,
+  .core-readout,
+  .core-status,
+  .core-coordinates,
+  .core-side-labels b,
+  .core-side-labels span,
+  .service-tags span,
+  .locale-switcher,
+  .process-number,
+  .project-tag,
+  .blog-post-category,
+  .blog-detail-back,
+  .blog-detail-meta,
+  .testimonial-quote p,
+  .testimonial-name,
+  .faq-question,
+  .faq-panel > p,
+  .footer-brand-name,
+  .footer-heading,
+  .notfound-status,
+  .notfound-title
+) {
+  letter-spacing: normal;
+}
+
 html[dir="rtl"] .nav-links {
   flex-direction: row-reverse;
 }

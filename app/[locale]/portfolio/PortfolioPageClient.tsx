@@ -129,7 +129,7 @@ function ProjectCard({
           ))}
         </div>
         <span className="project-link">
-          {ctaLabel} <ArrowUpRight size={13} />
+          {ctaLabel} <ArrowUpRight size={14} />
         </span>
       </div>
     </a>
@@ -279,7 +279,7 @@ export default function PortfolioPageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -299,7 +299,7 @@ export default function PortfolioPageClient({
             {t("PortfolioPage.hero.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#work`}>
-            {t("PortfolioPage.hero.secondaryCta")} <ArrowUpRight size={15} />
+            {t("PortfolioPage.hero.secondaryCta")} <ArrowUpRight size={16} />
           </a>
         </div>
       </section>
@@ -369,7 +369,7 @@ export default function PortfolioPageClient({
               className="button-secondary"
               href={getEngineersWhatsAppUrl(siteSettings)}
             >
-              {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>

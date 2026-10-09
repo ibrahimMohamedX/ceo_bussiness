@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   FaFacebookF,
@@ -295,7 +295,7 @@ export default function SoftwarePageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -324,7 +324,7 @@ export default function SoftwarePageClient({
             {t("SoftwarePage.hero.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#process`}>
-            {t("SoftwarePage.hero.secondaryCta")} <ArrowUpRight size={15} />
+            {t("SoftwarePage.hero.secondaryCta")} <ArrowUpRight size={16} />
           </a>
         </div>
       </section>
@@ -353,7 +353,7 @@ export default function SoftwarePageClient({
           <span>{t("SoftwarePage.whatWeBuild.tags.2")}</span>
         </div>
         <a className="service-link" href={`#process`}>
-          {t("SoftwarePage.whatWeBuild.link")} <ArrowUpRight size={13} />
+          {t("SoftwarePage.whatWeBuild.link")} <ArrowUpRight size={14} />
         </a>
       </section>
 
@@ -517,7 +517,7 @@ export default function SoftwarePageClient({
                 ))}
               </div>
               <span className="project-link">
-                {t("Projects.items.1.cta")} <ArrowUpRight size={13} />
+                {t("Projects.items.1.cta")} <ArrowUpRight size={14} />
               </span>
             </div>
           </a>
@@ -547,7 +547,7 @@ export default function SoftwarePageClient({
               className="button-secondary"
               href={getEngineersWhatsAppUrl(siteSettings)}
             >
-              {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>

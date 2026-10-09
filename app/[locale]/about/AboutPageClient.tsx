@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   FaFacebookF,
@@ -223,7 +223,7 @@ export default function AboutPageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -243,7 +243,7 @@ export default function AboutPageClient({
             {t("AboutPage.hero.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#values`}>
-            {t("AboutPage.hero.secondaryCta")} <ArrowUpRight size={15} />
+            {t("AboutPage.hero.secondaryCta")} <ArrowUpRight size={16} />
           </a>
         </div>
       </section>
@@ -337,7 +337,7 @@ export default function AboutPageClient({
           {t("AboutPage.story.desc")}
         </p>
         <a className="service-link" href={`#team`}>
-          {t("AboutPage.story.link")} <ArrowUpRight size={13} />
+          {t("AboutPage.story.link")} <ArrowUpRight size={14} />
         </a>
       </section>
 
@@ -460,7 +460,7 @@ export default function AboutPageClient({
               className="button-secondary"
               href={getEngineersWhatsAppUrl(siteSettings)}
             >
-              {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>

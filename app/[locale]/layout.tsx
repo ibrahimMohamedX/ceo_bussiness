@@ -1,5 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono, IBM_Plex_Sans_Arabic } from "next/font/google";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/src/i18n/routing";
 import { getSiteSettings } from "@/src/lib/public/settings";
@@ -7,6 +8,33 @@ import { cloudinaryUrl } from "@/src/lib/cloudinary/url";
 import Providers from "./Providers";
 import { LivingBackground } from "@/components/LivingBackground";
 import "../globals.css";
+
+/* ── Font system ─────────────────────────────────────────────────
+   Self-hosted via next/font/google (no CDN, no layout shift).
+   • Geist / Geist Mono  → Latin text everywhere (EN pages + Latin
+     fragments inside Arabic pages).
+   • IBM Plex Sans Arabic → all Arabic script, on the ar locale and
+     anywhere Arabic glyphs appear. The font stacks in globals.css
+     fall through Geist → Plex Arabic, so one stack serves both
+   locales: Latin renders in Geist, Arabic in Plex Arabic.        */
+const geistSans = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
+  display: "swap",
+});
+
+const geistMono = Geist_Mono({
+  subsets: ["latin"],
+  variable: "--font-geist-mono",
+  display: "swap",
+});
+
+const arabicSans = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-arabic-sans",
+  display: "swap",
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -64,6 +92,7 @@ export default async function LocaleLayout({
 
   return (
     <html
+      className={`${geistSans.variable} ${geistMono.variable} ${arabicSans.variable}`}
       lang={locale === "ar" ? "ar" : "en"}
       dir={locale === "ar" ? "rtl" : "ltr"}
       suppressHydrationWarning

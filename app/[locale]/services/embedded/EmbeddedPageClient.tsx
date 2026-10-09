@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   FaFacebookF,
@@ -335,7 +335,7 @@ export default function EmbeddedPageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -364,7 +364,7 @@ export default function EmbeddedPageClient({
             {t("EmbeddedPage.hero.primaryCta")} <ArrowUpRight size={16} />
           </a>
           <a className="button-secondary" href={`#process`}>
-            {t("EmbeddedPage.hero.secondaryCta")} <ArrowUpRight size={15} />
+            {t("EmbeddedPage.hero.secondaryCta")} <ArrowUpRight size={16} />
           </a>
         </div>
       </section>
@@ -393,7 +393,7 @@ export default function EmbeddedPageClient({
           <span>{t("EmbeddedPage.whatWeBuild.tags.2")}</span>
         </div>
         <a className="service-link" href={`#process`}>
-          {t("EmbeddedPage.whatWeBuild.link")} <ArrowUpRight size={13} />
+          {t("EmbeddedPage.whatWeBuild.link")} <ArrowUpRight size={14} />
         </a>
       </section>
 
@@ -559,7 +559,7 @@ export default function EmbeddedPageClient({
                 ))}
               </div>
               <span className="project-link">
-                {t("Projects.items.2.cta")} <ArrowUpRight size={13} />
+                {t("Projects.items.2.cta")} <ArrowUpRight size={14} />
               </span>
             </div>
           </a>
@@ -589,7 +589,7 @@ export default function EmbeddedPageClient({
               className="button-secondary"
               href={getEngineersWhatsAppUrl(siteSettings)}
             >
-              {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>

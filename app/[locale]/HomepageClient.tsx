@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 import {
   FaFacebookF,
   FaInstagram,
@@ -13,7 +13,6 @@ import {
   ArrowUpRight,
   CircleCheckBig,
   Code2,
-  Cog,
   Cpu,
   Database,
   Factory,
@@ -23,13 +22,17 @@ import {
   Microchip,
   Radio,
   Rocket,
-  Search,
   Server,
   Shield,
   ShieldCheck,
   Smartphone,
-  Sparkles,
   Brain,
+  BrainCircuit,
+  DraftingCompass,
+  Orbit,
+  Telescope,
+  Workflow,
+  Wrench,
   Zap,
   Box,
   SlidersHorizontal,
@@ -60,6 +63,7 @@ import {
   Users,
   X,
 } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Image from "next/image";
 import { ref as storageRef, getDownloadURL } from "firebase/storage";
 import { firebaseStorage } from "@/src/lib/firebase/client";
@@ -74,6 +78,7 @@ import {
 } from "@/src/lib/project-cta";
 import { Brand } from "@/components/Brand";
 import { FooterBrandLogo } from "@/components/FooterBrandLogo";
+import { AppIcon } from "@/components/AppIcon";
 
 /* ------------------------------------------------------------------ */
 /*  EYEBROW â€” reused section label (site-consistent)                   */
@@ -277,48 +282,50 @@ const techCategories = [
 
 const whyProjexCards = [
   { key: "quality", icon: ShieldCheck },
-  { key: "e2e", icon: GitBranch },
+  { key: "e2e", icon: Workflow },
   { key: "hardware", icon: Cpu },
   { key: "modern", icon: Zap },
   { key: "delivery", icon: Truck },
   { key: "support", icon: LifeBuoy },
 ] as const;
 
+const techIconMap: Record<string, LucideIcon> = {
+  Code2,
+  Zap,
+  SlidersHorizontal,
+  Box,
+  Move,
+  Server,
+  Terminal,
+  Cpu,
+  Shield,
+  Database,
+  Microchip,
+  CogIcon,
+  CircuitBoard,
+  Grid,
+  Brain,
+  MessageSquare,
+  Link,
+  Eye,
+  FileCode,
+  GitBranch,
+  Radio,
+  Wifi,
+  Bluetooth,
+  Cable,
+  Network,
+  Smartphone,
+  Layers,
+  Apple,
+  Bot,
+  Globe,
+  Plug,
+};
+
 function TechnologyIcon({ name }: { name: string }) {
-  const iconMap: Record<string, React.ReactNode> = {
-    Code2: <Code2 size={20} strokeWidth={1.5} />,
-    Zap: <Zap size={20} strokeWidth={1.5} />,
-    SlidersHorizontal: <SlidersHorizontal size={20} strokeWidth={1.5} />,
-    Box: <Box size={20} strokeWidth={1.5} />,
-    Move: <Move size={20} strokeWidth={1.5} />,
-    Server: <Server size={20} strokeWidth={1.5} />,
-    Terminal: <Terminal size={20} strokeWidth={1.5} />,
-    Cpu: <Cpu size={20} strokeWidth={1.5} />,
-    Shield: <Shield size={20} strokeWidth={1.5} />,
-    Database: <Database size={20} strokeWidth={1.5} />,
-    Microchip: <Microchip size={20} strokeWidth={1.5} />,
-    CogIcon: <CogIcon size={20} strokeWidth={1.5} />,
-    CircuitBoard: <CircuitBoard size={20} strokeWidth={1.5} />,
-    Grid: <Grid size={20} strokeWidth={1.5} />,
-    Brain: <Brain size={20} strokeWidth={1.5} />,
-    MessageSquare: <MessageSquare size={20} strokeWidth={1.5} />,
-    Link: <Link size={20} strokeWidth={1.5} />,
-    Eye: <Eye size={20} strokeWidth={1.5} />,
-    FileCode: <FileCode size={20} strokeWidth={1.5} />,
-    GitBranch: <GitBranch size={20} strokeWidth={1.5} />,
-    Radio: <Radio size={20} strokeWidth={1.5} />,
-    Wifi: <Wifi size={20} strokeWidth={1.5} />,
-    Bluetooth: <Bluetooth size={20} strokeWidth={1.5} />,
-    Cable: <Cable size={20} strokeWidth={1.5} />,
-    Network: <Network size={20} strokeWidth={1.5} />,
-    Smartphone: <Smartphone size={20} strokeWidth={1.5} />,
-    Layers: <Layers size={20} strokeWidth={1.5} />,
-    Apple: <Apple size={20} strokeWidth={1.5} />,
-    Bot: <Bot size={20} strokeWidth={1.5} />,
-    Globe: <Globe size={20} strokeWidth={1.5} />,
-    Plug: <Plug size={20} strokeWidth={1.5} />,
-  };
-  return iconMap[name] || <Code2 size={20} strokeWidth={1.5} />;
+  const Icon = techIconMap[name] ?? Code2;
+  return <AppIcon icon={Icon} size="md" />;
 }
 
 function TechnologyCategory({
@@ -332,7 +339,7 @@ function TechnologyCategory({
     <div className="tech-category">
       <div className="tech-category-header">
         <div className="tech-category-icon">
-          <category.icon size={22} strokeWidth={1.5} />
+          <AppIcon icon={category.icon} size="lg" />
         </div>
         <h4>{t(`Technologies.categories.${category.key}.title`)}</h4>
       </div>
@@ -373,7 +380,7 @@ function WhyProjexCard({
       style={{ "--card-index": index } as React.CSSProperties}
     >
       <div className="why-projex-icon">
-        <card.icon size={28} strokeWidth={1.5} />
+        <AppIcon icon={card.icon} size="xl" />
       </div>
       <div className="why-projex-card-body">
         <h3>{t(`WhyProjex.cards.${card.key}.title`)}</h3>
@@ -399,7 +406,7 @@ function TestimonialCard({
       style={{ "--card-index": index } as React.CSSProperties}
     >
       <div className="testimonial-quote-mark" aria-hidden="true">
-        <Quote size={28} strokeWidth={1.5} />
+        <AppIcon icon={Quote} size="xl" />
       </div>
       <blockquote className="testimonial-quote">
         <p>{isAr ? testimonial.quote.ar : testimonial.quote.en}</p>
@@ -447,7 +454,7 @@ function FaqItem({
             {isAr ? faq.question.ar : faq.question.en}
           </span>
           <span className="faq-toggle" aria-hidden="true">
-            <Plus size={22} strokeWidth={1.5} />
+            <AppIcon icon={Plus} size="lg" />
           </span>
         </button>
       </h3>
@@ -518,7 +525,7 @@ function FeaturedProjectCard({
           ))}
         </div>
         <span className="project-link">
-          {ctaLabel} <ArrowUpRight size={13} strokeWidth={1.5} />
+          {ctaLabel} <ArrowUpRight size={14} />
         </span>
       </div>
     </a>
@@ -676,7 +683,7 @@ export default function HomepageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -701,21 +708,25 @@ export default function HomepageClient({
               {t("Hero.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={servicesHref}>
-              {t("Hero.secondaryCta")} <ArrowUpRight size={15} />
+              {t("Hero.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
           <div className="hero-highlights">
             <span>
-              <Cpu size={18} /> {t("Hero.highlights.engineering")}
+              <AppIcon icon={Cpu} size="md" />{" "}
+              {t("Hero.highlights.engineering")}
             </span>
             <span>
-              <ShieldCheck size={18} /> {t("Hero.highlights.reliable")}
+              <AppIcon icon={ShieldCheck} size="md" />{" "}
+              {t("Hero.highlights.reliable")}
             </span>
             <span>
-              <Radio size={18} /> {t("Hero.highlights.hardware")}
+              <AppIcon icon={CircuitBoard} size="md" />{" "}
+              {t("Hero.highlights.hardware")}
             </span>
             <span>
-              <Sparkles size={18} /> {t("Hero.highlights.ai")}
+              <AppIcon icon={BrainCircuit} size="md" />{" "}
+              {t("Hero.highlights.ai")}
             </span>
           </div>
           <div className="hero-note">
@@ -740,7 +751,7 @@ export default function HomepageClient({
         <div className="services-grid">
           <article className="service-card">
             <div className="service-icon">
-              <Code2 size={28} strokeWidth={1.5} />
+              <AppIcon icon={Code2} size="xl" />
             </div>
             <h3>{t("Services.cards.software.title")}</h3>
             <p>{t("Services.cards.software.description")}</p>
@@ -750,12 +761,12 @@ export default function HomepageClient({
               <span>{t("Services.cards.software.tags.2")}</span>
             </div>
             <a className="service-link" href={servicesAnchor("software")}>
-              {t("Services.cards.software.link")} <ArrowUpRight size={13} />
+              {t("Services.cards.software.link")} <ArrowUpRight size={14} />
             </a>
           </article>
           <article className="service-card">
             <div className="service-icon">
-              <Microchip size={28} strokeWidth={1.5} />
+              <AppIcon icon={Microchip} size="xl" />
             </div>
             <h3>{t("Services.cards.embedded.title")}</h3>
             <p>{t("Services.cards.embedded.description")}</p>
@@ -765,12 +776,12 @@ export default function HomepageClient({
               <span>{t("Services.cards.embedded.tags.2")}</span>
             </div>
             <a className="service-link" href={servicesAnchor("embedded")}>
-              {t("Services.cards.embedded.link")} <ArrowUpRight size={13} />
+              {t("Services.cards.embedded.link")} <ArrowUpRight size={14} />
             </a>
           </article>
           <article className="service-card">
             <div className="service-icon">
-              <Brain size={28} strokeWidth={1.5} />
+              <AppIcon icon={Brain} size="xl" />
             </div>
             <h3>{t("Services.cards.ai.title")}</h3>
             <p>{t("Services.cards.ai.description")}</p>
@@ -780,7 +791,7 @@ export default function HomepageClient({
               <span>{t("Services.cards.ai.tags.2")}</span>
             </div>
             <a className="service-link" href={servicesAnchor("ai")}>
-              {t("Services.cards.ai.link")} <ArrowUpRight size={13} />
+              {t("Services.cards.ai.link")} <ArrowUpRight size={14} />
             </a>
           </article>
         </div>
@@ -800,28 +811,28 @@ export default function HomepageClient({
         <div className="industries-grid">
           <article className="industry-card">
             <div className="industry-icon">
-              <Rocket size={28} strokeWidth={1.5} />
+              <AppIcon icon={Orbit} size="xl" />
             </div>
             <h3>{t("Industries.cards.aerospace.title")}</h3>
             <p>{t("Industries.cards.aerospace.description")}</p>
           </article>
           <article className="industry-card">
             <div className="industry-icon">
-              <Factory size={28} strokeWidth={1.5} />
+              <AppIcon icon={Factory} size="xl" />
             </div>
             <h3>{t("Industries.cards.manufacturing.title")}</h3>
             <p>{t("Industries.cards.manufacturing.description")}</p>
           </article>
           <article className="industry-card">
             <div className="industry-icon">
-              <HeartPulse size={28} strokeWidth={1.5} />
+              <AppIcon icon={HeartPulse} size="xl" />
             </div>
             <h3>{t("Industries.cards.healthcare.title")}</h3>
             <p>{t("Industries.cards.healthcare.description")}</p>
           </article>
           <article className="industry-card">
             <div className="industry-icon">
-              <Zap size={28} strokeWidth={1.5} />
+              <AppIcon icon={Zap} size="xl" />
             </div>
             <h3>{t("Industries.cards.energy.title")}</h3>
             <p>{t("Industries.cards.energy.description")}</p>
@@ -847,7 +858,7 @@ export default function HomepageClient({
               01
             </div>
             <div className="process-icon">
-              <Search size={28} strokeWidth={1.5} />
+              <AppIcon icon={Telescope} size="xl" />
             </div>
             <h3>{t("Process.steps.discovery.title")}</h3>
             <p>{t("Process.steps.discovery.description")}</p>
@@ -857,7 +868,7 @@ export default function HomepageClient({
               02
             </div>
             <div className="process-icon">
-              <GitBranch size={28} strokeWidth={1.5} />
+              <AppIcon icon={DraftingCompass} size="xl" />
             </div>
             <h3>{t("Process.steps.architecture.title")}</h3>
             <p>{t("Process.steps.architecture.description")}</p>
@@ -867,7 +878,7 @@ export default function HomepageClient({
               03
             </div>
             <div className="process-icon">
-              <Cog size={28} strokeWidth={1.5} />
+              <AppIcon icon={Wrench} size="xl" />
             </div>
             <h3>{t("Process.steps.engineering.title")}</h3>
             <p>{t("Process.steps.engineering.description")}</p>
@@ -877,7 +888,7 @@ export default function HomepageClient({
               04
             </div>
             <div className="process-icon">
-              <CircleCheckBig size={28} strokeWidth={1.5} />
+              <AppIcon icon={CircleCheckBig} size="xl" />
             </div>
             <h3>{t("Process.steps.validation.title")}</h3>
             <p>{t("Process.steps.validation.description")}</p>
@@ -887,7 +898,7 @@ export default function HomepageClient({
               05
             </div>
             <div className="process-icon">
-              <Rocket size={28} strokeWidth={1.5} />
+              <AppIcon icon={Rocket} size="xl" />
             </div>
             <h3>{t("Process.steps.deployment.title")}</h3>
             <p>{t("Process.steps.deployment.description")}</p>
@@ -1046,7 +1057,7 @@ export default function HomepageClient({
               className="button-secondary"
               href={getEngineersWhatsAppUrl(siteSettings)}
             >
-              {t("ContactCta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("ContactCta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>

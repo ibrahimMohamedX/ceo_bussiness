@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import {
   FaFacebookF,
@@ -187,7 +187,7 @@ export default function BlogPageClient({
         </div>
 
         <a className="nav-action" href={getProjectCtaUrl(siteSettings)}>
-          {t("Navbar.cta")} <ArrowUpRight size={15} />
+          {t("Navbar.cta")} <ArrowUpRight size={16} />
         </a>
       </nav>
 
@@ -275,7 +275,7 @@ export default function BlogPageClient({
                       ))}
                     </div>
                     <a className="project-link" href={href}>
-                      {t("BlogPage.featured.cta")} <ArrowUpRight size={13} />
+                      {t("BlogPage.featured.cta")} <ArrowUpRight size={14} />
                     </a>
                   </div>
                 </article>
@@ -319,7 +319,7 @@ export default function BlogPageClient({
               {t("BlogPage.cta.primaryCta")} <ArrowUpRight size={16} />
             </a>
             <a className="button-secondary" href={portfolioHref}>
-              {t("BlogPage.cta.secondaryCta")} <ArrowUpRight size={15} />
+              {t("BlogPage.cta.secondaryCta")} <ArrowUpRight size={16} />
             </a>
           </div>
         </div>
