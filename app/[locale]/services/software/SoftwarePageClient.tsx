@@ -49,6 +49,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { PublicService } from "@/src/lib/public/services";
+import type { PublicProject } from "@/src/lib/public/projects";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
 import { Brand } from "@/components/Brand";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -77,12 +78,14 @@ interface SoftwarePageClientProps {
   locale: string;
   service: PublicService | null;
   siteSettings: PublicSiteSettings | null;
+  projects: PublicProject[];
 }
 
 export default function SoftwarePageClient({
   locale,
   service,
   siteSettings,
+  projects,
 }: SoftwarePageClientProps) {
   const t = useTranslations();
   const { resolvedTheme, setTheme } = useTheme();
@@ -92,7 +95,7 @@ export default function SoftwarePageClient({
   }, [resolvedTheme, setTheme]);
 
   const enHref = "/en/services/software";
-  const arHref = "/ar/services/embedded";
+  const arHref = "/ar/services/software";
   const servicesHref = `/${locale}/services`;
   const home = `/${locale}`;
   const blogHref = `/${locale}/blog`;
@@ -139,40 +142,35 @@ export default function SoftwarePageClient({
     desc: string;
   }
 
-  // Capabilities - use dynamic data from service if available, fallback to static
-  const capabilities: CapabilityItem[] = service?.description
-    ? [
-        {
-          key: "architecture",
-          icon: Layers,
-          title: t("SoftwarePage.capabilities.items.architecture.title"),
-          desc: t("SoftwarePage.capabilities.items.architecture.desc"),
-        },
-        {
-          key: "cloud",
-          icon: Server,
-          title: t("SoftwarePage.capabilities.items.cloud.title"),
-          desc: t("SoftwarePage.capabilities.items.cloud.desc"),
-        },
-        {
-          key: "tooling",
-          icon: Code2,
-          title: t("SoftwarePage.capabilities.items.tooling.title"),
-          desc: t("SoftwarePage.capabilities.items.tooling.desc"),
-        },
-        {
-          key: "data",
-          icon: Database,
-          title: t("SoftwarePage.capabilities.items.data.title"),
-          desc: t("SoftwarePage.capabilities.items.data.desc"),
-        },
-      ]
-    : [
-        { key: "architecture", icon: Layers, title: "", desc: "" },
-        { key: "cloud", icon: Server, title: "", desc: "" },
-        { key: "tooling", icon: Code2, title: "", desc: "" },
-        { key: "data", icon: Database, title: "", desc: "" },
-      ];
+  // Capabilities — static translated copy. This marketing content must
+  // never depend on the CMS record: the old fallback rendered empty
+  // titles whenever the service was missing/unpublished.
+  const capabilities: CapabilityItem[] = [
+    {
+      key: "architecture",
+      icon: Layers,
+      title: t("SoftwarePage.capabilities.items.architecture.title"),
+      desc: t("SoftwarePage.capabilities.items.architecture.desc"),
+    },
+    {
+      key: "cloud",
+      icon: Server,
+      title: t("SoftwarePage.capabilities.items.cloud.title"),
+      desc: t("SoftwarePage.capabilities.items.cloud.desc"),
+    },
+    {
+      key: "tooling",
+      icon: Code2,
+      title: t("SoftwarePage.capabilities.items.tooling.title"),
+      desc: t("SoftwarePage.capabilities.items.tooling.desc"),
+    },
+    {
+      key: "data",
+      icon: Database,
+      title: t("SoftwarePage.capabilities.items.data.title"),
+      desc: t("SoftwarePage.capabilities.items.data.desc"),
+    },
+  ];
 
   const quality = [
     { key: "maintainable", icon: ShieldCheck },
@@ -494,38 +492,62 @@ export default function SoftwarePageClient({
         </div>
       </section>
 
-      {/* â”€â”€ 7. Relevant work (repo-represented project) â”€â”€ */}
-      <section className="projects-section" id="work">
-        <div className="projects-intro">
-          <div className="projects-intro-head">
-            <Eyebrow label={t("SoftwarePage.work.eyebrow")} />
-            <h2>
-              {t("SoftwarePage.work.title.line1")}
-              <br />
-              {t("SoftwarePage.work.title.line2")}
-            </h2>
-          </div>
-          <p>{t("SoftwarePage.work.description")}</p>
-        </div>
-        <div className="software-projects-grid">
-          <a className="project-card" href={`${home}#projects`}>
-            <div className="project-content">
-              <h3>{t("Projects.items.1.title")}</h3>
-              <p className="project-summary">{t("Projects.items.1.summary")}</p>
-              <div className="project-tags">
-                {(t.raw("Projects.items.1.tags") as string[]).map((tag) => (
-                  <span className="project-tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <span className="project-link">
-                {t("Projects.items.1.cta")} <ArrowUpRight size={14} />
-              </span>
+      {projects.length > 0 && (
+        <section className="projects-section" id="work">
+          <div className="projects-intro">
+            <div className="projects-intro-head">
+              <Eyebrow label={t("SoftwarePage.work.eyebrow")} />
+              <h2>
+                {t("SoftwarePage.work.title.line1")}
+                <br />
+                {t("SoftwarePage.work.title.line2")}
+              </h2>
             </div>
-          </a>
-        </div>
-      </section>
+            <p>{t("SoftwarePage.work.description")}</p>
+          </div>
+          <div className="projects-grid">
+            {projects.map((project) => {
+              const cover =
+                project.media.find((m) => m.isCover) ?? project.media[0];
+              const isAr = locale === "ar";
+              return (
+                <a
+                  key={project.id}
+                  className="project-card"
+                  href={`${home}/portfolio/${project.slug}`}
+                >
+                  {cover?.url ? (
+                    <div className="project-image-wrapper">
+                      <div
+                        className="project-image"
+                        style={{ backgroundImage: `url(${cover.url})` }}
+                      />
+                    </div>
+                  ) : null}
+                  <div className="project-content">
+                    <h3>{isAr ? project.title.ar : project.title.en}</h3>
+                    <p className="project-summary">
+                      {isAr ? project.summary.ar : project.summary.en}
+                    </p>
+                    {project.technologies.length > 0 ? (
+                      <div className="project-tags">
+                        {project.technologies.slice(0, 4).map((tag) => (
+                          <span className="project-tag" key={tag}>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                    <span className="project-link">
+                      {t("Projects.cta")} <ArrowUpRight size={14} />
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* â”€â”€ Pricing / contact CTA (reused) â”€â”€ */}
       <section

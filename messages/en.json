@@ -170,6 +170,7 @@
     },
     "description": "A selection of production systems delivered across aerospace, manufacturing, healthcare, and energy. Each project represents a full lifecycle engagement — from discovery to deployment and beyond.",
     "cta": "View Case Study",
+    "viewAll": "See all projects",
     "empty": "No featured projects yet.",
     "items": [
       {

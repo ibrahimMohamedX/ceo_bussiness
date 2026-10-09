@@ -987,22 +987,22 @@ export default function HomepageClient({
         </div>
       </section>
 
-      {/* â”€â”€ Featured Projects â”€â”€ */}
-      <section className="projects-section" id="projects">
-        <Reveal className="projects-intro">
-          <div className="projects-intro-head">
-            <Eyebrow label={t("Projects.eyebrow")} />
-            <h2>
-              {t("Projects.title.line1")}
-              <br />
-              {t("Projects.title.line2")}
-            </h2>
-          </div>
-          <p>{t("Projects.description")}</p>
-        </Reveal>
-        <div className="projects-grid">
-          {featuredProjects.length > 0 ? (
-            featuredProjects.map((project, index) => (
+      {/* â”€â”€ Featured Projects (hidden entirely while empty) â”€â”€ */}
+      {featuredProjects.length > 0 && (
+        <section className="projects-section" id="projects">
+          <Reveal className="projects-intro">
+            <div className="projects-intro-head">
+              <Eyebrow label={t("Projects.eyebrow")} />
+              <h2>
+                {t("Projects.title.line1")}
+                <br />
+                {t("Projects.title.line2")}
+              </h2>
+            </div>
+            <p>{t("Projects.description")}</p>
+          </Reveal>
+          <div className="projects-grid">
+            {featuredProjects.map((project, index) => (
               <Reveal key={project.id} delay={index * 90}>
                 <FeaturedProjectCard
                   project={project}
@@ -1011,14 +1011,15 @@ export default function HomepageClient({
                   ctaLabel={t("Projects.cta")}
                 />
               </Reveal>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12 text-[var(--muted-foreground)]">
-              {t("Projects.empty")}
-            </div>
-          )}
-        </div>
-      </section>
+            ))}
+          </div>
+          <div className="flex justify-center pt-2">
+            <a className="button-secondary" href={`/${locale}/portfolio`}>
+              {t("Projects.viewAll")} <ArrowUpRight size={16} />
+            </a>
+          </div>
+        </section>
+      )}
 
       {/* â”€â”€ Technologies â”€â”€ */}
       <section className="technologies-section" id="technologies">
@@ -1071,19 +1072,20 @@ export default function HomepageClient({
           ))}
         </div>
       </section>
-      <section className="testimonials-section" id="testimonials">
-        <Reveal className="testimonials-intro">
-          <Eyebrow label={t("Testimonials.eyebrow")} />
-          <h2>
-            {t("Testimonials.title.line1")}
-            <br />
-            <em>{t("Testimonials.title.line2")}</em>
-          </h2>
-          <p>{t("Testimonials.description")}</p>
-        </Reveal>
-        <div className="testimonials-grid">
-          {featuredTestimonials.length > 0 ? (
-            featuredTestimonials.map((testimonial, index) => (
+      {/* Testimonials (hidden entirely while empty) */}
+      {featuredTestimonials.length > 0 && (
+        <section className="testimonials-section" id="testimonials">
+          <Reveal className="testimonials-intro">
+            <Eyebrow label={t("Testimonials.eyebrow")} />
+            <h2>
+              {t("Testimonials.title.line1")}
+              <br />
+              <em>{t("Testimonials.title.line2")}</em>
+            </h2>
+            <p>{t("Testimonials.description")}</p>
+          </Reveal>
+          <div className="testimonials-grid">
+            {featuredTestimonials.map((testimonial, index) => (
               <Reveal key={testimonial.id} delay={index * 90}>
                 <TestimonialCard
                   testimonial={testimonial}
@@ -1091,27 +1093,22 @@ export default function HomepageClient({
                   index={index}
                 />
               </Reveal>
-            ))
-          ) : (
-            <div className="col-span-full text-center py-12 text-[var(--muted-foreground)]">
-              {t("Testimonials.empty")}
-            </div>
-          )}
-        </div>
-      </section>
-      <section className="faq-section" id="faq">
-        <Reveal className="faq-intro">
-          <Eyebrow label={t("Faq.eyebrow")} />
-          <h2>
-            {t("Faq.title.line1")}
-            <br />
-            <em>{t("Faq.title.line2")}</em>
-          </h2>
-          <p>{t("Faq.description")}</p>
-        </Reveal>
-        {faqs.length === 0 ? (
-          <p className="faq-empty">{t("Faq.empty")}</p>
-        ) : (
+            ))}
+          </div>
+        </section>
+      )}
+      {/* FAQ (hidden entirely while empty) */}
+      {faqs.length > 0 && (
+        <section className="faq-section" id="faq">
+          <Reveal className="faq-intro">
+            <Eyebrow label={t("Faq.eyebrow")} />
+            <h2>
+              {t("Faq.title.line1")}
+              <br />
+              <em>{t("Faq.title.line2")}</em>
+            </h2>
+            <p>{t("Faq.description")}</p>
+          </Reveal>
           <div className="faq-list">
             {faqs.map((faq, index) => (
               <Reveal key={faq.id} delay={index * 70}>
@@ -1119,8 +1116,8 @@ export default function HomepageClient({
               </Reveal>
             ))}
           </div>
-        )}
-      </section>
+        </section>
+      )}
 
       {/* ---------------------------------------------------------------- */}
       {/*  11 â€” Contact CTA (centered heading + dual CTA + glow bg)       */}

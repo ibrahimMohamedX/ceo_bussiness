@@ -48,6 +48,7 @@ import {
   Zap,
 } from "lucide-react";
 import type { PublicService } from "@/src/lib/public/services";
+import type { PublicProject } from "@/src/lib/public/projects";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
 import { Brand } from "@/components/Brand";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -76,12 +77,14 @@ interface EmbeddedPageClientProps {
   locale: string;
   service: PublicService | null;
   siteSettings: PublicSiteSettings | null;
+  projects: PublicProject[];
 }
 
 export default function EmbeddedPageClient({
   locale,
   service,
   siteSettings,
+  projects,
 }: EmbeddedPageClientProps) {
   const t = useTranslations();
   const { resolvedTheme, setTheme } = useTheme();
@@ -138,40 +141,35 @@ export default function EmbeddedPageClient({
     desc: string;
   }
 
-  // Capabilities - use dynamic data from service if available, fallback to static
-  const capabilities: CapabilityItem[] = service?.description
-    ? [
-        {
-          key: "deterministic",
-          icon: Microchip,
-          title: t("EmbeddedPage.capabilities.items.deterministic.title"),
-          desc: t("EmbeddedPage.capabilities.items.deterministic.desc"),
-        },
-        {
-          key: "closeToHardware",
-          icon: Cpu,
-          title: t("EmbeddedPage.capabilities.items.closeToHardware.title"),
-          desc: t("EmbeddedPage.capabilities.items.closeToHardware.desc"),
-        },
-        {
-          key: "protocols",
-          icon: Bluetooth,
-          title: t("EmbeddedPage.capabilities.items.protocols.title"),
-          desc: t("EmbeddedPage.capabilities.items.protocols.desc"),
-        },
-        {
-          key: "drivers",
-          icon: CircuitBoard,
-          title: t("EmbeddedPage.capabilities.items.drivers.title"),
-          desc: t("EmbeddedPage.capabilities.items.drivers.desc"),
-        },
-      ]
-    : [
-        { key: "firmware", icon: Microchip, title: "", desc: "" },
-        { key: "iot", icon: Cpu, title: "", desc: "" },
-        { key: "connectivity", icon: Bluetooth, title: "", desc: "" },
-        { key: "hardware", icon: CircuitBoard, title: "", desc: "" },
-      ];
+  // Capabilities — static translated copy. This marketing content must
+  // never depend on the CMS record: the old fallback rendered empty
+  // titles whenever the service was missing/unpublished.
+  const capabilities: CapabilityItem[] = [
+    {
+      key: "deterministic",
+      icon: Microchip,
+      title: t("EmbeddedPage.capabilities.items.deterministic.title"),
+      desc: t("EmbeddedPage.capabilities.items.deterministic.desc"),
+    },
+    {
+      key: "closeToHardware",
+      icon: Cpu,
+      title: t("EmbeddedPage.capabilities.items.closeToHardware.title"),
+      desc: t("EmbeddedPage.capabilities.items.closeToHardware.desc"),
+    },
+    {
+      key: "protocols",
+      icon: Bluetooth,
+      title: t("EmbeddedPage.capabilities.items.protocols.title"),
+      desc: t("EmbeddedPage.capabilities.items.protocols.desc"),
+    },
+    {
+      key: "drivers",
+      icon: CircuitBoard,
+      title: t("EmbeddedPage.capabilities.items.drivers.title"),
+      desc: t("EmbeddedPage.capabilities.items.drivers.desc"),
+    },
+  ];
 
   const quality = [
     { key: "hardwareInLoop", icon: ShieldCheck },
@@ -537,37 +535,62 @@ export default function EmbeddedPageClient({
       </section>
 
       {/* â”€â”€ 7. Relevant work â”€â”€ */}
-      <section className="projects-section" id="work">
-        <div className="projects-intro">
-          <div className="projects-intro-head">
-            <Eyebrow label={t("EmbeddedPage.work.eyebrow")} />
-            <h2>
-              {t("EmbeddedPage.work.title.line1")}
-              <br />
-              {t("EmbeddedPage.work.title.line2")}
-            </h2>
-          </div>
-          <p>{t("EmbeddedPage.work.description")}</p>
-        </div>
-        <div className="software-projects-grid">
-          <a className="project-card" href={`${home}#projects`}>
-            <div className="project-content">
-              <h3>{t("Projects.items.2.title")}</h3>
-              <p className="project-summary">{t("Projects.items.2.summary")}</p>
-              <div className="project-tags">
-                {(t.raw("Projects.items.2.tags") as string[]).map((tag) => (
-                  <span className="project-tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <span className="project-link">
-                {t("Projects.items.2.cta")} <ArrowUpRight size={14} />
-              </span>
+      {projects.length > 0 && (
+        <section className="projects-section" id="work">
+          <div className="projects-intro">
+            <div className="projects-intro-head">
+              <Eyebrow label={t("EmbeddedPage.work.eyebrow")} />
+              <h2>
+                {t("EmbeddedPage.work.title.line1")}
+                <br />
+                {t("EmbeddedPage.work.title.line2")}
+              </h2>
             </div>
-          </a>
-        </div>
-      </section>
+            <p>{t("EmbeddedPage.work.description")}</p>
+          </div>
+          <div className="projects-grid">
+            {projects.map((project) => {
+              const cover =
+                project.media.find((m) => m.isCover) ?? project.media[0];
+              const isAr = locale === "ar";
+              return (
+                <a
+                  key={project.id}
+                  className="project-card"
+                  href={`${home}/portfolio/${project.slug}`}
+                >
+                  {cover?.url ? (
+                    <div className="project-image-wrapper">
+                      <div
+                        className="project-image"
+                        style={{ backgroundImage: `url(${cover.url})` }}
+                      />
+                    </div>
+                  ) : null}
+                  <div className="project-content">
+                    <h3>{isAr ? project.title.ar : project.title.en}</h3>
+                    <p className="project-summary">
+                      {isAr ? project.summary.ar : project.summary.en}
+                    </p>
+                    {project.technologies.length > 0 ? (
+                      <div className="project-tags">
+                        {project.technologies.slice(0, 4).map((tag) => (
+                          <span className="project-tag" key={tag}>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                    <span className="project-link">
+                      {t("Projects.cta")} <ArrowUpRight size={14} />
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* â”€â”€ Pricing / contact CTA (reused) â”€â”€ */}
       <section

@@ -37,6 +37,7 @@ import {
   X,
 } from "lucide-react";
 import type { PublicService } from "@/src/lib/public/services";
+import type { PublicProject } from "@/src/lib/public/projects";
 import type { PublicSiteSettings } from "@/src/lib/public/settings";
 import { Brand } from "@/components/Brand";
 import { MobileMenu } from "@/components/MobileMenu";
@@ -65,12 +66,14 @@ interface AIPageClientProps {
   locale: string;
   service: PublicService | null;
   siteSettings: PublicSiteSettings | null;
+  projects: PublicProject[];
 }
 
 export default function AIPageClient({
   locale,
   service,
   siteSettings,
+  projects,
 }: AIPageClientProps) {
   const t = useTranslations();
   const { resolvedTheme, setTheme } = useTheme();
@@ -127,54 +130,47 @@ export default function AIPageClient({
     desc: string;
   }
 
-  // Capabilities - use dynamic data from service if available
-  const capabilities: CapabilityItem[] = service?.description
-    ? [
-        {
-          key: "machineLearning",
-          icon: Brain,
-          title: t("AIPage.capabilities.items.machineLearning.title"),
-          desc: t("AIPage.capabilities.items.machineLearning.desc"),
-        },
-        {
-          key: "computerVision",
-          icon: Eye,
-          title: t("AIPage.capabilities.items.computerVision.title"),
-          desc: t("AIPage.capabilities.items.computerVision.desc"),
-        },
-        {
-          key: "llmApplications",
-          icon: MessageSquare,
-          title: t("AIPage.capabilities.items.llmApplications.title"),
-          desc: t("AIPage.capabilities.items.llmApplications.desc"),
-        },
-        {
-          key: "generativeAI",
-          icon: WandSparkles,
-          title: t("AIPage.capabilities.items.generativeAI.title"),
-          desc: t("AIPage.capabilities.items.generativeAI.desc"),
-        },
-        {
-          key: "predictiveAnalytics",
-          icon: TrendingUp,
-          title: t("AIPage.capabilities.items.predictiveAnalytics.title"),
-          desc: t("AIPage.capabilities.items.predictiveAnalytics.desc"),
-        },
-        {
-          key: "aiAutomation",
-          icon: Bot,
-          title: t("AIPage.capabilities.items.aiAutomation.title"),
-          desc: t("AIPage.capabilities.items.aiAutomation.desc"),
-        },
-      ]
-    : [
-        { key: "machineLearning", icon: Brain, title: "", desc: "" },
-        { key: "computerVision", icon: Eye, title: "", desc: "" },
-        { key: "llmApplications", icon: MessageSquare, title: "", desc: "" },
-        { key: "generativeAI", icon: WandSparkles, title: "", desc: "" },
-        { key: "predictiveAnalytics", icon: TrendingUp, title: "", desc: "" },
-        { key: "aiAutomation", icon: Bot, title: "", desc: "" },
-      ];
+  // Capabilities — static translated copy. This marketing content must
+  // never depend on the CMS record: the old fallback rendered empty
+  // titles whenever the service was missing/unpublished.
+  const capabilities: CapabilityItem[] = [
+    {
+      key: "machineLearning",
+      icon: Brain,
+      title: t("AIPage.capabilities.items.machineLearning.title"),
+      desc: t("AIPage.capabilities.items.machineLearning.desc"),
+    },
+    {
+      key: "computerVision",
+      icon: Eye,
+      title: t("AIPage.capabilities.items.computerVision.title"),
+      desc: t("AIPage.capabilities.items.computerVision.desc"),
+    },
+    {
+      key: "llmApplications",
+      icon: MessageSquare,
+      title: t("AIPage.capabilities.items.llmApplications.title"),
+      desc: t("AIPage.capabilities.items.llmApplications.desc"),
+    },
+    {
+      key: "generativeAI",
+      icon: WandSparkles,
+      title: t("AIPage.capabilities.items.generativeAI.title"),
+      desc: t("AIPage.capabilities.items.generativeAI.desc"),
+    },
+    {
+      key: "predictiveAnalytics",
+      icon: TrendingUp,
+      title: t("AIPage.capabilities.items.predictiveAnalytics.title"),
+      desc: t("AIPage.capabilities.items.predictiveAnalytics.desc"),
+    },
+    {
+      key: "aiAutomation",
+      icon: Bot,
+      title: t("AIPage.capabilities.items.aiAutomation.title"),
+      desc: t("AIPage.capabilities.items.aiAutomation.desc"),
+    },
+  ];
 
   const reliability = [
     { key: "testSet", icon: GitBranch },
@@ -491,37 +487,62 @@ export default function AIPageClient({
       </section>
 
       {/* â”€â”€ 7. Relevant work (repo-represented AI project) â”€â”€ */}
-      <section className="projects-section" id="work">
-        <div className="projects-intro">
-          <div className="projects-intro-head">
-            <Eyebrow label={t("AIPage.work.eyebrow")} />
-            <h2>
-              {t("AIPage.work.title.line1")}
-              <br />
-              {t("AIPage.work.title.line2")}
-            </h2>
-          </div>
-          <p>{t("AIPage.work.description")}</p>
-        </div>
-        <div className="software-projects-grid">
-          <a className="project-card" href={`${home}#projects`}>
-            <div className="project-content">
-              <h3>{t("Projects.items.1.title")}</h3>
-              <p className="project-summary">{t("Projects.items.1.summary")}</p>
-              <div className="project-tags">
-                {(t.raw("Projects.items.1.tags") as string[]).map((tag) => (
-                  <span className="project-tag" key={tag}>
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              <span className="project-link">
-                {t("Projects.items.1.cta")} <ArrowUpRight size={14} />
-              </span>
+      {projects.length > 0 && (
+        <section className="projects-section" id="work">
+          <div className="projects-intro">
+            <div className="projects-intro-head">
+              <Eyebrow label={t("AIPage.work.eyebrow")} />
+              <h2>
+                {t("AIPage.work.title.line1")}
+                <br />
+                {t("AIPage.work.title.line2")}
+              </h2>
             </div>
-          </a>
-        </div>
-      </section>
+            <p>{t("AIPage.work.description")}</p>
+          </div>
+          <div className="projects-grid">
+            {projects.map((project) => {
+              const cover =
+                project.media.find((m) => m.isCover) ?? project.media[0];
+              const isAr = locale === "ar";
+              return (
+                <a
+                  key={project.id}
+                  className="project-card"
+                  href={`${home}/portfolio/${project.slug}`}
+                >
+                  {cover?.url ? (
+                    <div className="project-image-wrapper">
+                      <div
+                        className="project-image"
+                        style={{ backgroundImage: `url(${cover.url})` }}
+                      />
+                    </div>
+                  ) : null}
+                  <div className="project-content">
+                    <h3>{isAr ? project.title.ar : project.title.en}</h3>
+                    <p className="project-summary">
+                      {isAr ? project.summary.ar : project.summary.en}
+                    </p>
+                    {project.technologies.length > 0 ? (
+                      <div className="project-tags">
+                        {project.technologies.slice(0, 4).map((tag) => (
+                          <span className="project-tag" key={tag}>
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    ) : null}
+                    <span className="project-link">
+                      {t("Projects.cta")} <ArrowUpRight size={14} />
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {/* â”€â”€ Contact CTA (reused) â”€â”€ */}
       <section
