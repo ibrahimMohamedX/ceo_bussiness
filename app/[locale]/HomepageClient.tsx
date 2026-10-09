@@ -147,129 +147,146 @@ interface HomepageClientProps {
 }
 
 /* ------------------------------------------------------------------ */
-/*  DigitalCore — animated SVG "reactor" hero visual.                  */
-/*  Pure CSS/SVG (no image stack): rotating rings, orbiting nodes, a   */
-/*  breathing core orb and minimal HUD chips. Sharp at any scale,     */
-/*  responsive, RTL-safe (logical properties), both themes.           */
+/*  DigitalCore — interactive 3D orbital core.                         */
+/*  A stereoscopic CSS-3D scene (no libraries): a tick instrument      */
+/*  disc, three tilted orbital planes with spinning rings and         */
+/*  glowing nodes, and a layered orb over a deep back glow. The        */
+/*  scene tilts toward the pointer (lerped via --tilt-x/y) and drifts  */
+/*  in a gentle idle sway; taps fire energy pulse rings. Pure         */
+/*  transform/opacity animations, both themes, reduced-motion safe.   */
 /* ------------------------------------------------------------------ */
 
-const CORE_TICKS = Array.from({ length: 48 }, (_, i) => i);
-
 function DigitalCore({ t }: { t: ReturnType<typeof useTranslations> }) {
-  const coreRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+  const [pulses, setPulses] = useState<number[]>([]);
 
-  /* Subtle pointer parallax — desktop, fine pointers only. */
+  /* Pointer-driven tilt — fine pointers only, lerped every frame;
+     returns to a slow autonomous sway when the pointer leaves. */
   useEffect(() => {
-    const core = coreRef.current;
+    const scene = sceneRef.current;
     if (
-      !core ||
+      !scene ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
       !window.matchMedia("(pointer: fine)").matches
     )
       return;
 
-    let frame = 0;
-    const reset = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        core.style.setProperty("--parallax-x", "0px");
-        core.style.setProperty("--parallax-y", "0px");
-      });
+    let targetX = 0;
+    let targetY = 0;
+    let curX = 0;
+    let curY = 0;
+    let idle = true;
+    let raf = 0;
+
+    const loop = (now: number) => {
+      if (idle) {
+        const time = now / 1000;
+        targetX = Math.sin(time * 0.32) * 5;
+        targetY = Math.cos(time * 0.24) * 7;
+      }
+      curX += (targetX - curX) * 0.055;
+      curY += (targetY - curY) * 0.055;
+      scene.style.setProperty("--tilt-x", `${curX.toFixed(3)}deg`);
+      scene.style.setProperty("--tilt-y", `${curY.toFixed(3)}deg`);
+      raf = requestAnimationFrame(loop);
     };
-    const onPointerMove = (event: PointerEvent) => {
-      const bounds = core.getBoundingClientRect();
-      const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 8;
-      const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 6;
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        core.style.setProperty("--parallax-x", `${x.toFixed(2)}px`);
-        core.style.setProperty("--parallax-y", `${y.toFixed(2)}px`);
-      });
+    raf = requestAnimationFrame(loop);
+
+    const onMove = (event: PointerEvent) => {
+      const bounds = scene.getBoundingClientRect();
+      const nx = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const ny = (event.clientY - bounds.top) / bounds.height - 0.5;
+      idle = false;
+      targetY = nx * 26;
+      targetX = -ny * 20;
+    };
+    const onLeave = () => {
+      idle = true;
     };
 
-    core.addEventListener("pointermove", onPointerMove, { passive: true });
-    core.addEventListener("pointerleave", reset);
+    scene.addEventListener("pointermove", onMove, { passive: true });
+    scene.addEventListener("pointerleave", onLeave);
     return () => {
-      cancelAnimationFrame(frame);
-      core.removeEventListener("pointermove", onPointerMove);
-      core.removeEventListener("pointerleave", reset);
+      cancelAnimationFrame(raf);
+      scene.removeEventListener("pointermove", onMove);
+      scene.removeEventListener("pointerleave", onLeave);
     };
   }, []);
 
+  /* Tap / click → expanding energy pulse rings from the core. */
+  const firePulse = useCallback(() => {
+    setPulses((v) => [...v.slice(-2), Date.now()]);
+  }, []);
+
   return (
-    <figure
-      ref={coreRef}
-      className="core-v3"
-      aria-labelledby="core-caption"
-    >
-      <div className="core-stage">
+    <figure className="core-v4" aria-labelledby="core-caption">
+      <div
+        ref={sceneRef}
+        className="core-scene"
+        onPointerDown={firePulse}
+      >
+        <div className="core-3d" aria-hidden="true">
+          <div className="core-back-glow" />
+
+          {/* Instrument tick disc — facing the viewer, behind the orb */}
+          <div className="core-disc" />
+
+          {/* Orbital plane A — large dashed ring, two nodes */}
+          <div className="orbit-plane orbit-plane--a">
+            <div className="orbit-spin">
+              <div className="orbit-ring orbit-ring--dash" />
+              <span className="orbit-node" />
+              <span className="orbit-node orbit-node--minor" />
+            </div>
+          </div>
+
+          {/* Orbital plane B — steep tilt, energy arc + minor node */}
+          <div className="orbit-plane orbit-plane--b">
+            <div className="orbit-spin">
+              <div className="orbit-ring" />
+              <div className="orbit-ring orbit-ring--arc" />
+              <span className="orbit-node orbit-node--minor" />
+            </div>
+          </div>
+
+          {/* Orbital plane C — small, fast node */}
+          <div className="orbit-plane orbit-plane--c">
+            <div className="orbit-spin">
+              <div className="orbit-ring orbit-ring--soft" />
+              <span className="orbit-node orbit-node--fast" />
+            </div>
+          </div>
+
+          {/* Near-front equator ring */}
+          <div className="orbit-plane orbit-plane--eq">
+            <div className="orbit-spin">
+              <div className="orbit-ring orbit-ring--faint" />
+            </div>
+          </div>
+
+          {/* The layered orb */}
+          <div className="orb">
+            <span className="orb-halo" />
+            <span className="orb-shell" />
+            <span className="orb-nucleus" />
+          </div>
+
+          {/* Tap energy pulses */}
+          {pulses.map((id) => (
+            <span
+              key={id}
+              className="core-pulse"
+              onAnimationEnd={() =>
+                setPulses((v) => v.filter((p) => p !== id))
+              }
+            />
+          ))}
+        </div>
+
         <div className="hud-chip hud-chip--tl">DIGITAL CORE / 001</div>
         <div className="hud-chip hud-chip--tr">
           <span className="hud-pulse-dot" aria-hidden="true" />
           SYS ONLINE
-        </div>
-
-        <svg
-          className="core-svg"
-          viewBox="0 0 400 400"
-          aria-hidden="true"
-          focusable="false"
-        >
-          {/* Faint outer boundary */}
-          <circle cx="200" cy="200" r="196" className="ring-outer" />
-          {/* Instrument ticks */}
-          {CORE_TICKS.map((i) => {
-            const angle = (i * 360) / CORE_TICKS.length;
-            const long = i % 4 === 0;
-            return (
-              <line
-                key={i}
-                className={long ? "tick tick--long" : "tick"}
-                x1="200"
-                y1={200 - (long ? 186 : 190)}
-                x2="200"
-                y2="194"
-                transform={`rotate(${angle} 200 200)`}
-              />
-            );
-          })}
-          {/* Slow dashed orbit */}
-          <g className="ring-spin-slow">
-            <circle cx="200" cy="200" r="170" className="ring-dash" />
-            <circle cx="200" cy="30" r="4" className="orbit-node" />
-            <circle cx="200" cy="30" r="8" className="orbit-halo" />
-          </g>
-          {/* Counter-rotating energy arcs */}
-          <g className="ring-spin-rev">
-            <circle
-              cx="200"
-              cy="200"
-              r="146"
-              className="ring-arc"
-              strokeDasharray="150 300"
-            />
-            <circle
-              cx="200"
-              cy="200"
-              r="134"
-              className="ring-arc ring-arc--soft"
-              strokeDasharray="70 330"
-              transform="rotate(140 200 200)"
-            />
-          </g>
-          {/* Inner faint shell */}
-          <circle cx="200" cy="200" r="118" className="ring-inner" />
-          {/* Crosshair hairlines */}
-          <line x1="14" y1="200" x2="386" y2="200" className="crosshair" />
-          <line x1="200" y1="14" x2="200" y2="386" className="crosshair" />
-          {/* Inner fast node */}
-          <g className="ring-spin-fast">
-            <circle cx="200" cy="82" r="3" className="orbit-node" />
-          </g>
-        </svg>
-
-        <div className="core-orb" aria-hidden="true">
-          <span className="core-orb-core" />
         </div>
       </div>
 
