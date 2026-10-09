@@ -30,9 +30,20 @@
   --foreground: #e7f0f2;
   --card: #0d1317;
   --primary: #6ee7f2;
-  --muted-foreground: #7f9197;
+  /* Slightly brighter muted for readability over dark glass. */
+  --muted-foreground: #8aa0a8;
   --border: rgba(181, 219, 224, 0.14);
   --radius: 16px;
+
+  /* ── Visual system v2 tokens ── */
+  --surface-raised: #111a20;
+  --border-strong: rgba(181, 219, 224, 0.24);
+  --glow: rgba(110, 231, 242, 0.12);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.32);
+  --shadow-lg: 0 14px 40px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 32px rgba(110, 231, 242, 0.1);
+  --radius-lg: 24px;
+  --radius-xl: 32px;
 }
 * {
   box-sizing: border-box;
@@ -57,7 +68,11 @@ button {
 }
 .foundation-shell {
   min-height: 100vh;
-  overflow: hidden;
+  /* overflow: clip (not hidden) — hidden would create a scroll
+     container and trap position: sticky on .topbar. clip contains
+     the same overflow without scroll-container semantics, and the
+     fixed layers (living background, grid) escape it anyway. */
+  overflow: clip;
   /* Transparent base: the fixed .living-bg canvas behind the shell is
      the site background (html keeps the solid --background under it).
      The radial gradient remains as an additive glow over the canvas. */
@@ -1006,6 +1021,14 @@ html.light {
   --primary: #0891b2;
   --muted-foreground: #4b5b63;
   --border: rgba(0, 0, 0, 0.1);
+
+  /* ── Visual system v2 tokens (light) ── */
+  --surface-raised: #ffffff;
+  --border-strong: rgba(0, 0, 0, 0.16);
+  --glow: rgba(8, 145, 178, 0.1);
+  --shadow-sm: 0 2px 8px rgba(11, 24, 28, 0.08);
+  --shadow-lg: 0 14px 40px rgba(11, 24, 28, 0.12);
+  --shadow-glow: 0 0 32px rgba(8, 145, 178, 0.08);
 }
 html.light .foundation-shell {
   /* Additive glow only — base color comes from html behind the
@@ -3975,7 +3998,9 @@ html.light .software-section-intro > p {
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.6),
     inset 0 0 30px rgba(0, 240, 255, 0.05);
-  font-family: "Courier New", Courier, monospace;
+  /* Site mono stack: Geist Mono for Latin HUD labels, IBM Plex Sans
+     Arabic falls through for Arabic label text. */
+  font-family: var(--font-mono);
   color: var(--hud-cyan);
 
   /* دعم حركة الماوس القادمة من الـ TSX Hook */
@@ -4214,4 +4239,260 @@ html.light .software-section-intro > p {
   height: 100%;
   z-index: -1;
   pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   VISUAL SYSTEM v2 — whole-site finish upgrade
+   Appended last: these grouped rules win by source order over the
+   section-specific definitions above (same specificity, later wins).
+   Same identity (dark tech + cyan), elevated execution:
+   unified glass cards with inner edge highlights, luminous primary
+   button + glass secondary, sticky glass topbar, eyebrow chips,
+   glass footer, selection + scrollbar details. Both themes.
+   ══════════════════════════════════════════════════════════════════ */
+
+/* ── Glass cards: one elevated recipe for every card surface ──
+   Layout, padding and the per-card ::after sheen stay in the
+   section rules above; this upgrades the material itself. */
+.service-card,
+.industry-card,
+.process-step,
+.project-card,
+.tech-category,
+.why-projex-card,
+.testimonial-card,
+.faq-item {
+  background: linear-gradient(
+    180deg,
+    rgba(17, 26, 32, 0.66),
+    rgba(9, 14, 17, 0.8)
+  );
+  border-color: rgba(181, 219, 224, 0.11);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow:
+    inset 0 1px 0 rgba(190, 235, 240, 0.06),
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.service-card:hover,
+.industry-card:hover,
+.process-step:hover,
+.project-card:hover,
+.tech-category:hover,
+.why-projex-card:hover,
+.testimonial-card:hover,
+.faq-item:hover {
+  transform: translateY(-4px);
+  border-color: rgba(110, 231, 242, 0.38);
+  box-shadow:
+    inset 0 1px 0 rgba(190, 235, 240, 0.08),
+    0 18px 44px rgba(0, 0, 0, 0.5),
+    0 0 28px rgba(110, 231, 242, 0.1);
+}
+
+/* ── Buttons: primary goes luminous gradient, secondary goes glass ── */
+.button-primary {
+  background: linear-gradient(180deg, #9df3fb, #56d8e8);
+  color: #05262b;
+  font-weight: 600;
+  border: 1px solid rgba(110, 231, 242, 0.45);
+  box-shadow:
+    0 2px 14px rgba(110, 231, 242, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.button-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 30px rgba(110, 231, 242, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.button-secondary {
+  background: rgba(110, 231, 242, 0.05);
+  border: 1px solid rgba(181, 219, 224, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(190, 235, 240, 0.06);
+}
+.button-secondary:hover {
+  border-color: rgba(110, 231, 242, 0.45);
+  background: rgba(110, 231, 242, 0.1);
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.32),
+    0 0 22px rgba(110, 231, 242, 0.09);
+}
+
+/* Navbar CTA joins the glass family. */
+.nav-action {
+  background: rgba(110, 231, 242, 0.05);
+  border: 1px solid rgba(181, 219, 224, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 0 rgba(190, 235, 240, 0.05);
+}
+.nav-action:hover {
+  border-color: rgba(110, 231, 242, 0.45);
+  background: rgba(110, 231, 242, 0.1);
+}
+
+/* ── Topbar: sticky glass ──
+   Depends on .foundation-shell { overflow: clip } above — overflow:
+   hidden would trap position: sticky. */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(7, 10, 13, 0.62);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  border-bottom-color: rgba(181, 219, 224, 0.1);
+}
+
+/* ── Eyebrow chips ──
+   The tracked mono label becomes a glowing pill. Width hugs content;
+   centered intros re-center it explicitly. */
+.eyebrow {
+  display: inline-flex;
+  width: fit-content;
+  padding: 7px 14px;
+  border: 1px solid rgba(110, 231, 242, 0.22);
+  border-radius: 999px;
+  background: rgba(110, 231, 242, 0.06);
+  box-shadow:
+    0 0 18px rgba(110, 231, 242, 0.07),
+    inset 0 1px 0 rgba(190, 235, 240, 0.07);
+}
+.faq-intro .eyebrow {
+  display: flex;
+  width: fit-content;
+  margin-inline: auto;
+}
+
+/* ── Footer glass ── */
+.footer-section {
+  background: linear-gradient(
+    180deg,
+    rgba(13, 19, 23, 0.6),
+    rgba(9, 14, 17, 0.85)
+  );
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-top-color: rgba(110, 231, 242, 0.1);
+}
+
+/* ── Details: selection + scrollbar ── */
+::selection {
+  background: rgba(110, 231, 242, 0.28);
+  color: #e7f0f2;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(110, 231, 242, 0.16);
+  border: 2px solid rgba(7, 10, 13, 0.55);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(110, 231, 242, 0.32);
+}
+
+/* ── Visual system v2 — light theme ── */
+html.light .service-card,
+html.light .industry-card,
+html.light .process-step,
+html.light .project-card,
+html.light .tech-category,
+html.light .why-projex-card,
+html.light .testimonial-card,
+html.light .faq-item {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.82),
+    rgba(247, 250, 252, 0.9)
+  );
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 10px 30px rgba(11, 24, 28, 0.08);
+}
+html.light .service-card:hover,
+html.light .industry-card:hover,
+html.light .process-step:hover,
+html.light .project-card:hover,
+html.light .tech-category:hover,
+html.light .why-projex-card:hover,
+html.light .testimonial-card:hover,
+html.light .faq-item:hover {
+  border-color: rgba(8, 145, 178, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 18px 44px rgba(11, 24, 28, 0.12),
+    0 0 28px rgba(8, 145, 178, 0.1);
+}
+html.light .button-primary {
+  background: linear-gradient(180deg, #2fb3d2, #0891b2);
+  color: #ffffff;
+  border-color: rgba(8, 145, 178, 0.45);
+  box-shadow:
+    0 2px 14px rgba(8, 145, 178, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+html.light .button-primary:hover {
+  box-shadow:
+    0 10px 30px rgba(8, 145, 178, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+html.light .button-secondary {
+  background: rgba(8, 145, 178, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+html.light .button-secondary:hover {
+  border-color: rgba(8, 145, 178, 0.45);
+  background: rgba(8, 145, 178, 0.09);
+  box-shadow:
+    0 10px 28px rgba(11, 24, 28, 0.1),
+    0 0 22px rgba(8, 145, 178, 0.08);
+}
+html.light .nav-action {
+  background: rgba(8, 145, 178, 0.05);
+  border-color: rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+html.light .nav-action:hover {
+  border-color: rgba(8, 145, 178, 0.45);
+  background: rgba(8, 145, 178, 0.09);
+}
+html.light .topbar {
+  background: rgba(244, 247, 249, 0.68);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+html.light .eyebrow {
+  border-color: rgba(8, 145, 178, 0.25);
+  background: rgba(8, 145, 178, 0.06);
+  box-shadow: 0 0 18px rgba(8, 145, 178, 0.06);
+}
+html.light .footer-section {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.65),
+    rgba(247, 249, 251, 0.9)
+  );
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+html.light ::selection {
+  background: rgba(8, 145, 178, 0.22);
+  color: #0a1014;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: rgba(8, 145, 178, 0.25);
+  border-color: rgba(244, 247, 249, 0.7);
+}
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: rgba(8, 145, 178, 0.4);
 }
